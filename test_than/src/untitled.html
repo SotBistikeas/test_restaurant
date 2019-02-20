@@ -1,0 +1,148 @@
+   
+<html>
+<head>
+    <title>skata</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.2/dist/vue.js"></script>
+</head>
+<body>
+<style>
+    #databinding{
+            padding: 20px 15px 15px 15px;
+            margin: 0 0 25px 0;
+            width: auto;
+        }
+        span, option input {
+            font-size: 20px;
+        }
+        .Table{
+            display: table;
+            width: 80%;
+        }
+        .Title{
+            display: table-caption;
+            text-align: center;
+            font-weight: bold;
+            font-size: larger;
+        }
+        .Heading{
+            display: table-row;
+            font-weight: bolder;
+            text-align: center;
+        }
+        .Row{
+            display: table-row;
+        }
+        .Cell{
+            display: table-cell;
+            border: solid;
+            border-width: thin;
+            padding-left: 5px;
+            padding-right: 5px;
+            width: 30%;
+        }
+</style>
+
+
+<div id="databinding" >
+    <h1>Details</h1>
+    <span>Product Name</span>
+    <input type="text" placeholder="enter name" v-model = "name">
+    <span>Price per kilo</span>
+    <input type="text" placeholder="enter price per kilo" v-model = "ppk">
+    
+    <span>VAT</span>
+    
+        <select v-model="vat">
+            <option disabled value="">Please select Vat</option>
+            <option value="3%">3%</option>
+            <option value="13%">13%</option>
+            <option value="23%">23%</option>
+          </select>
+    
+    <button @click="showdata" v-bind:style="styleobj">Add</button>
+    <br/>
+    
+    <br/>
+    <customercomponent v-for="(item, index) in custdet" :key="index"
+                       v-bind:item="item"
+                       v-bind:index="index"
+                       v-bind:itr="item"
+                       v-bind:key="item.name"
+                       v-on:removeelement="custdet.splice(index, 1)">
+    </customercomponent>
+
+</div>
+
+
+
+<script type="text/javascript">
+
+    Vue.component('customercomponent',{
+    template: '<div class="Table"><div class="Row" v-bind:style="styleobj"><div class="Cell"><p>{{itr.name}}</p></div><div class="Cell"><p>{{itr.ppk}}</p></div><div class="Cell"><p>{{itr.vat}}</p></div><div class="Cell"><p><button v-on:click = "$emit(\'removeelement\')">Remove</button></p></div></div></div>',
+    props: ['itr','index'],
+    data: function(){
+        return {
+            styleobj:{
+                backgroundColor:this.getcolor(),
+                fontsize:20
+            }
+        }
+    },
+    methods: {
+        getcolor: function () {
+            if (this.index % 2){
+                return "#FFE633"
+            } else{
+                return "#D4CA87"
+            }
+            
+        }
+    },
+
+    
+});
+var vn = new Vue({
+    el:'#databinding',
+    data:{
+        name:'',
+        ppk:'',
+        vat:'',
+        custdet:[],
+        styleobj:{
+            backgroundColor:'#2196F3!important',
+            cursor:'pointer',
+            padding:'8px 16px',
+            verticalAling: 'middle',
+            }   
+        },
+    
+    methods:{
+        showdata(){
+            localStorage.name = this.name;
+            localStorage.ppk = this.ppk;
+            localStorage.vat = this.vat;
+            console.log('na doume ti kaname');
+            this.custdet.push({
+                name:this.name,
+                ppk:this.ppk,
+                vat:this.vat,
+                
+            });
+            this.name='';
+            this.ppk='';
+            this.vat='';
+        console.log('added one');
+        },
+        
+
+    },
+})
+   
+</script>
+
+
+
+
+
+</body>
+</html>
