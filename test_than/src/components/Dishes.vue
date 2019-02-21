@@ -10,13 +10,13 @@
         <div class="Table">
             <div class="Row">
                 <span>Dish Name</span>
-                <input type="text" placeholder="enter name">
+                <input type="text" placeholder="enter name" v-model="nameinput">
+              <span>{{cost}}</span>
+                <button v-on:click="addit">add dish</button>
             </div>
-            <!-- <button @click="addit" >Add</button> -->
-            <!-- <span v-for="(product, index) in products" :key="index">{{product.id}}-{{product.name}}-{{product.price}}-{{product.vat}}%<br/></span> -->
+
     
-    
-    
+
             <div class="Row" v-if="products.length !=0 ">
     
     
@@ -36,12 +36,12 @@
                     <br/> {{proion.price}}
                 </div>
                 <div class="Cell">
-                    <span>Qyantity needed: </span>
-                    <input type="number" placeholder="gr / ml" v-model="qyantity">
+                    <span>quantity needed: </span>
+                    <input type="number" placeholder="gr / ml" v-model="quantity">
                 </div>
                 <div class="Cell">
                     <span>cost per dish</span><br/>
-                    <span v-bind:value="cost">{{proion.price * qyantity}}</span>
+                    <span v-bind:value="cost">{{proion.price * quantity}}</span>
                 </div>
                 <div class="Cell">
                     <button @click="addprotodish">Add</button>
@@ -99,7 +99,7 @@
         <table>
             <tr class="Row">
                 <th class="Cell">Onama ylikou</th>
-                <th class="Cell">Qyantity per dish</th>
+                <th class="Cell">quantity per dish</th>
                 <th class="Cell">Cost per dish</th>
             </tr>
 
@@ -119,7 +119,13 @@
                 
             
         </table>
-        <div><p>{{listofproducts}}£££££££££££</p></div>
+        <div v-for="x in listofproducts" >
+            {{x.productsofdish.name}}
+          {{x.productsofdish.price}}
+          {{x.productsofdish.quantity}}
+
+
+        </div>
     <!--<P>!*{{listofproducts}}*!</P>-->
     <!-- <productcomponent v-for="(item, index) in products" :key="index"
                        v-bind:item="item"
@@ -140,7 +146,7 @@
 </tr>
 -->
     
-
+<div>{{dishes}}************</div>
 
 
   </div>
@@ -149,7 +155,7 @@
 
 <script>
     import axios from 'axios';
-    
+
     
     export default {
     
@@ -164,18 +170,18 @@
                     price: '',
                     vat: ''
                 },
+                nameinput:'',
                 options: [],
                 products: [],
-                productsofdish: {
-                    name: '',
-                    qyantity: '',
-                    price: ''
-                },
+                productsofdish:[],
                 listofproducts: [],
-                qyantity: '',
+                quantity: '',
                 proion: '',
                 dishes: [],
                 cost: '',
+                totalprice: '',
+              x:'',
+
             }
         },
         options: {
@@ -196,28 +202,41 @@
         methods: {
     
             addit: function() {
-    
-                axios.post('http://localhost:9000/dish', {
-                    name: this.name,
-                    productsofdish: this.productsofdish,
-                }).then(() => {
-                    axios.get('http://localhost:9000/dishes').then(response => {
-                        this.dishes = response.data;
-                    });
+                this.dishes.push({
+                  name: this.nameinput,
+                  productsofdish: this.listofproducts,
+                  price: this.cost,
+
                 });
+              console.log(this.listofproducts);
+               alert ("yo");
+                  axios.post('http://localhost:9000/dishes', {
+                        name: this.nameinput,
+                        price: this.cost,
+                        productsofdish: this.listofproducts,
+
+                  }).then(() => {
+                      axios.get('http://localhost:9000/dishes').then(response => {
+                          this.dishes = response.data;
+                      });
+                  });
     
             },
             addprotodish: function() {
-                this.listofproducts.push({
+
+
+              this.listofproducts.push({
                     productsofdish: {
                         name: this.proion.name,
-                        qyantity: this.qyantity,
-                        price: this.qyantity * this.proion.price
+                        quantity: this.quantity,
+                        price: this.quantity * this.proion.price
                     },
 
                 });
+              console.log(this.listofproducts);
+                this.cost =  (this.quantity * this.proion.price) + this.cost,
                 this.name = '',
-                this.qyantity = ''
+                this.quantity = ''
 
                 // alert("ta kataferes");
 
@@ -285,18 +304,7 @@
         width: 80%;
     }
     
-    .Title {
-        display: table-caption;
-        text-align: center;
-        font-weight: bold;
-        font-size: larger;
-    }
-    
-    .Heading {
-        display: table-row;
-        font-weight: bolder;
-        text-align: center;
-    }
+
     
     .Row {
         display: table-row;

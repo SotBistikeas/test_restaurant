@@ -8,22 +8,23 @@
    
     <h1>Details</h1>
     <span>Product Name</span>
-    <input type="text" placeholder="enter name" v-model = "name" v-validate="'min:5'" name="name">
+    <input type="text" placeholder="enter name" v-model = "name" >
+      <!--v-validate="'min:5'" name="name"-->
     <p class="alert" v-if="errors.has('name')">{{ errors.first('name')}}</p>
     
 
     <span>Price per kilo</span>
     <input type="number" placeholder="enter price per kilo" v-model = "price" >
        
-    <!-- <span>VAT</span>
+    <span>VAT</span>
     
         <select v-model="vat">
             <option disabled value="">Please select Vat</option>
             <option value="3">3%</option>
             <option value="13">13%</option>
             <option value="23">23%</option>
-          </select> -->
-         
+          </select>
+
     <button @click="showdata" v-bind:style="styleobj">Add</button>
   
     </form>
@@ -36,11 +37,13 @@
         <tr class="Row">
           <th>Name</th>
           <th>Price per kilo/litre</th>
+          <th>Vat</th>
         </tr>
         <tr class="Row" v-for="(product,index) in products" :key="index" v-bind:style="styleobj">
           <td>{{product.name}}</td>
           <td>{{product.price}}</td>
-          <td><button v-on:click="products.splice(index, 1)">remove item</button></td>
+          <td>{{product.vat}}</td>
+          <td><button v-on:click="deleteproduct(product.id)">remove item</button></td>
         </tr>
       </table>
     <!--<productcomponent v-for="(product, index) in products" :key="index"-->
@@ -58,8 +61,6 @@
 
 
 <script>
-import axios from 'axios';
-import { Component, Vue } from 'vue-property-decorator';
 
 export default {
 
@@ -69,7 +70,7 @@ export default {
     return {
         name:'',
         price:'',
-        // vat:'',
+        vat:'',
         product:'',
         
         products:[],
@@ -94,7 +95,7 @@ export default {
             axios.post('http://localhost:9000/product',{
                 name : this.name,
                 price : this.price,
-                // vat : this.vat
+                vat : this.vat
             }).then( () => {
                 axios.get('http://localhost:9000/products').then (response => {
                 this.products = response.data;
@@ -113,6 +114,7 @@ export default {
             // this.vat='';
         },
 
+
         getcolor: function () {
           if (this.index % 2){
             return "#00FFFF"
@@ -120,7 +122,14 @@ export default {
             return "#008080"
           }
 
-      },
+        },
+        deleteproduct(id){
+          axios.delete('http://localhost:9000/products/'+id).then( () => {
+            axios.get('http://localhost:9000/products').then (response => {
+              this.products = response.data;
+            });
+          } );
+        },
     },
     components:{
         productcomponent: {
@@ -174,17 +183,7 @@ span, option, input {
     display: table;
     width: 80%;
 }
-.Title{
-    display: table-caption;
-    text-align: center;
-    font-weight: bold;
-    font-size: larger;
-}
-.Heading{
-    display: table-row;
-    font-weight: bolder;
-    text-align: center;
-}
+
 .Row{
     display: table-row;
 }
@@ -198,7 +197,8 @@ span, option, input {
 }
 .alert{
     border: solid;
-    width: 30%;
-    display: table-cell;
+    display: inline-block;
+    padding: 5px;
+    margin-top: 5px;
 }
 </style>

@@ -2,7 +2,6 @@ package com.example.demo.Services;
 
 
 import com.example.demo.Entities.Product;
-import com.example.demo.Entities.User;
 import com.example.demo.Repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,4 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public List<Product> findByUser(User user) {
-        return productRepository.findByCreatorId(user.getId());
-    }
 }

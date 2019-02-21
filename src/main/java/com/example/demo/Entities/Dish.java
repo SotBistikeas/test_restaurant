@@ -19,7 +19,7 @@ public class Dish {
     @ManyToOne
     public User maker;
 
-
+    public Long price;
 
     public User getMaker() {
         return maker;
@@ -27,6 +27,21 @@ public class Dish {
 
     public void setMaker(User maker) {
         this.maker = maker;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+
+    public Dish(String name, List<Product> productsofdish, User maker, Long price) {
+        this.name = name;
+        this.productsofdish = productsofdish;
+        this.maker = maker;
+        this.price = price;
     }
 
     public Dish(String name, List<Product> productsofdish, User maker) {
