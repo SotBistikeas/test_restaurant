@@ -1,0 +1,43 @@
+Αρχικα, κατέβασα ένα project σε asp.net core 2.2, το asp.net Boilerplate
+site: https://aspnetboilerplate.com/
+λέξη να ψάχνεις στο google: 'aspnetboilerplate', πχ 'aspnetboilerplate developing on mac'
+
+
+θεωρητικά για να τρέξει αυτό χρειάζεται κάποια πράγματα
+asp.net core 2.2 sdk: https://dotnet.microsoft.com/download/dotnet-core/2.2
+αυτό απο ότι καταλαβαίνω δεν έχει πρόβλημα να τρέξει σε mac
+
+
+Επίσης, χρειάζεται έναν sql server. νομίζω αυτό θα παίξει μόνο με docker, βρήκα ένα video που περιγράφει την διαδικασία
+https://www.youtube.com/watch?v=BVNWRYPv78o
+
+Δες και αυτό το post, μπορεί να βοηθήσει
+https://forum.aspnetboilerplate.com/viewtopic.php?f=5&t=11257&p=29371
+
+Σε εμένα, που έχω έναν sql server στον υπολογιστή μου η διαδικασία είναι κάπως έτσι:
+
+1. Visual studio code
+2. File -> Open Folder -> D:\Projects\SotBistikeas\test_restaurant\FoodCost\aspnet-core
+3. Ανοίγω το αρχείο \src\FoodCost.Web.Host\appsettings.json
+4. εκεί έχει το connection string, που σε εμενα είναι 
+	Server=localhost; Database=FoodCostDb; Trusted_Connection=True;
+	αυτό το αλλάζεις σίγουρα, θα πρέπει να φτιάξεις κάποιο connection string για να δώσεις στην εφαρμογή
+5. Terminal -> New Terminal
+6. Τρέχω τις παρακάτω εντολές για πρώτη φορά. ίσως να χρειαστεί και κάτι ακόμα σε εσένα, κάτι δεν θα είναι εγκατεστημένο σίγουρα..
+	dotnet build
+	cd src
+	cd .\FoodCost.EntityFrameworkCore\
+	dotnet ef database update
+7. Αν όλα έχουν παει καλά σε αυτό το σημείο θα πρέπει να έχει δημιουργήσει μια βάση 'FoodCostDb'
+8. cd.. cd.. -> καταλήγω στο D:\Projects\SotBistikeas\test_restaurant\FoodCost\aspnet-core
+9. τρέχω την εντολή
+	cd src
+	cd .\FoodCost.Web.Host\
+	dotnet run
+10. Ανοίγω το url http://localhost:21021/
+	με πηγαίνει στο http://localhost:21021/swagger/index.html όπου υπάρχουν όλα τα api της εφαρμογής
+	συγκεκριμένα, αυτά που μας ενδιαφέρουν είναι αυτά που αφορούν το Product
+	καλα, αμα φτάσεις μεχρι εκεί τότε όλα έχουν παει υπερβολικά τέλεια! 
+
+
+ 
