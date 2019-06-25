@@ -12,7 +12,13 @@ namespace FoodCost.Products.Dto
     public class ProductDto : EntityDto
     {
         public string Name { get; set; }
+
         public decimal Price { get; set; }
+
         public int VatCategoryId { get; set; }
+
+        public int UnitOfMeasureId { get; set; }
+        
+        public decimal Quantity { get; set; }
     }
 }

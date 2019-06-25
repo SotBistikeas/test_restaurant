@@ -31,6 +31,7 @@ namespace FoodCost.EntityFrameworkCore.Seed
             //Other seeds
 
             new VatCategoriesBuilder(context, 1).Create();
+            new UnitOfMeasuresBuilder(context, 1).Create();
         }
 
         private static void WithDbContext<TDbContext>(IIocResolver iocResolver, Action<TDbContext> contextAction)

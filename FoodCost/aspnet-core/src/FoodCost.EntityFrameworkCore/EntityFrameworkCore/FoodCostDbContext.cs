@@ -4,6 +4,8 @@ using FoodCost.Authorization.Roles;
 using FoodCost.Authorization.Users;
 using FoodCost.MultiTenancy;
 using FoodCost.Models.Products;
+using FoodCost.Models.VatCategories;
+using FoodCost.Models.UnitOfMeasures;
 
 namespace FoodCost.EntityFrameworkCore
 {
@@ -13,6 +15,8 @@ namespace FoodCost.EntityFrameworkCore
 
         public DbSet<Product> Products { get; set; }
         public DbSet<VatCategory> VatCategories { get; set; }
+        public DbSet<UnitOfMeasure> UnitOfMeasures { get; set; }
+        public DbSet<MeasureGroup> MeasureGroups { get; set; }
 
         public FoodCostDbContext(DbContextOptions<FoodCostDbContext> options)
             : base(options)

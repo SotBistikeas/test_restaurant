@@ -2,6 +2,7 @@
 using Abp.Domain.Repositories;
 using FoodCost.CommonServices.Dto;
 using FoodCost.Models.Products;
+using FoodCost.Models.VatCategories;
 using System;
 using System.Collections.Generic;
 using System.Text;

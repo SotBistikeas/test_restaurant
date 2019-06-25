@@ -1,7 +1,7 @@
 using Abp.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 
-namespace FoodCost.Models.Products
+namespace FoodCost.Models.VatCategories
 {
     public class VatCategory : Entity
     {
