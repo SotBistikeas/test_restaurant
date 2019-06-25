@@ -4,14 +4,16 @@ using FoodCost.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FoodCost.Migrations
 {
     [DbContext(typeof(FoodCostDbContext))]
-    partial class FoodCostDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190625211601_FoodIngredient")]
+    partial class FoodIngredient
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1082,17 +1084,11 @@ namespace FoodCost.Migrations
 
                     b.Property<int>("ProductId");
 
-                    b.Property<decimal>("Quantity");
-
-                    b.Property<int>("UnitOfMeasureId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("FoodIngredientId");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("UnitOfMeasureId");
 
                     b.ToTable("FoodIngredient_Product_Mapping");
                 });
@@ -1406,11 +1402,6 @@ namespace FoodCost.Migrations
                     b.HasOne("FoodCost.Models.Products.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("FoodCost.Models.UnitOfMeasures.UnitOfMeasure", "UnitOfMeasure")
-                        .WithMany()
-                        .HasForeignKey("UnitOfMeasureId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

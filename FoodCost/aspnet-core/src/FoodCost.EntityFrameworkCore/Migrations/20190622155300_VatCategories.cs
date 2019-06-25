@@ -74,7 +74,7 @@ namespace FoodCost.Migrations
                 column: "VatCategoryId",
                 principalTable: "VatCategories",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

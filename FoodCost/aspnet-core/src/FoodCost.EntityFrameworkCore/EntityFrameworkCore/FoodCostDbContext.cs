@@ -17,6 +17,8 @@ namespace FoodCost.EntityFrameworkCore
         public DbSet<VatCategory> VatCategories { get; set; }
         public DbSet<UnitOfMeasure> UnitOfMeasures { get; set; }
         public DbSet<MeasureGroup> MeasureGroups { get; set; }
+        public DbSet<FoodIngredient> FoodIngredients { get; set; }
+        public DbSet<FoodIngredient_Product> FoodIngredient_Product_Mapping { get; set; }
 
         public FoodCostDbContext(DbContextOptions<FoodCostDbContext> options)
             : base(options)

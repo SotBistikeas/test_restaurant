@@ -74,7 +74,7 @@ namespace FoodCost.Migrations
                 column: "UnitOfMeasureId",
                 principalTable: "UnitOfMeasures",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
 
 
         }
