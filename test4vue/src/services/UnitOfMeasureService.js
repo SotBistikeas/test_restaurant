@@ -11,10 +11,10 @@ const apiClient = axios.create({
 });
 
 export default {
-  getVat() {
-    return apiClient.get('/VatCategory/GetAll').catch(error => console.log('There was an error:' + error.responce));
+  getUnit() {
+    return apiClient.get('/UnitOfMeasure/GetAll?MaxResultCount=56');
   },
-  getVatById(id){
-    return apiClient.get('/VatCategory/Get?Id=' + id);
+  getUnitById(id) {
+    return apiClient.get('/UnitOfMeasure/Get?Id=' + id);
   }
 };

@@ -54,30 +54,21 @@
 <script>
 import NProgress from 'nprogress';
 import { required } from 'vuelidate/lib/validators';
-import UnitOfMesureService from '@/services/UnitOfMeasureService.js';
+import VatService from '@/services/VatService';
 import axios from 'axios';
 
     export default {
-        beforeCreate: 
-        function(){
+        beforeCreate: function(){
             axios.get('http://localhost:21021/api/services/app/VatCategory/GetAll')
                 .then(responce=>{
                 this.x = responce.data       
                 })
-                .then(
-                    this.vatOption1 = this.x.result.items[0],
-                    this.vatOption2 = this.x.result.items[1],
+                .then(responce =>{
+                    this.vatOption1 = this.x.result.items[0]
+                    this.vatOption2 = this.x.result.items[1]
                     this.vatOption3 = this.x.result.items[2]
-                )
-                .catch(error => console.log('There was an error:' + error.responce));
-        UnitOfMesureService.getUnit()
-        .then(responce=>{
-            this.result = responce.data.result
-            this.items = responce.data.result.items
-        })
-        .catch(error =>{
-            console.log('There war an error ' + error.responce);
-        })     
+                })
+                .catch(error => console.log('There was an error:' + error.responce)) 
         },
         data(){
             return {
@@ -85,8 +76,7 @@ import axios from 'axios';
                 vatOption1:[],
                 vatOption2:[],
                 vatOption3:[],
-                result:{},
-                items:[],
+                
                 x:'',
                 product: this.createFreshProductObject(),
             }
@@ -145,4 +135,5 @@ import axios from 'axios';
 
 
 <style scoped>
+  
 </style>

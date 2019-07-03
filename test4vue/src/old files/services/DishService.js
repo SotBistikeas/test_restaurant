@@ -20,4 +20,14 @@ apiClient.interceptors.response.use(response => {
   NProgress.done();
   return response;
 });
-export default {};
+export default {
+  getDishes(perPage, page) {
+    return apiClient.get('/dishes?_limit=' + perPage + '&_page=' + page);
+  },
+  getDish(id) {
+    return apiClient.get('/dishes/' + id);
+  },
+  postDish(dish) {
+    return apiClient.post('/dishes', dish);
+  }
+};

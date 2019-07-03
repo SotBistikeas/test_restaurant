@@ -1,28 +1,26 @@
 <template>
     <div >
         
-    <ProductCard  v-for="product in products" :key="product.id" :product="product"/>
-
+    <VatCard  v-for="vat in vats" :key="vat.id" :vat="vat"/>
 
     </div>
 </template>
 <script>
-import ProductCard from '@/components/ProductCard.vue';
-import ProductService from '@/services/ProductService.js';
+import VatCard from '@/components/VatCard.vue';
+import VatService from '@/services/VatService.js';
 
 export default {
         components:{
-            ProductCard
+            VatCard
         },
         data(){
             return {
-                products:[]
+                vats:[]
             }
         },
         created(){
-            ProductService.getAllProducts()
-            .then(response => {
-                this.products = response.data.result.items
+            VatService.getVat().then(response => {
+                this.vats = response.data.result.items;
             })
             .catch(error =>{
                 console.log('There was an error getting products from db '+ error.response)

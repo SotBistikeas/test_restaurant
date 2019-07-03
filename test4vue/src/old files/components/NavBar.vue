@@ -5,8 +5,7 @@
             <router-link :to="{name: 'ProductCreate'}">New Product</router-link> |
             <router-link :to="{name: 'DishCreate'}">New Dish</router-link> |
             <router-link :to="{name: 'ProductList'}">Product List</router-link> |
-            <router-link :to="{name: 'UnitList'}">Units</router-link> |
-            <router-link :to="{name: 'VatList'}">Vat List</router-link>
+            <router-link :to="{name: 'DishList'}">Dish list</router-link> 
         </nav>
     </div>
 </template>

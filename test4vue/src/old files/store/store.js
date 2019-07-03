@@ -5,7 +5,6 @@ import * as product from '@/store/modules/product.js';
 import * as dish from '@/store/modules/dish.js';
 import * as notification from '@/store/modules/notification.js';
 import * as vat from '@/store/modules/vat.js';
-import * as unit from '@/store/modules/unit.js';
 
 Vue.use(Vuex);
 export default new Vuex.Store({
@@ -14,16 +13,15 @@ export default new Vuex.Store({
     product,
     notification,
     dish,
-    vat,
-    unit
+    vat
   },
   state: {
     vat: [],
+    products: [],
     prodsOfDish: [],
     quantity: 0,
     price: 0,
     tempPrice: 0,
-    pds: [],
-    unit: []
+    pds: []
   }
 });

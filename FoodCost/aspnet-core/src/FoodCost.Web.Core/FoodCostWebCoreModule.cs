@@ -12,6 +12,8 @@ using Abp.Zero.Configuration;
 using FoodCost.Authentication.JwtBearer;
 using FoodCost.Configuration;
 using FoodCost.EntityFrameworkCore;
+using Abp.Configuration.Startup;
+
 
 namespace FoodCost
 {
@@ -40,6 +42,8 @@ namespace FoodCost
 
             // Use database for language management
             Configuration.Modules.Zero().LanguageManagement.EnableDbLocalization();
+
+            Configuration.Modules.AbpWebCommon().SendAllExceptionsToClients = true;
 
             Configuration.Modules.AbpAspNetCore()
                  .CreateControllersForAppServices(

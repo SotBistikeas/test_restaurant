@@ -11,10 +11,19 @@ const apiClient = axios.create({
 });
 
 export default {
-  getVat() {
-    return apiClient.get('/VatCategory/GetAll').catch(error => console.log('There was an error:' + error.responce));
+  data: {
+    vat: [],
+    x: {}
   },
-  getVatById(id){
-    return apiClient.get('/VatCategory/Get?Id=' + id);
+  getVat() {
+    apiClient
+      .get('/VatCategory/GetAll')
+      .then(responce => {
+        this.x = responce.data;
+      })
+      .then(() => {
+        this.vat = this.x.result;
+      })
+      .catch(error => console.log('There was an error:' + error.responce));
   }
 };
