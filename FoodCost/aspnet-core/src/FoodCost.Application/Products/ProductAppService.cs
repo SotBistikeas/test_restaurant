@@ -1,6 +1,7 @@
 ﻿using Abp;
 using Abp.Application.Services;
 using Abp.Domain.Repositories;
+using Abp.Web.Models;
 using FoodCost.Models.Products;
 using FoodCost.Products.Dto;
 using System;

@@ -34,6 +34,10 @@ namespace FoodCost.Models.Products
 
     public class FoodIngredient_Product : Entity, IAudited
     {
+        public int FoodIngredientId { get; set; }
+        [ForeignKey(nameof(FoodIngredientId))]
+        public FoodIngredient FoodIngredient { get; set; }
+
         public int ProductId { get; set; }
         [ForeignKey(nameof(ProductId))]
         public Product Product { get; set; }
