@@ -22,19 +22,29 @@ apiClient.interceptors.response.use(response => {
 });
 export default {
   getProducts(perPage, page) {
-    return apiClient.get('/Product/GetAll?_limit=' + perPage + '&_page=' + page);
+    return apiClient.get('/Product/GetAll?_limit=' + perPage + '&_page=' + page).catch(error => {
+      console.log('There was an error:', error.message);
+    });
   },
   getAllProducts() {
-    return apiClient.get('/Product/GetAll');
+    return apiClient.get('/Product/GetAll').catch(error => {
+      console.log('There was an error:', error.message);
+    });
   },
   getProduct(id) {
-    return apiClient.get('/Product/Get?Id=' + id);
+    return apiClient.get('/Product/Get?Id=' + id).catch(error => {
+      console.log('There was an error:', error.message);
+    });
   },
   postProduct(product) {
-    return apiClient.post('/Product/Create', product);
+    return apiClient.post('/Product/Create', product).catch(error => {
+      console.log('There was an error:', error.message);
+    });
   },
   deleteProduct(id) {
-    return apiClient.delete('/Product/Delete?Id=' + id);
+    return apiClient.delete('/Product/Delete?Id=' + id).catch(error => {
+      console.log('There was an error:', error.message);
+    });
   }
 };
 // http://localhost:21021/api/services/app/Product/Get?Id=

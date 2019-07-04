@@ -1,13 +1,10 @@
-import UnitService from '@/services/UnitOfMeasureService.js';
+import UnitOfMeasureService from '@/services/UnitOfMeasureService.js';
 
-export const state = {
-  unit: []
-};
 export const actions = {
-  fetchUnit({ commit, dispatch, state },) {
-    return UnitService.getUnit(state)
+  fetchUnits({ commit, dispatch, state }) {
+    return UnitOfMeasureService.getUnit(state)
       .then(response => {
-        commit('SET_UNIT', response.data);
+        commit('SET_UNITS', response.data);
       })
       .catch(error => {
         const notification = {
@@ -15,6 +12,7 @@ export const actions = {
           message: 'there was a problem fetching units: ' + error.message
         };
         dispatch('notification/add', notification, { root: true });
+        console.log('There was an error from unit.js');
       });
   },
 }

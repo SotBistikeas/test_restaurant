@@ -1,7 +1,7 @@
 <template>
   <div>
-    <span>Name: {{unit.result.name}}</span> <br>
-    <span>Id: {{unit.result.id}}</span>
+    <span>Name: {{unit.name}}</span> <br>
+    <span>Id: {{unit.id}}</span>
     <br><br><br>
     <router-link :to="{name: 'UnitList'}">Back to Units List</router-link>
   </div>
@@ -22,10 +22,10 @@ import UnitOfMeasureService from '@/services/UnitOfMeasureService.js';
     created(){
       UnitOfMeasureService.getUnitById(this.id)
       .then(response => {
-        this.unit = response.data;
+        this.unit = response.data.result;
       })
       .catch(error =>{
-        console.log(error.response);
+        console.log(error.message);
       })
     }
   }

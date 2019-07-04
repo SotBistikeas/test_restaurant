@@ -1,41 +1,29 @@
 <template>
     <div >
-        
-    <ProductCard  v-for="product in products" :key="product.id" :product="product"/>
+    <ProductCard  class="gap" v-for="product in products" :key="product.id" :product="product"/>
 
 
     </div>
 </template>
 <script>
 import ProductCard from '@/components/ProductCard.vue';
-import ProductService from '@/services/ProductService.js';
-
+import {mapState} from 'vuex';
 export default {
         components:{
             ProductCard
         },
-        data(){
-            return {
-                products:[]
-            }
-        },
         created(){
-            ProductService.getAllProducts()
-            .then(response => {
-                this.products = response.data.result.items
-            })
-            .catch(error =>{
-                console.log('There was an error getting products from db '+ error.response)
-            })
-        }
+            this.$store.dispatch('fetchProducts')
+        },
+        computed: mapState(['products'])
 
     }
 </script>
 
 
 <style scoped>
-.box{
-    border: 1px, solid ,black;
+.gap{
+    margin: 5px;
 }
 </style>
 

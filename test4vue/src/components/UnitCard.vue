@@ -1,7 +1,7 @@
 <template>
-    <div class="lol">
+    <div>
 
-        <router-link :to="{name:'UnitShow', params : {id: unit.id}}">
+        <router-link class="box" :to="{name:'UnitShow', params : {id: unit.id}}">
             {{unit.name}} - {{ unit.id }}
         </router-link>
     </div>
@@ -16,8 +16,7 @@
 </script>
 
 <style scoped>
-.lol{
-    border: 1px dotted red;
-    margin: 1px;
+.box {
+  border: 1px dotted green;
 }
 </style>

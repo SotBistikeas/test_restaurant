@@ -1,35 +1,30 @@
 <template>
     <div>
-                
-        <UnitCard v-for="unit in units" :key="unit.id" :unit="unit"/> 
+        <span v-if="units.length != 0">Total unit options: {{ units.length }}</span>
+    
+        <UnitCard class="gap" v-for="unit in units " :key="unit.id" :unit="unit"/> 
    
     </div>
 </template>
 
 <script>
 import UnitCard from '@/components/UnitCard.vue';
-import UnitOfMesureService from '@/services/UnitOfMeasureService.js';
+import {mapState} from 'vuex';
 export default {
     components:{
         UnitCard,
     },
-    data(){
-            return {
-                units:[]
-            }
-        },
     created(){
-        UnitOfMesureService.getUnit()
-        .then(responce=>{
-            this.units = responce.data.result.items
-        })
-        .catch(error =>{
-            console.log('There war an error ' + error.responce);
-        })
-        
-    }
+            this.$store.dispatch('fetchUnits')
+            console.log('store.dispatch-fetchunits')
+        },
+        computed: mapState(['units'])
 }
    
 </script>
 
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+<style scoped>
+.gap{
+    margin: 5px;
+}
+</style>

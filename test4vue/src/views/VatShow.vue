@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="vat != null">
     <span>{{ vat.name }}</span> | 
     <span>{{ vat.id }}</span> |
     <span>{{ vat.vat }}</span>
@@ -22,10 +22,8 @@ import VatService from '@/services/VatService.js';
       VatService.getVatById(this.id)
       .then(response => {
         this.vat = response.data.result;
-        console.log(this.vat)
-      })
-      .catch(error =>{
-        console.log(error.response);
+      }).catch(error=>{
+        console.log('skata');
       })
     }
   }

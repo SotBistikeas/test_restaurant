@@ -1,39 +1,31 @@
 <template>
     <div >
-        
-    <VatCard  v-for="vat in vats" :key="vat.id" :vat="vat"/>
+     
+    <VatCard class="gap" v-for="vat in vats" :key="vat.id" :vat="vat"/>
 
     </div>
 </template>
 <script>
 import VatCard from '@/components/VatCard.vue';
-import VatService from '@/services/VatService.js';
+import {mapState} from 'vuex';
 
 export default {
         components:{
             VatCard
         },
-        data(){
-            return {
-                vats:[]
-            }
-        },
         created(){
-            VatService.getVat().then(response => {
-                this.vats = response.data.result.items;
-            })
-            .catch(error =>{
-                console.log('There was an error getting products from db '+ error.response)
-            })
-        }
+            this.$store.dispatch('fetchVats')
+            console.log('store.dispatch-fetchvats')
+        },
+        computed: mapState(['vats'])
 
     }
 </script>
 
 
 <style scoped>
-.box{
-    border: 1px, solid ,black;
+.gap{
+    margin: 5px;
 }
 </style>
 

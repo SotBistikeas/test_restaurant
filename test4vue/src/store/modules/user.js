@@ -1,3 +1,11 @@
 export const state = {
-  user: { id: '1', name: 'bake' }
+  user: {
+    userName: 'string',
+    name: 'string',
+    surname: 'string',
+    emailAddress: 'string',
+    isActive: true,
+    roleNames: ['string'],
+    password: 'string'
+  }
 };

@@ -47,7 +47,6 @@ const router = new Router({
       path: '/dishlist',
       name: 'DishList',
       component: DishList,
-      props: true
     },
     {
       path: '/user/:username',
@@ -80,7 +79,6 @@ const router = new Router({
       path: '/404',
       name: '404',
       component: NotFound,
-      props: true
     },
     {
       path: '/vat',
