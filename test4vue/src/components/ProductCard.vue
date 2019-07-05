@@ -4,7 +4,7 @@
     <span>name: {{ product.name }} |
     price: {{ product.price }} |
     vat: {{ product.vatCategoryId }} |
-    unit: {{ product.UnitOfMeadureId }} |
+    unit: {{ product.unitOfMeasureId }} |
     quantity: {{ product.quantity }} |
     id: {{ product.id }}</span>
     </router-link>

@@ -43,7 +43,9 @@ namespace FoodCost
             // Use database for language management
             Configuration.Modules.Zero().LanguageManagement.EnableDbLocalization();
 
+#if DEBUG
             Configuration.Modules.AbpWebCommon().SendAllExceptionsToClients = true;
+#endif
 
             Configuration.Modules.AbpAspNetCore()
                  .CreateControllersForAppServices(
