@@ -1,11 +1,8 @@
 
 <template>
-  <b-form-group
-    :label="label"
-  >
+  <b-form-group :label="label">
     <b-form-input :value="value" @input="updateValue" v-bind="$attrs" v-on="listeners" class></b-form-input>
   </b-form-group>
- 
 </template>
 
 

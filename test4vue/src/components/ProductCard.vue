@@ -1,5 +1,4 @@
 <template>
-  <div class="box">
     <router-link :to="{name:'ProductShow', params:{ id : product.id}}">
     <span>name: {{ product.name }} |
     price: {{ product.price }} |
@@ -8,7 +7,6 @@
     quantity: {{ product.quantity }} |
     id: {{ product.id }}</span>
     </router-link>
-  </div>
 </template>
 
 <script>
@@ -18,12 +16,3 @@
     }
   }
 </script>
-
-<style scoped>
-h3 {
-  color: red;
-}
-.box {
-  border: 1px dotted green;
-}
-</style>
