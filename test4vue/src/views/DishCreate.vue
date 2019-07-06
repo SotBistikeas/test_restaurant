@@ -128,11 +128,7 @@ import { required } from 'vuelidate/lib/validators';
                     price:'',
                     pds:this.$store.state.pds,
                 }
-            },
-            
-            
-            
-            
+            }
         },
         
     }

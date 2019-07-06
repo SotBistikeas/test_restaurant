@@ -63,12 +63,12 @@ export const actions = {
     if (product) {
       commit('SET_PRODUCT', product);
       return product;
-    } else {
-      return ProductService.getProduct(id).then(response => {
-        commit('SET_PRODUCT', response.data);
-        return response.data;
-      });
     }
+    return ProductService.getProduct(id).then(response => {
+      commit('SET_PRODUCT', response.data);
+      return response.data;
+    });
+
   }
 };
 export const getters = {
