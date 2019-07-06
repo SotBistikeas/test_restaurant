@@ -6,8 +6,8 @@ import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
 import 'nprogress/nprogress.css';
 import BootstrapVue from 'bootstrap-vue';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap-vue/dist/bootstrap-vue.css';
+
+import './css/main.scss';
 import Vuelidate from 'vuelidate';
 
 Vue.use(BootstrapVue);

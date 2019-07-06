@@ -1,44 +1,21 @@
 <template>
-    <div id="nav" >
-        <router-link to="/">Home</router-link>
-        <nav>
-            <router-link :to="{name: 'ProductCreate'}">New Product</router-link> |
-            <router-link :to="{name: 'DishCreate'}">New Dish</router-link> |
-            <router-link :to="{name: 'ProductList'}">Product List</router-link> |
-            <router-link :to="{name: 'UnitList'}">Units</router-link> |
-            <router-link :to="{name: 'VatList'}">Vat List</router-link>
-        </nav>
-    </div>
+  <b-navbar toggleable="lg" type="dark" variant="primary">
+    <b-navbar-brand>
+      <router-link to="/">Home</router-link>
+    </b-navbar-brand>
+    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+    <b-collapse id="nav-collapse" is-nav>
+      <b-navbar-nav>
+        <b-nav-item :to="{ name: 'ProductCreate' }">New Product</b-nav-item>
+        <b-nav-item :to="{ name: 'DishCreate' }">New Dish</b-nav-item>
+        <b-nav-item :to="{ name: 'ProductList' }">Product List</b-nav-item>
+        <b-nav-item :to="{ name: 'UnitList' }">Units</b-nav-item>
+        <b-nav-item :to="{ name: 'VatList' }">Vat List</b-nav-item>
+      </b-navbar-nav>
+    </b-collapse>
+  </b-navbar>
 </template>
 
 <script>
-    export default {
-
-    }
+export default {};
 </script>
-
-<style scoped>
-    .nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        height: 60px;
-    }
-    .nav > .brand {
-        font-family: 'Montserrat', sans-serif;
-        font-weight: 700;
-        font-size: 1.5em;
-        color: #39b982;
-        text-decoration: none;
-    }
-    .nav .nav-item {
-        box-sizing: border-box;
-        margin: 0 5px;
-        color: rgba(0, 0, 0, 0.5);
-        text-decoration: none;
-    }
-    .nav .nav-item.router-link-exact-active {
-        color: #39b982;
-        border-bottom: solid 2px #39b982;
-    }
-</style>
