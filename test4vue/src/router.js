@@ -14,7 +14,7 @@ import VatList from './views/VatList.vue';
 import UnitList from './views/UnitList.vue';
 import UnitShow from './views/UnitShow.vue';
 import VatShow from './views/VatShow.vue';
-
+import FoodIngredient from './views/FoodIngredient.vue';
 Vue.use(Router);
 
 const router = new Router({
@@ -37,6 +37,11 @@ const router = new Router({
       path: '/create',
       name: 'ProductCreate',
       component: ProductCreate
+    },
+    {
+      path: '/foodingredient',
+      name: 'FoodIngredient',
+      component: FoodIngredient
     },
     {
       path: '/createDish',
