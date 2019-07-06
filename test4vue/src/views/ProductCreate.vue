@@ -7,8 +7,9 @@
           label="Name:"
           v-model="product.name"
           class="field"
-          :class="{error: $v.product.name.$error}"
           @blur="$v.product.name.$touch()"
+          :state="!$v.product.name.$error"
+          errorMessage="Name is required"
         />
 
         <template v-if="$v.product.name.$error">
@@ -20,6 +21,7 @@
           class="field"
           :class="{error: $v.product.price.$error}"
           @blur="$v.product.price.$touch()"
+          type="number"
         />
         <template v-if="$v.product.price.$error">
           <p v-if="!$v.product.price.required" class="errorMessage">Price is required</p>
@@ -52,7 +54,7 @@
         </template>
 
         <BaseButton type="submit" :disabled="$v.$anyError" variant="primary">Save</BaseButton>
-       
+
         <p v-if="$v.$anyError">Please fill out all the fields</p>
       </form>
     </b-card>
