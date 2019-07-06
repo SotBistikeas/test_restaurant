@@ -4,17 +4,14 @@
     <b-card title="Create a new product" sub-title="Card subtitle">
       <form @submit.prevent="createProduct">
         <BaseInput
-          label="Name:"
+          label="Name"
           v-model="product.name"
-          class="field"
           @blur="$v.product.name.$touch()"
           :state="!$v.product.name.$error"
           errorMessage="Name is required"
         />
 
-        <template v-if="$v.product.name.$error">
-          <p v-if="!$v.product.name.required" class="errorMessage">Name is required</p>
-        </template>
+
         <BaseInput
           label="Timi ana kilo:"
           v-model="product.price"
@@ -22,10 +19,10 @@
           :class="{error: $v.product.price.$error}"
           @blur="$v.product.price.$touch()"
           type="number"
+          :state="!$v.product.price.$error"
+          errorMessage="Price is required"
         />
-        <template v-if="$v.product.price.$error">
-          <p v-if="!$v.product.price.required" class="errorMessage">Price is required</p>
-        </template>
+        
         <b-form-group label="Vat category">
           <b-form-select v-model="product.vatCategoryId">
             <option disabled hidden :value="null">Please select one</option>
