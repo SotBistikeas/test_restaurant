@@ -6,6 +6,7 @@ using FoodCost.MultiTenancy;
 using FoodCost.Models.Products;
 using FoodCost.Models.VatCategories;
 using FoodCost.Models.UnitOfMeasures;
+using FoodCost.Models.Dishes;
 
 namespace FoodCost.EntityFrameworkCore
 {
@@ -19,6 +20,8 @@ namespace FoodCost.EntityFrameworkCore
         public DbSet<MeasureGroup> MeasureGroups { get; set; }
         public DbSet<FoodIngredient> FoodIngredients { get; set; }
         public DbSet<FoodIngredient_Product> FoodIngredient_Product_Mapping { get; set; }
+        public DbSet<Dish> Dishes { get; set; }
+        public DbSet<Dish_FoodIngredient> Dish_FoodIngredient_Mapping { get; set; }
 
         public FoodCostDbContext(DbContextOptions<FoodCostDbContext> options)
             : base(options)

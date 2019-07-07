@@ -15,8 +15,3 @@
     }
 </script>
 
-<style scoped>
-.box {
-  border: 1px dotted green;
-}
-</style>

@@ -14,11 +14,3 @@
   }
 </script>
 
-<style scoped>
-h3 {
-  color: red;
-}
-.box {
-  border: 1px dotted green;
-}
-</style>
