@@ -5,7 +5,7 @@
     <p>cost: {{ FoodIngredient.cost }} </p>
     <p>unit id: {{ FoodIngredient.unitOfMeasureId }} </p>
     <p>Quantity: {{ FoodIngredient.quantity }} </p>
-    <!-- <BaseButton>Delete</BaseButton> -->
+    <Button @click="deleteIt()">Delete</Button> 
     <br><br>
     <select v-model="FoodIngredient.products">
         <option disabled hidden :value="null">Please select one</option>
@@ -15,6 +15,12 @@
           v-bind:key="option.id"
         >{{ option.name }}</option>
       </select>
+      <BaseButton @click="addToList()">Add to list</BaseButton>
+      <div v-if="list.length > 0">
+        <div v-for="l in list" :key="l.id">
+          {{ l }}
+        </div>
+      </div>
   </div>
 </template>
 
@@ -31,6 +37,7 @@ import axios from 'axios';
         FoodIngredient:{
           result:{}
         },
+        list:[]
       }
     },
     beforeCreate(){
@@ -42,16 +49,6 @@ import axios from 'axios';
       })
     },
     created(){
-      
-      // ProductService.getAllProducts()
-      // .then(responce => {
-      //   this.ProductOptions = responce.data;
-      //   console.log('responce = '+ responce.data + "    lol");
-      // })
-      // .catch(error => {
-      //   console.log("There war an error " + error.responce);
-      // });
-      
       FoodIngredientService.getFoodIngredientById(this.id)
       .then(response => {
         this.FoodIngredient = response.data.result;
@@ -60,7 +57,25 @@ import axios from 'axios';
       .catch(error =>{
         console.log(error.response);
       })
+    },
+    methods:{
+    deleteIt(id){
+      axios
+      .delete('http://localhost:21021/api/services/app/FoodIngredient/Delete?Id='+ this.id)
+      .then(response => {
+        this.$router.push({
+                name:'FoodIngredientList'
+              })
+              console.log('record with id:' + this.id + ' has been deleted');
+        }).catch(error =>{
+          console.log(error.message);
+        })
+    },
+    addToList(){
+      this.list.push(this.FoodIngredient.products);
+      console.log(this.list);
     }
+    },
   }
 </script>
 
