@@ -13,7 +13,7 @@ export default {
         components:{
             VatCard
         },
-        created(){
+        beforeCreate(){
             this.$store.dispatch('fetchVats')
             console.log('store.dispatch-fetchvats')
         },

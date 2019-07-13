@@ -7,7 +7,7 @@
 
     <form @submit.prevent="createProduct">
       <BaseInput
-        label="Name:"
+        label="Onoma: "
         v-model="product.name"
         class="field"
         :class="{error: $v.product.name.$error}"
@@ -17,7 +17,7 @@
         <p v-if="!$v.product.name.required" class="errorMessage">Name is required</p>
       </template>
       <BaseInput
-        label="Timi ana kilo:"
+        label="Timi: "
         v-model="product.price"
         class="field"
         :class="{error: $v.product.price.$error}"

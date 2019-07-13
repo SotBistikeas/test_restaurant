@@ -19,7 +19,7 @@ import UnitOfMeasureService from '@/services/UnitOfMeasureService.js';
         }
       }
     },
-    created(){
+    beforecreate(){
       UnitOfMeasureService.getUnitById(this.id)
       .then(response => {
         this.unit = response.data.result;

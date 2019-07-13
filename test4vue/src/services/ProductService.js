@@ -27,7 +27,7 @@ export default {
     });
   },
   getAllProducts() {
-    return apiClient.get('/Product/GetAll').catch(error => {
+    return apiClient.get('/Product/GetAll?MaxResultCount=10000').catch(error => {
       console.log('There was an error:', error.message);
     });
   },

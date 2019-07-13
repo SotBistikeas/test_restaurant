@@ -15,6 +15,8 @@ import UnitList from './views/UnitList.vue';
 import UnitShow from './views/UnitShow.vue';
 import VatShow from './views/VatShow.vue';
 import FoodIngredient from './views/FoodIngredient.vue';
+import FoodIngredientShow from './views/FoodIngredientShow.vue';
+import FoodIngredientList from './views/FoodIngredientList.vue';
 Vue.use(Router);
 
 const router = new Router({
@@ -44,6 +46,32 @@ const router = new Router({
       component: FoodIngredient
     },
     {
+      path: '/foodlist',
+      name: 'FoodIngredientList',
+      component: FoodIngredientList
+    },
+    {
+      path: '/FoodIngredient/:id',
+      name: 'FoodIngredientShow',
+      component: FoodIngredientShow,
+      props: true,
+      beforeEnter(routeTo, _routeFrom, next) {
+        store
+          .dispatch('FoodIngredient/fetchFoodIngredient', routeTo.params.id)
+          .then(FoodIngredient => {
+            routeTo.params.FoodIngredient = FoodIngredient;
+            next();
+          })
+          .catch(error => {
+            if (error.response && error.response.status == 404) {
+              next({ name: '404', params: { resource: 'FoodIngredient' } });
+            } else {
+              next({ name: 'network-issue' });
+            }
+          });
+      }
+    },
+    {
       path: '/createDish',
       name: 'DishCreate',
       component: DishCreate
@@ -51,7 +79,7 @@ const router = new Router({
     {
       path: '/dishlist',
       name: 'DishList',
-      component: DishList,
+      component: DishList
     },
     {
       path: '/user/:username',
@@ -83,7 +111,7 @@ const router = new Router({
     {
       path: '/404',
       name: '404',
-      component: NotFound,
+      component: NotFound
     },
     {
       path: '/vat',
