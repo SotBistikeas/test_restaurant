@@ -10,25 +10,32 @@
     <br>
     {{x}} -- lol
     <br><br>
-    <select v-model="product">
+    <!-- <select v-model="product">
         <option
           v-for="option in ProductOptions"
           v-bind:value="option"
           v-bind:key="option.id"
         >{{ option.name }}</option>
-      </select>
+      </select> -->
+      <b-form-group label="Products">
+        <b-form-select v-model="product">
+          <option disabled hidden :value="null">Please select one</option>
+            <option
+              v-for="option in ProductOptions"
+              v-bind:value="option"
+              v-bind:key="option.id"
+            >{{ option.name }}</option>
+        </b-form-select>
+      </b-form-group>
+      <form v-on:submit="addToList()"> 
       <BaseInput
         label="quantity:"
         v-model="quantity"
         class="field"
       />
       <span v-if="!(isNaN(product.price * quantity))">price per FoodIngredient: {{product.price * quantity}}</span>
-      <BaseButton @click="addToList()">Add to list</BaseButton>
-      <!-- <div v-if="list.length > 0">
-        <div v-for="l in list" :key="l.name">
-          name:{{ l.name }} <br> id:{{ l.id }} <br> unit:{{ l.unitOfMeasureId}} <br> vat:{{ l.vatCategoryId }}
-        </div>
-      </div> -->
+      <BaseButton type="submit">Add to list</BaseButton>
+      </form>
   </div>
 </template>
 
@@ -45,7 +52,6 @@ import axios from 'axios';
         FoodIngredient:{
           result:{}
         },
-        list:[],
         product:{
           productId:'',
           quantity: '',
@@ -101,14 +107,12 @@ import axios from 'axios';
           unitOfMeasureId: this.product.unitOfMeasureId,
           id: 0,
       })
+            
+      axios
+      .get('http://localhost:21021/api/services/app/FoodIngredient/GetProducts?foodIngredientId='+this.id)
       .then(response =>{
-        console.log(response.data);
-        console.log(this.product.id+' product id');
-        console.log(this.quantity+' quantity');
-        console.log(this.product.unitOfMeasureId+' unit id');
+        this.x = response.data.result
       })
-      this.list.push(this.product);
-      console.log(this.list);
     }
     },
   }

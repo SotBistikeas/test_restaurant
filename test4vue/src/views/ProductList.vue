@@ -8,7 +8,6 @@
       <span>
         name: {{ product.name }} |
         price: {{ product.price }} |
-        vat: {{ product.vatCategoryId }} |
         unit: {{ product.unitOfMeasureId }} |
         quantity: {{ product.quantity }} |
         id: {{ product.id }}
@@ -17,12 +16,8 @@
   </b-list-group>
 </template>
 <script>
-import ProductCard from "@/components/ProductCard.vue";
 import { mapState } from "vuex";
 export default {
-  components: {
-    ProductCard
-  },
         beforeCreate(){
     this.$store.dispatch("fetchProducts");
   },

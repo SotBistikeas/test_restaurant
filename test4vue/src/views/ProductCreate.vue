@@ -23,19 +23,6 @@
           errorMessage="Price is required"
         />
         
-        <b-form-group label="Vat category">
-          <b-form-select v-model="product.vatCategoryId">
-            <option disabled hidden :value="null">Please select one</option>
-            <option
-              v-for="option in vatCategoryOptions"
-              v-bind:value="option.id"
-              v-bind:key="option.id"
-            >{{ option.name }}</option>
-          </b-form-select>
-        </b-form-group>
-        <template v-if="$v.product.vatCategoryId.$error">
-          <p v-if="!$v.product.vatCategoryId.required" class="errorMessage">Vat is required</p>
-        </template>
         <b-form-group label="Unit of measure">
           <b-form-select v-model="product.unitOfMeasureId">
             <option disabled hidden :value="null">Please select one</option>
@@ -67,14 +54,7 @@ import axios from "axios";
 
 export default {
   beforeCreate: function() {
-    //get vat categories
-    axios
-      .get("http://localhost:21021/api/services/app/VatCategory/GetAll")
-      .then(responce => {
-        this.vatCategoryOptions = responce.data.result.items;
-      })
-      .catch(error => console.log("There was an error:" + error.responce));
-
+    //get Unit categories
     UnitOfMesureService.getUnit()
       .then(responce => {
         this.unitOfMeasureOptions = responce.data.result.items;
@@ -85,7 +65,6 @@ export default {
   },
   data() {
     return {
-      vatCategoryOptions: [],
       unitOfMeasureOptions: [],
       result: {},
       items: [],
@@ -97,7 +76,6 @@ export default {
     product: {
       name: { required },
       price: { required },
-      vatCategoryId: { required },
       unitOfMeasureId: { required }
     }
   },
@@ -110,10 +88,6 @@ export default {
         this.$store
           .dispatch("product/createProduct", this.product)
           .then(() => {
-            //this.$router.push({
-            //  name:'ProductShow',
-            // params:{ id : this.product.id}
-            // })
             this.product = this.createFreshProductObject();
           })
           .catch(() => {
@@ -127,7 +101,6 @@ export default {
         id: 0,
         user: user,
         price: null,
-        vatCategoryId: null,
         unitOfMeasureId: 402, // kgs
         quantity: 1
       };

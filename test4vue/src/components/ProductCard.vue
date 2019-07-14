@@ -2,7 +2,6 @@
     <router-link :to="{name:'ProductShow', params:{ id : product.id}}">
     <span>name: {{ product.name }} |
     price: {{ product.price }} |
-    vat: {{ product.vatCategoryId }} |
     unit: {{ product.unitOfMeasureId }} |
     quantity: {{ product.quantity }} |
     id: {{ product.id }}</span>

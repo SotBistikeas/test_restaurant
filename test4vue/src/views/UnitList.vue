@@ -1,9 +1,9 @@
 <template>
     <div >
-        <span v-if="units.length != 0">Total unit options: {{ units.length }}</span>
+        <span v-if="units.length != 0">Total unit options: {{ units.length }}
     
         <UnitCard class="gap" v-for="unit in units" :key="unit.id" :unit="unit" /> 
-   
+        </span>
     </div>
 </template>
 
