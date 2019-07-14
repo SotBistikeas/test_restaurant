@@ -26,6 +26,7 @@ namespace FoodCost.Products
 
         public FoodIngredient_ProductDto AddProduct(int foodIngredientId, FoodIngredient_ProductDto foodIngredientProduct)
         {
+
             var fi = Repository.GetAllIncluding(
                 o => o.FoodIngredient_Product_Mapping)
                 .FirstOrDefault(o => o.Id == foodIngredientId);
@@ -35,7 +36,7 @@ namespace FoodCost.Products
                 Quantity = foodIngredientProduct.Quantity,
                 UnitOfMeasureId = foodIngredientProduct.UnitOfMeasureId
             });
-            _foodIngredientService.CalculateFoodIngredient(fi.Id);
+            //_foodIngredientService.CalculateFoodIngredient(fi.Id);
             return foodIngredientProduct;
         }
 

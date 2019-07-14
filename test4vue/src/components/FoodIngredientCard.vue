@@ -2,7 +2,7 @@
   <div class="box">
     
     <router-link class="box" :to="{name:'FoodIngredientShow', params : {id: FoodIngredient.id}}">
-            {{FoodIngredient.name}} - {{ FoodIngredient.id }}
+            {{FoodIngredient.name}} - {{ FoodIngredient.id }} - HI!
         </router-link>
   </div>
 </template>

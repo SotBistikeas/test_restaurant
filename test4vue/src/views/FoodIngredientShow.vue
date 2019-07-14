@@ -6,6 +6,9 @@
     <p>unit id: {{ FoodIngredient.unitOfMeasureId }} </p>
     <p>Quantity: {{ FoodIngredient.quantity }} </p>
     <Button @click="deleteIt()">Delete</Button> 
+    <br>
+    <br>
+    {{x}} -- lol
     <br><br>
     <select v-model="product">
         <option
@@ -50,6 +53,7 @@ import axios from 'axios';
           id: ''
         },
         quantity:'',
+        x:''
       }
     },
     beforeCreate(){
@@ -58,6 +62,7 @@ import axios from 'axios';
       .then(response =>{
         this.ProductOptions = response.data.result.items;
       })
+      
     },
     created(){
       FoodIngredientService.getFoodIngredientById(this.id)
@@ -66,6 +71,12 @@ import axios from 'axios';
       })
       .catch(error =>{
         console.log(error.response);
+      })
+      axios
+      .get('http://localhost:21021/api/services/app/FoodIngredient/GetProducts?foodIngredientId='+this.id)
+      .then(response =>{
+        this.x = response.data.result
+        console.log(this.x);
       })
     },
     methods:{
@@ -82,9 +93,10 @@ import axios from 'axios';
         })
     },
     addToList(){
+      
       axios
       .post('http://localhost:21021/api/services/app/FoodIngredient/AddProduct?foodIngredientId=' + this.id,{
-          productId: this.product.productId,
+          productId: this.product.id,
           quantity: this.quantity,
           unitOfMeasureId: this.product.unitOfMeasureId,
           id: 0,
