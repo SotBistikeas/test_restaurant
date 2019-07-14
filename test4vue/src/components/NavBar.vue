@@ -11,6 +11,7 @@
         <b-nav-item :to="{ name: 'ProductList' }">Product List</b-nav-item>
         <b-nav-item :to="{ name: 'UnitList' }">Units</b-nav-item>
         <b-nav-item :to="{ name: 'VatList' }">Vat List</b-nav-item>
+        <b-nav-item :to="{ name: 'FoodIngredientList' }">FoodIngredient List</b-nav-item>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>

@@ -1,5 +1,5 @@
 <template>
-    <div v-if="units.length > 0">
+    <div >
         <span v-if="units.length != 0">Total unit options: {{ units.length }}</span>
     
         <UnitCard class="gap" v-for="unit in units" :key="unit.id" :unit="unit" /> 
@@ -14,7 +14,7 @@ export default {
     components:{
         UnitCard,
     },
-    created(){
+    beforeCreate(){
             this.$store.dispatch('fetchUnits')
             console.log('store.dispatch-fetchunits')
         },

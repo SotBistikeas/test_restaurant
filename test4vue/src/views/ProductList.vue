@@ -23,7 +23,7 @@ export default {
   components: {
     ProductCard
   },
-  created() {
+        beforeCreate(){
     this.$store.dispatch("fetchProducts");
   },
   computed: mapState(["products"])
