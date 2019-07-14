@@ -15,7 +15,6 @@ namespace FoodCost.Products.Dto
 
         public decimal Price { get; set; }
 
-        public int VatCategoryId { get; set; }
 
         public int UnitOfMeasureId { get; set; }
         

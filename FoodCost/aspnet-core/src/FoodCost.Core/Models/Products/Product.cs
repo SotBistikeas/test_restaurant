@@ -18,9 +18,7 @@ namespace FoodCost.Models.Products
         [Required]
         public decimal Price { get; set; }
 
-        public int VatCategoryId { get; set; }
-        [ForeignKey(nameof(VatCategoryId))]
-        public VatCategory VatCategory { get; set; }
+
         public int UnitOfMeasureId { get; set; }
         [ForeignKey(nameof(UnitOfMeasureId))]
         public UnitOfMeasure UnitOfMeasure { get; set; }
