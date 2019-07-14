@@ -5,18 +5,26 @@
     <p>cost: {{ FoodIngredient.cost }} </p>
     <p>unit id: {{ FoodIngredient.unitOfMeasureId }} </p>
     <p>Quantity: {{ FoodIngredient.quantity }} </p>
-    <Button @click="deleteIt()">Delete</Button> 
+    <BaseButton @click="deleteIt()" variant="danger">Delete</BaseButton> 
     <br>
     <br>
-    {{x}} -- lol
-    <br><br>
-    <!-- <select v-model="product">
-        <option
-          v-for="option in ProductOptions"
-          v-bind:value="option"
-          v-bind:key="option.id"
-        >{{ option.name }}</option>
-      </select> -->
+      <div v-for="item in x" :key="item.id">
+        {{ item }}
+      </div>
+
+    <br>
+    <b-form-group label="Product id to remove from food ingredient">
+      <b-form-select v-model="idToRemove">
+        <option 
+        v-for="option in x"
+        v-bind:value="option.productId"
+        v-bind:key="option.id">
+          {{option.productId}}
+        </option>
+      </b-form-select>
+      <BaseButton @click="deleteThis()" variant="warning">Remove product from list</BaseButton> 
+    </b-form-group>
+    <br>
       <b-form-group label="Products">
         <b-form-select v-model="product">
           <option disabled hidden :value="null">Please select one</option>
@@ -34,7 +42,7 @@
         class="field"
       />
       <span v-if="!(isNaN(product.price * quantity))">price per FoodIngredient: {{product.price * quantity}}</span>
-      <BaseButton type="submit">Add to list</BaseButton>
+      <BaseButton type="submit" variant="success">Add to list</BaseButton>
       </form>
   </div>
 </template>
@@ -59,7 +67,9 @@ import axios from 'axios';
           id: ''
         },
         quantity:'',
-        x:''
+        x:'',
+        item:'',
+        idToRemove:'',
       }
     },
     beforeCreate(){
@@ -82,7 +92,6 @@ import axios from 'axios';
       .get('http://localhost:21021/api/services/app/FoodIngredient/GetProducts?foodIngredientId='+this.id)
       .then(response =>{
         this.x = response.data.result
-        console.log(this.x);
       })
     },
     methods:{
@@ -97,6 +106,18 @@ import axios from 'axios';
         }).catch(error =>{
           console.log(error.message);
         })
+    },
+    deleteThis(id , idToRemove ) {
+       console.log('this.id = ' + this.id);
+       console.log('this.idToRemove = '+ this.idToRemove);
+       axios
+       .delete('http://localhost:21021/api/services/app/FoodIngredient/RemoveProduct?foodIngredientId=' + this.id + '&productId=' + this.idToRemove)
+       .then(response =>{
+         location.reload();
+         })
+        .catch(error =>{
+           console.log(error.message);
+         })
     },
     addToList(){
       

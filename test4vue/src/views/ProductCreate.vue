@@ -1,7 +1,7 @@
 
 <template>
   <div>
-    <b-card title="Create a new product" sub-title="Card subtitle">
+    <b-card title="Create a new product" sub-title="">
       <form @submit.prevent="createProduct">
         <BaseInput
           label="Name"

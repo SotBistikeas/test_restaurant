@@ -18,7 +18,7 @@
           v-bind:key="option.id"
         >{{ option.name }}</option>
       </select>
-      <BaseButton type="submit">Create Food Ingredient</BaseButton>
+      <BaseButton type="submit" variant="success">Create Food Ingredient</BaseButton>
     </form>
       
   </div>
