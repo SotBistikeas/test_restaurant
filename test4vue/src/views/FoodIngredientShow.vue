@@ -8,11 +8,17 @@
     <BaseButton @click="deleteIt()" variant="danger">Delete</BaseButton> 
     <br>
     <br>
-      <div v-for="item in x" :key="item.id">
+      <!-- <div v-for="item in x" :key="item.id">
         {{ item }}
       </div>
 
+    <br> -->
     <br>
+    <div>
+    <b-table striped hover :items="x"></b-table>
+  </div>
+    <br>
+
     <b-form-group label="Product id to remove from food ingredient">
       <b-form-select v-model="idToRemove">
         <option 
