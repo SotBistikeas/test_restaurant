@@ -47,3 +47,4 @@ yarn-error.log*
 *.sw*
 
 
+FoodCost/aspnet-core/src/FoodCost.Web.Host/appsettings.json
