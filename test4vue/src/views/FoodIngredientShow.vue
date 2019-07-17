@@ -8,21 +8,16 @@
     <BaseButton @click="deleteIt()" variant="danger">Delete</BaseButton>
     <br />
     <br />
-    <!-- <div v-for="item in x" :key="item.id">
-        {{ item }}
-      </div>
-
-    <br>-->
     <br />
     <div>
-      <b-table striped hover :items="x"></b-table>
+      <b-table striped hover :items="products"></b-table>
     </div>
     <br />
 
     <b-form-group label="Product id to remove from food ingredient">
       <b-form-select v-model="idToRemove">
         <option
-          v-for="option in x"
+          v-for="option in products"
           v-bind:value="option.id"
           v-bind:key="option.id"
         >{{option.productId}}</option>
@@ -70,7 +65,7 @@ export default {
         id: ""
       },
       quantity: "",
-      x: "",
+      products: [],
       item: "",
       idToRemove: ""
     };
@@ -103,7 +98,7 @@ export default {
             this.id
         )
         .then(response => {
-          this.x = response.data.result;
+          this.products = response.data.result;
         });
     },
     deleteIt(id) {
