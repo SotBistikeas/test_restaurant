@@ -40,7 +40,7 @@ namespace FoodCost.Products
             return foodIngredientProduct;
         }
 
-        public void RemoveProduct(int foodIngredientId, int productId)
+        public void RemoveProductByProductId(int foodIngredientId, int productId)
         {
             var fi = Repository.GetAllIncluding(
                 o => o.FoodIngredient_Product_Mapping).FirstOrDefault(o => o.Id == foodIngredientId);
@@ -48,6 +48,17 @@ namespace FoodCost.Products
                 fi.FoodIngredient_Product_Mapping.Remove(fipm);
             _foodIngredientService.CalculateFoodIngredient(fi.Id);
         }
+
+        
+        public void RemoveProduct(int foodIngredientId, int id)
+        {
+            var fi = Repository.GetAllIncluding(
+                o => o.FoodIngredient_Product_Mapping).FirstOrDefault(o => o.Id == foodIngredientId);
+            foreach (var fipm in fi.FoodIngredient_Product_Mapping.Where(o => o.Id == id).ToList())
+                fi.FoodIngredient_Product_Mapping.Remove(fipm);
+            _foodIngredientService.CalculateFoodIngredient(fi.Id);
+        }
+
 
     }
 }
