@@ -163,7 +163,18 @@ export default {
             id: 0
           }
         )
-        .then(() => this.loadProducts());
+        .then(() => {
+          //clear old data
+          this.product = {
+            productId: "",
+            quantity: "",
+            unitOfMeasureId: "",
+            id: ""
+          };
+          this.quantity = null;
+          //reload table
+          this.loadProducts();
+        });
     },
     getProductName(productId) {
       var p = this.ProductOptions.find(o => o.id == productId);
