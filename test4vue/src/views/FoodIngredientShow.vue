@@ -10,7 +10,13 @@
     <br />
     <br />
     <div>
-      <b-table striped hover :items="products"></b-table>
+      <b-table striped hover :items="products" :fields="productFields">
+        <!-- A custom formatted column -->
+        <template slot="id" slot-scope="data">
+          <b-button variant="outline-danger" size="sm" @click="deleteThis(id, data.value)">Remove</b-button>
+        </template>
+        <template slot="productId" slot-scope="data">{{ getProductName(data.value) }}</template>
+      </b-table>
     </div>
     <br />
 
@@ -22,7 +28,7 @@
           v-bind:key="option.id"
         >{{option.productId}}</option>
       </b-form-select>
-      <BaseButton @click="deleteThis()" variant="warning">Remove product from list</BaseButton>
+      <BaseButton @click="deleteThis(id, idToRemove)" variant="warning">Remove product from list</BaseButton>
     </b-form-group>
     <br />
     <b-form-group label="Products">
@@ -66,6 +72,14 @@ export default {
       },
       quantity: "",
       products: [],
+      productFields: {
+        productId: {},
+        quantity: {},
+        unitOfMeasureId: {},
+        id: {
+          label: ""
+        }
+      },
       item: "",
       idToRemove: ""
     };
@@ -117,16 +131,18 @@ export default {
           console.log(error.message);
         });
     },
-    deleteThis(id, idToRemove) {
+    deleteThis(foodIngredientId, itemId) {
       console.log("this.id = " + this.id);
       console.log("this.idToRemove = " + this.idToRemove);
+      console.log("foodIngredientId = " + foodIngredientId);
+      console.log("itemId = " + itemId);
       axios
-        //.delete('http://localhost:21021/api/services/app/FoodIngredient/RemoveProductByProductId?foodIngredientId=' + this.id + '&productId=' + this.idToRemove)
+        //.delete('http://localhost:21021/api/services/app/FoodIngredient/RemoveProductByProductId?foodIngredientId=' + foodIngredientId + '&productId=' + itemId)
         .delete(
           "http://localhost:21021/api/services/app/FoodIngredient/RemoveProduct?foodIngredientId=" +
-            this.id +
+            foodIngredientId +
             "&id=" +
-            this.idToRemove
+            itemId
         )
         .then(response => {
           this.loadProducts();
@@ -148,6 +164,11 @@ export default {
           }
         )
         .then(() => this.loadProducts());
+    },
+    getProductName(productId) {
+      var p = this.ProductOptions.find(o => o.id == productId);
+      if (p != null) return p.name;
+      else return null;
     }
   }
 };
