@@ -40,6 +40,15 @@ namespace FoodCost.Products
             return foodIngredientProduct;
         }
 
+        public void AddProducts(int foodIngredientId, List<FoodIngredient_ProductDto> foodIngredientProducts)
+        {
+
+            foreach (var fip in foodIngredientProducts)
+            {
+                AddProduct(foodIngredientId, fip);
+            }
+        }
+
         public void RemoveProductByProductId(int foodIngredientId, int productId)
         {
             var fi = Repository.GetAllIncluding(
@@ -49,7 +58,7 @@ namespace FoodCost.Products
             _foodIngredientService.CalculateFoodIngredient(fi.Id);
         }
 
-        
+
         public void RemoveProduct(int foodIngredientId, int id)
         {
             var fi = Repository.GetAllIncluding(
