@@ -1,16 +1,44 @@
 <template>
   <div v-if="FoodIngredient != null">
-    <h2>Showing FoodIngredient #: {{FoodIngredient.id}}</h2>
-    <p>name: {{ FoodIngredient.name }}</p>
+    <!-- <h2>Showing FoodIngredient #: {{FoodIngredient.id}}</h2>
+    <div>
+    <h3>name: {{ FoodIngredient.name }}</h3>
+    <input type="text" v-model="editedname" label="update name"/>  
+    <BaseButton pill size="sm" @click="updateIt()" variant="warning">Update name</BaseButton> 
+    </div>
     <p>cost: {{ FoodIngredient.cost }}</p>
     <p>unit id: {{ FoodIngredient.unitOfMeasureId }}</p>
     <p>Quantity: {{ FoodIngredient.quantity }}</p>
     <BaseButton @click="deleteIt()" variant="danger">Delete</BaseButton>
     <br />
-    <br />
+    <br /> -->
+    <div>
+    <b-card
+    title="Details"
+    header-tag="header"
+    footer-tag="footer"
+    style="max-width: 20rem;"
+    class="mb-2"
+    header-bg-variant="success"
+    body-bg-variant="info"
+    footer-bg-variant="warning"
+    >
+    <h5 slot="header" class="mb-0">{{ FoodIngredient.name }}</h5>
+    
+    <p>cost: {{ FoodIngredient.cost }}</p>
+    <p>unit id: {{ FoodIngredient.unitOfMeasureId }}</p>
+    <p>Quantity: {{ FoodIngredient.quantity }}</p>
+    <h5 slot="footer" class="mb-0" >
+    <BaseInput v-model="editedname" label="update name"/>  
+    <BaseButton pill size="sm" @click="updateIt()" variant="dark">Update</BaseButton> 
+    </h5>
+
+    <BaseButton @click="deleteIt()" variant="danger">Delete</BaseButton>
+  </b-card>
+</div>
     <br />
     <div>
-      <b-table striped hover :items="products" :fields="productFields">
+      <b-table striped hover :items="products" :fields="Fields">
         <!-- A custom formatted column -->
         <template slot="id" slot-scope="data">
           <b-button variant="outline-danger" size="sm" @click="deleteThis(id, data.value)">Remove</b-button>
@@ -20,7 +48,7 @@
     </div>
     <br />
 
-    <b-form-group label="Product id to remove from food ingredient">
+    <!-- <b-form-group label="Product id to remove from food ingredient">
       <b-form-select v-model="idToRemove">
         <option
           v-for="option in products"
@@ -29,7 +57,7 @@
         >{{option.productId}}</option>
       </b-form-select>
       <BaseButton @click="deleteThis(id, idToRemove)" variant="warning">Remove product from list</BaseButton>
-    </b-form-group>
+    </b-form-group> -->
     <br />
     <b-form-group label="Products">
       <b-form-select v-model="product">
@@ -81,7 +109,27 @@ export default {
         }
       },
       item: "",
-      idToRemove: ""
+      idToRemove: "",
+      editedname:'',
+      temp:'',
+      Fields: {
+        productId: {
+            label: 'Product name',
+            sortable: true
+          },
+          quantity: {
+            label: 'Quantity per ingredient',
+            sortable: true
+          },
+          unitOfMeasureId: {
+            label: 'Unit of measure',
+            sortable: false
+          },
+          id:{
+            label:'Delete',
+            sortable: false
+          }
+      },
     };
   },
   beforeCreate() {
@@ -95,16 +143,19 @@ export default {
       });
   },
   created() {
-    FoodIngredientService.getFoodIngredientById(this.id)
+    this.loadFoodIngredient();
+    this.loadProducts();
+  },
+  methods: {
+    loadFoodIngredient(){
+      FoodIngredientService.getFoodIngredientById(this.id)
       .then(response => {
         this.FoodIngredient = response.data.result;
       })
       .catch(error => {
         console.log(error.response);
       });
-    this.loadProducts();
-  },
-  methods: {
+    },
     loadProducts() {
       axios
         .get(
@@ -115,13 +166,11 @@ export default {
           this.products = response.data.result;
         });
     },
-    deleteIt(id) {
+    deleteIt() {
       axios
-        .delete(
-          "http://localhost:21021/api/services/app/FoodIngredient/Delete?Id=" +
-            this.id
-        )
+        .delete("http://localhost:21021/api/services/app/FoodIngredient/Delete?Id=" + this.id )
         .then(response => {
+          this.temp = response.data;
           this.$router.push({
             name: "FoodIngredientList"
           });
@@ -131,11 +180,23 @@ export default {
           console.log(error.message);
         });
     },
+    updateIt(){
+      axios.put('http://localhost:21021/api/services/app/FoodIngredient/Update', {
+            name: this.editedname,
+            cost: this.FoodIngredient.cost,
+            unitOfMeasureId: this.FoodIngredient.unitOfMeasureId,
+            quantity: this.FoodIngredient.quantity,
+            id: this.id
+        }).then(response =>{
+          this.loadFoodIngredient();
+          this.temp = response.data;
+          this.editedname = '' 
+        })
+        .catch(error => {
+          console.log(error.message);
+        });
+    },
     deleteThis(foodIngredientId, itemId) {
-      console.log("this.id = " + this.id);
-      console.log("this.idToRemove = " + this.idToRemove);
-      console.log("foodIngredientId = " + foodIngredientId);
-      console.log("itemId = " + itemId);
       axios
         //.delete('http://localhost:21021/api/services/app/FoodIngredient/RemoveProductByProductId?foodIngredientId=' + foodIngredientId + '&productId=' + itemId)
         .delete(
@@ -145,6 +206,7 @@ export default {
             itemId
         )
         .then(response => {
+          this.temp = response.data;
           this.loadProducts();
         })
         .catch(error => {
