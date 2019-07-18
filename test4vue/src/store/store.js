@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import * as user from '@/store/modules/user.js';
+import * as baharika from '@/store/modules/baharika.js';
 import * as product from '@/store/modules/product.js';
 import * as dish from '@/store/modules/dish.js';
 import * as notification from '@/store/modules/notification.js';
@@ -14,6 +15,7 @@ import FoodIngredientService from '@/services/FoodIngredientService.js';
 Vue.use(Vuex);
 export default new Vuex.Store({
   modules: {
+    baharika,
     user,
     product,
     notification,

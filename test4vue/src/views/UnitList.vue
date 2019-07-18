@@ -1,6 +1,6 @@
 <template>
-    <div >
-        <span v-if="units.length != 0">Total unit options: {{ units.length }}
+    <div v-if="unit != null">
+        <span >Total unit options: {{ units.length }}
     
         <UnitCard class="gap" v-for="unit in units" :key="unit.id" :unit="unit" /> 
         </span>
@@ -11,6 +11,11 @@
 import UnitCard from '@/components/UnitCard.vue';
 import {mapState} from 'vuex';
 export default {
+    data(){
+        return{
+            unit:''
+        }
+    },
     components:{
         UnitCard,
     },

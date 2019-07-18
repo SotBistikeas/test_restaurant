@@ -17,6 +17,7 @@ import VatShow from './views/VatShow.vue';
 import FoodIngredient from './views/FoodIngredient.vue';
 import FoodIngredientShow from './views/FoodIngredientShow.vue';
 import FoodIngredientList from './views/FoodIngredientList.vue';
+import baharika from './views/baharika.vue';
 Vue.use(Router);
 
 const router = new Router({
@@ -75,6 +76,11 @@ const router = new Router({
       path: '/createDish',
       name: 'DishCreate',
       component: DishCreate
+    },
+    {
+      path: '/baharika',
+      name: 'baharika',
+      component: baharika
     },
     {
       path: '/dishlist',

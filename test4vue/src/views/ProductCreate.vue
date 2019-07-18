@@ -50,7 +50,6 @@
 import NProgress from "nprogress";
 import { required } from "vuelidate/lib/validators";
 import UnitOfMesureService from "@/services/UnitOfMeasureService.js";
-import axios from "axios";
 
 export default {
   beforeCreate: function() {
@@ -88,7 +87,7 @@ export default {
         this.$store
           .dispatch("product/createProduct", this.product)
           .then(() => {
-            this.product = this.createFreshProductObject();
+          this.product = this.createFreshProductObject();
           })
           .catch(() => {
             NProgress.done();
@@ -99,8 +98,9 @@ export default {
       const user = this.$store.state.user.user;
       return {
         id: 0,
+        name:'',
         user: user,
-        price: null,
+        price: '',
         unitOfMeasureId: 402, // kgs
         quantity: 1
       };
