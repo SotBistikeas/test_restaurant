@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import NavBar from "@/components/NavBar.vue";
-import NotificationContainer from "@/components/NotificationContainer.vue";
+import NavBar from '@/components/NavBar.vue';
+import NotificationContainer from '@/components/NotificationContainer.vue';
 
 export default {
   components: {

@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <b-card title="Create a new product" sub-title="">
@@ -11,26 +10,21 @@
           errorMessage="Name is required"
         />
 
-
         <BaseInput
           label="Timi ana kilo:"
           v-model="product.price"
           class="field"
-          :class="{error: $v.product.price.$error}"
+          :class="{ error: $v.product.price.$error }"
           @blur="$v.product.price.$touch()"
           type="number"
           :state="!$v.product.price.$error"
           errorMessage="Price is required"
         />
-        
+
         <b-form-group label="Unit of measure">
           <b-form-select v-model="product.unitOfMeasureId">
             <option disabled hidden :value="null">Please select one</option>
-            <option
-              v-for="option in unitOfMeasureOptions"
-              v-bind:value="option.id"
-              v-bind:key="option.id"
-            >{{ option.name }}</option>
+            <option v-for="option in unitOfMeasureOptions" v-bind:value="option.id" v-bind:key="option.id">{{ option.name }}</option>
           </b-form-select>
         </b-form-group>
         <template v-if="$v.product.unitOfMeasureId.$error">
@@ -45,11 +39,10 @@
   </div>
 </template>
 
-
 <script>
-import NProgress from "nprogress";
-import { required } from "vuelidate/lib/validators";
-import UnitOfMesureService from "@/services/UnitOfMeasureService.js";
+import NProgress from 'nprogress';
+import { required } from 'vuelidate/lib/validators';
+import UnitOfMesureService from '@/services/UnitOfMeasureService.js';
 
 export default {
   beforeCreate: function() {
@@ -59,7 +52,7 @@ export default {
         this.unitOfMeasureOptions = responce.data.result.items;
       })
       .catch(error => {
-        console.log("There war an error " + error.responce);
+        console.log('There war an error ' + error.responce);
       });
   },
   data() {
@@ -85,9 +78,9 @@ export default {
       if (!this.$v.$invalid) {
         NProgress.start();
         this.$store
-          .dispatch("product/createProduct", this.product)
+          .dispatch('product/createProduct', this.product)
           .then(() => {
-          this.product = this.createFreshProductObject();
+            this.product = this.createFreshProductObject();
           })
           .catch(() => {
             NProgress.done();
@@ -98,7 +91,7 @@ export default {
       const user = this.$store.state.user.user;
       return {
         id: 0,
-        name:'',
+        name: '',
         user: user,
         price: '',
         unitOfMeasureId: 402, // kgs
@@ -109,7 +102,4 @@ export default {
 };
 </script>
 
-
-
-<style scoped>
-</style>
+<style scoped></style>

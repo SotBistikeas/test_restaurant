@@ -14,5 +14,5 @@ export const actions = {
         dispatch('notification/add', notification, { root: true });
         console.log('There was an error from Vat.js');
       });
-  },
-}
+  }
+};

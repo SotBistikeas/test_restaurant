@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions } from 'vuex';
 
 export default {
   props: {
@@ -17,21 +17,21 @@ export default {
   data() {
     return {
       timeout: null
-    }
+    };
   },
   mounted() {
-    this.timeout = setTimeout(() => this.remove(this.notification), 6000)
+    this.timeout = setTimeout(() => this.remove(this.notification), 6000);
   },
   beforeDestroy() {
-    clearTimeout(this.timeout)
+    clearTimeout(this.timeout);
   },
   computed: {
     notificationTypeClass() {
-      return `-text-${this.notification.type}`
+      return `-text-${this.notification.type}`;
     }
   },
   methods: mapActions('notification', ['remove'])
-}
+};
 </script>
 
 <style scoped>

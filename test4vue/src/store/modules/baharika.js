@@ -1,13 +1,12 @@
-/* eslint-disable prettier/prettier */
 export const state = {
   baharika: [
     'piperi-aspro',
     'piperi-mauro',
     'piperi-kokkino-gliko',
-    'piperi-kokkino-kaytero', 
-    'alati', 
+    'piperi-kokkino-kaytero',
+    'alati',
     'kanela',
-    'kanela trimeni', 
+    'kanela trimeni',
     'kari-kitrino',
     'kari-kokkino-kaytero',
     'fylla dafnis',
@@ -37,7 +36,6 @@ export const state = {
     'marathos',
     'garifalo',
     'garifalo trimeno',
-    'maintanos',
-
-    ]
+    'maintanos'
+  ]
 };

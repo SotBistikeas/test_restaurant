@@ -21,11 +21,11 @@ const requireComponent = require.context(
   false,
   // The regular expression used to match base component filenames
   /Base[A-Z]\w+\.(vue|js)$/
-)
+);
 
 requireComponent.keys().forEach(fileName => {
   // Get component config
-  const componentConfig = requireComponent(fileName)
+  const componentConfig = requireComponent(fileName);
 
   // Get PascalCase name of component
   const componentName = upperFirst(
