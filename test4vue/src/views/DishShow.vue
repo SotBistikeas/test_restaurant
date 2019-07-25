@@ -41,14 +41,63 @@
           <BaseInput v-model="editedname" label="update name" />
           <BaseButton pill size="sm" @click="updateIt()" variant="dark">Update</BaseButton>
         </h5>
-
-        <BaseButton @click="deleteIt()" variant="danger">Delete</BaseButton>
-
+        <b-form-checkbox v-model="del" switch>Delete</b-form-checkbox>
         <b-form-checkbox v-model="edit" switch>Edit name</b-form-checkbox>
+        <b-form-checkbox v-model="add" switch>Add product</b-form-checkbox>
+
+        <div v-if="del == true">
+          <BaseButton @click="deleteIt()" variant="danger">Delete</BaseButton>
+        </div>
+
         <span slot="footer" class="mb-0">
           <router-link :to="{ name: 'DishList' }">Back to Dish List</router-link>
         </span>
       </b-card>
+
+      <b-card
+      title="Add Food igredient"
+      header-tag="header"
+      footer-tag="footer"
+      style="max-width: 20rem;"
+      class="mb-2"
+      body-bg-variant="info"
+      id="productCard"
+      v-if="add == true">
+      <b-form-group label="Food Ingredients">
+        <b-form-select v-model="FoodIngredient">
+          <option disabled hidden :value="null">Please select one</option>
+          <option v-for="option in FoodIngredientOptions" v-bind:value="option" v-bind:key="option.id">{{ option.name }}</option>
+        </b-form-select>
+        <baseInput label="Amount" v-model="amount" class="field"/>
+        <span v-if="amount != null">Cost per dish: {{amount * FoodIngredient.cost}}</span>
+      </b-form-group>
+      <form v-on:submit.prevent="addToList()">
+        <!-- <BaseInput label="quantity:" v-model="quantity" class="field" />
+        <h6 v-if="!isNaN(product.price * quantity)">price per FoodIngredient: {{ product.price * quantity }}</h6> -->
+        <BaseButton type="submit" variant="success">Add to Dish</BaseButton>
+      </form>
+    </b-card>
+    <!-- <b-card
+      title="Add Product"
+      header-tag="header"
+      footer-tag="footer"
+      style="max-width: 20rem;"
+      class="mb-2"
+      body-bg-variant="info"
+      id="productCard"
+    >
+      <b-form-group label="Products">
+        <b-form-select v-model="product">
+          <option disabled hidden :value="null">Please select one</option>
+          <option v-for="option in ProductOptions" v-bind:value="option" v-bind:key="option.id">{{ option.name }}</option>
+        </b-form-select>
+      </b-form-group>
+      <form v-on:submit.prevent="addToList()">
+        <BaseInput label="quantity:" v-model="quantity" class="field" />
+        <h6 v-if="!isNaN(product.price * quantity)">price per FoodIngredient: {{ product.price * quantity }}</h6>
+        <BaseButton type="submit" variant="success">Add to list</BaseButton>
+      </form>
+    </b-card> -->
       
   </div>
 </template>
@@ -65,6 +114,7 @@ export default {
         result:{}
       },
       ProductOptions:[],
+      FoodIngredientOptions:[],
       // products:[],
       FoodIngredient:{},
       edit: false,
@@ -75,7 +125,10 @@ export default {
         foodIngredientid:'',
         quantity:'',
         unitOfMeasureId:'',
-      }
+      },
+      del: false,
+      amount:null,
+      add:false,
     };
   },
   // props: {
@@ -88,6 +141,11 @@ export default {
       .then(response => {
         this.ProductOptions = response.data.result.items;
       });
+    axios
+      .get('http://localhost:21021/api/services/app/FoodIngredient/GetAll?MaxResultCount=10000', { headers: { Accept: 'application/json' } })
+      .then(response =>{
+        this.FoodIngredientOptions = response.data.result.items;
+      })
   },
   created() {
     this.getIt();
@@ -141,6 +199,26 @@ export default {
         .catch(error =>{
           console.log(error.message);
         })
+      NProgress.done();
+    },
+    addToList(){
+      NProgress.start();
+      axios
+        .post('http://localhost:21021/api/services/app/Dish/AddFoodIngredient?dishId='+this.id ,{
+        foodIngredientId : this.FoodIngredient.id,
+        quantity : this.amount,
+        unitOfMeasureId : this.FoodIngredient.unitOfMeasureId,
+        id : 0
+      })
+      .then(()=>{
+        this.getIt();
+        this.loadFoodIngredient();
+        this.amount = '';
+        this.add = false;
+      })
+      .catch(error => {
+          console.log(error.response);
+        });
       NProgress.done();
     },
     loadFoodIngredient() {

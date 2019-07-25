@@ -16,7 +16,11 @@
         <p>unit id: {{ product.result.unitOfMeasureId }}</p>
         <p>Quantity: {{ product.result.quantity }}</p>
 
-        <BaseButton @click="deleteIt()" variant="danger">Delete</BaseButton>
+        <b-form-checkbox v-model="del" switch>Delete</b-form-checkbox>
+        <b-form-checkbox v-model="edit" switch>Edit name</b-form-checkbox>
+        <div v-if="del == true">
+          <BaseButton @click="deleteIt()" variant="danger">Delete</BaseButton>
+        </div>
 
         <h5 slot="footer" class="mb-0" v-if="edit == true">
           <BaseInput v-model="editedname" label="enter new name" />
@@ -25,9 +29,6 @@
           <BaseButton pill size="sm" @click="updateIt()" variant="dark">Update</BaseButton>
         </h5>
 
-        
-
-        <b-form-checkbox v-model="edit" switch>Edit name</b-form-checkbox>
         <span slot="footer" class="mb-0">
           <router-link :to="{ name: 'ProductList' }">Back to Product List</router-link>
         </span>
@@ -51,7 +52,7 @@ export default {
       editedname:'',
       editedPrice:'',
       editedUnit:'',
-
+      del: false
     };
   },
   created() {

@@ -1,16 +1,5 @@
 <template>
   <div v-if="FoodIngredient != null" id="test">
-    <!-- <h2>Showing FoodIngredient #: {{FoodIngredient.id}}</h2>
-    <div>
-    <h3>name: {{ FoodIngredient.name }}</h3>
-    <input type="text" v-model="editedname" label="update name"/>  
-    <BaseButton pill size="sm" @click="updateIt()" variant="warning">Update name</BaseButton> 
-    </div>
-    <p>cost: {{ FoodIngredient.cost }}</p>
-    <p>unit id: {{ FoodIngredient.unitOfMeasureId }}</p>
-    <p>Quantity: {{ FoodIngredient.quantity }}</p>
-    <BaseButton @click="deleteIt()" variant="danger">Delete</BaseButton>
-     -->
     <div>
       <b-card
         title="Details"
@@ -31,10 +20,13 @@
           <BaseInput v-model="editedname" label="update name" />
           <BaseButton pill size="sm" @click="updateIt()" variant="dark">Update</BaseButton>
         </h5>
-
-        <BaseButton @click="deleteIt()" variant="danger">Delete</BaseButton>
-
+        <b-form-checkbox v-model="del" switch>Delete</b-form-checkbox>
         <b-form-checkbox v-model="edit" switch>Edit name</b-form-checkbox>
+
+        <div v-if="del == true">
+          <BaseButton @click="deleteIt()" variant="danger">Delete</BaseButton>
+        </div>
+        
       </b-card>
     </div>
     <div>
@@ -53,16 +45,6 @@
         </li>
       </ul>
     </div>
-    <!-- <b-form-group label="Product id to remove from food ingredient">
-      <b-form-select v-model="idToRemove">
-        <option
-          v-for="option in products"
-          v-bind:value="option.id"
-          v-bind:key="option.id"
-        >{{option.productId}}</option>
-      </b-form-select>
-      <BaseButton @click="deleteThis(id, idToRemove)" variant="warning">Remove product from list</BaseButton>
-    </b-form-group> -->
     <b-card
       title="Add Product"
       header-tag="header"
@@ -108,6 +90,7 @@ export default {
   },
   data() {
     return {
+      del: false,
       edit: false,
       selected: [],
       ProductOptions: [],
@@ -207,6 +190,7 @@ export default {
           this.loadFoodIngredient();
           this.temp = response.data;
           this.editedname = '';
+          this.edit = false;
         })
         .catch(error => {
           console.log(error.message);
