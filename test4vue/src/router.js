@@ -4,6 +4,7 @@ import ProductList from './views/ProductList.vue';
 import DishList from './views/DishList.vue';
 import ProductCreate from './views/ProductCreate.vue';
 import DishCreate from './views/DishCreate.vue';
+import DishShow from './views/DishShow.vue';
 import ProductShow from './views/ProductShow.vue';
 import User from './views/User.vue';
 import NProgress from 'nprogress';
@@ -55,27 +56,18 @@ const router = new Router({
       path: '/FoodIngredient/:id',
       name: 'FoodIngredientShow',
       component: FoodIngredientShow,
-      props: true,
-      beforeEnter(routeTo, _routeFrom, next) {
-        store
-          .dispatch('FoodIngredient/fetchFoodIngredient', routeTo.params.id)
-          .then(FoodIngredient => {
-            routeTo.params.FoodIngredient = FoodIngredient;
-            next();
-          })
-          .catch(error => {
-            if (error.response && error.response.status == 404) {
-              next({ name: '404', params: { resource: 'FoodIngredient' } });
-            } else {
-              next({ name: 'network-issue' });
-            }
-          });
-      }
+      props: true
     },
     {
       path: '/createDish',
       name: 'DishCreate',
       component: DishCreate
+    },
+    {
+      path: '/DishShow/:id',
+      name: 'DishShow',
+      component: DishShow,
+      props: true
     },
     {
       path: '/baharika',

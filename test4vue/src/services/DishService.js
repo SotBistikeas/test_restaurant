@@ -2,7 +2,7 @@ import axios from 'axios';
 import NProgress from 'nprogress';
 
 const apiClient = axios.create({
-  baseURL: `http://localhost:21021`,
+  baseURL: `http://localhost:21021/api/services/app/Dish`,
   withCredentials: false, // This is the default
   headers: {
     Accept: 'application/json',
@@ -20,4 +20,16 @@ apiClient.interceptors.response.use(response => {
   NProgress.done();
   return response;
 });
-export default {};
+export default {
+  getDish() {
+    return apiClient.get('/GetAll?MaxResultCount=1000');
+  },
+  getDishById(id) {
+    return apiClient.get('Get?Id=' + id);
+  },
+  postDish(dish) {
+    return apiClient.post('/Create', dish).catch(error => {
+      console.log(error.message);
+    });
+  }
+};

@@ -1,7 +1,7 @@
 <template>
-  <div v-if="unit != null">
-    <span
-      >Total unit options: {{ units.length }}
+  <div v-if="units != null">
+    <span>
+      Total unit options: {{ units.length }}
 
       <UnitCard class="gap" v-for="unit in units" :key="unit.id" :unit="unit" />
     </span>
@@ -22,7 +22,6 @@ export default {
   },
   beforeCreate() {
     this.$store.dispatch('fetchUnits');
-    console.log('store.dispatch-fetchunits');
   },
   computed: mapState(['units'])
 };

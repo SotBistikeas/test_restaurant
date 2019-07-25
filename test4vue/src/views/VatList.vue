@@ -13,7 +13,6 @@ export default {
   },
   beforeCreate() {
     this.$store.dispatch('fetchVats');
-    console.log('store.dispatch-fetchvats');
   },
   computed: mapState(['vats'])
 };
