@@ -28,7 +28,14 @@
         footer-bg-variant="warning"
       >
         <h5 slot="header" class="mb-0">{{ dish.name }}</h5>
-        <span>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Delectus, saepe explicabo libero tempore deserunt molestiae quod, velit et eum quidem quae! Optio, odio nulla voluptatibus nam aliquid quia inventore natus!</span>
+        <div v-for="ingredient in ingredients" :key="ingredient.id">
+          Id: {{ ingredient.id }} <br>
+          Food-Id: {{ ingredient.foodIngredientId }} <br>
+          Quantity: {{ ingredient.quantity }} <br>
+          Unit-Id: {{ ingredient.unitOfMeasureId }} 
+        </div>
+        <!-- <span>{{ingredients}}</span>
+        <span>{{ingredients.id}}</span> *** <span>{{ingredients.quantity}}</span> *** <span>{{ingredients.foodIngredientid}}</span> -->
         <br>
         <h5 slot="footer" class="mb-0" v-if="edit == true">
           <BaseInput v-model="editedname" label="update name" />
@@ -50,7 +57,6 @@ import NProgress from 'nprogress';
 import axios from 'axios';
 import FoodIngredientService from '@/services/FoodIngredientService.js';
 import DishService from '@/services/DishService';
-
 export default {
   props: ['id'],
   data() {
@@ -63,6 +69,13 @@ export default {
       FoodIngredient:{},
       edit: false,
       editedname: '',
+      ingredients:[],
+      ingredient:{
+        id:'',
+        foodIngredientid:'',
+        quantity:'',
+        unitOfMeasureId:'',
+      }
     };
   },
   // props: {
@@ -90,6 +103,13 @@ export default {
       .catch(error => {
         console.log(error.response);
       });
+      DishService.getFoodIngredientsByDish(this.id)
+      .then(response =>{
+        this.ingredients = response.data.result;
+      })
+      .catch(error =>{
+        console.log(error.message);
+      })
     },
     deleteIt() {
       NProgress.start();

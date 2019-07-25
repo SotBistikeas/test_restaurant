@@ -21,7 +21,6 @@
         <h5 slot="footer" class="mb-0" v-if="edit == true">
           <BaseInput v-model="editedname" label="enter new name" />
           <BaseInput v-model="editedPrice" label="enter new price" />
-          <BaseInput v-model="editedQuantity" label="enter new quantiry" />
           <BaseInput v-model="editedUnit" label="enter new unit" />
           <BaseButton pill size="sm" @click="updateIt()" variant="dark">Update</BaseButton>
         </h5>
@@ -51,7 +50,6 @@ export default {
       edit: false,
       editedname:'',
       editedPrice:'',
-      editedQuantity:'',
       editedUnit:'',
 
     };
@@ -82,7 +80,7 @@ export default {
           name: this.editedname,
           price: this.editedPrice,
           unitOfMeasureId: this.editedUnit,
-          quantity: this.editedQuantity,
+          quantity: this.product.quantity,
           id: this.id
         })
         .then(response =>{
@@ -91,7 +89,6 @@ export default {
             this.edit = false;
             this.editedname = '';
             this.editedPrice = '';
-            this.editedQuantity = '';
             this.editedUnit = '';
           }
         })
