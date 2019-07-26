@@ -1,9 +1,6 @@
 <template>
   <div class="box">
-    <router-link class="box" :to="{ name: 'DishShow', params: { id: dish.id } }">
-      Name: {{ dish.name }} 
-      Id: {{ dish.id }}
-    </router-link>
+    <router-link class="box" :to="{ name: 'DishShow', params: { id: dish.id } }"> Name: {{ dish.name }} Id: {{ dish.id }} </router-link>
   </div>
 </template>
 

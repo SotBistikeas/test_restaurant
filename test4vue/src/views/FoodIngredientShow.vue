@@ -15,7 +15,7 @@
         <p>cost: {{ FoodIngredient.cost }}</p>
         <p>unit id: {{ FoodIngredient.unitOfMeasureId }}</p>
         <p>Quantity: {{ FoodIngredient.quantity }}</p>
-        <h5 slot="footer" class='mb-0'><router-link :to="{ name: 'FoodIngredientList' }">Back to FoodIngredient List</router-link> </h5>
+        <h5 slot="footer" class="mb-0"><router-link :to="{ name: 'FoodIngredientList' }">Back to FoodIngredient List</router-link></h5>
         <h5 slot="footer" class="mb-0" v-if="edit == true">
           <BaseInput v-model="editedname" label="update name" />
           <BaseButton pill size="sm" @click="updateIt()" variant="dark">Update</BaseButton>
@@ -26,7 +26,6 @@
         <div v-if="del == true">
           <BaseButton @click="deleteIt()" variant="danger">Delete</BaseButton>
         </div>
-        
       </b-card>
     </div>
     <div>

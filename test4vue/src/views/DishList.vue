@@ -5,27 +5,23 @@
 </template>
 <script>
 import DishCard from '@/components/DishCard.vue';
-import axios from 'axios';
-
-
+import ApiService from '@/services/ApiService.js';
 
 export default {
-  data(){
-    return{
-      dish:{},
-      dishes:[],
-    }
+  data() {
+    return {
+      dish: {},
+      dishes: []
+    };
   },
   components: {
     DishCard
   },
   beforeCreate() {
-    axios
-      .get('http://localhost:21021/api/services/app/Dish/GetAll?MaxResultCount=100000', { headers: { Accept: 'application/json' } })
-      .then(response => {
-        this.dishes = response.data.result.items;
-      });
-  },
+    ApiService.getDish().then(response => {
+      this.dishes = response.data.result.items;
+    });
+  }
 };
 </script>
 

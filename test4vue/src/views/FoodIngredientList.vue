@@ -5,15 +5,22 @@
 </template>
 <script>
 import FoodIngredientCard from '@/components/FoodIngredientCard.vue';
-import { mapState } from 'vuex';
+import ApiServices from '@/services/ApiService.js';
 export default {
+  data(){
+    return {
+      FoodIngredients: []
+    }
+  },
   components: {
     FoodIngredientCard
   },
   beforeCreate() {
-    this.$store.dispatch('fetchFoodIngredient');
+    ApiServices.getAllFoodIngredients().then(Response =>{
+      this.FoodIngredients = Response.data.result.items
+    })
   },
-  computed: mapState(['FoodIngredients'])
+  
 };
 </script>
 

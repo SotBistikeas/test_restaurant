@@ -25,7 +25,7 @@ export default {
     return apiClient.get('/GetAll?MaxResultCount=1000');
   },
   getFoodIngredientsByDish(id) {
-    return apiClient.get('GetFoodIngredients?dishId=' + id);
+    return apiClient.get('/GetFoodIngredients?dishId=' + id);
   },
   getDishById(id) {
     return apiClient.get('Get?Id=' + id);

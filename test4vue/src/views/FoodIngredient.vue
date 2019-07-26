@@ -14,15 +14,11 @@
 </template>
 
 <script>
-import NProgress from 'nprogress';
-// import { required } from 'vuelidate/lib/validators';
-import UnitOfMesureService from '@/services/UnitOfMeasureService.js';
-import axios from 'axios';
-// import FoodIngredientService from '@/services/FoodIngredientService.js';
+import ApiService from '@/services/ApiService.js';
 
 export default {
   beforeCreate: function() {
-    UnitOfMesureService.getUnit()
+    ApiService.getUnit()
       .then(responce => {
         this.unitOfMeasureOptions = responce.data.result.items;
       })
@@ -43,11 +39,7 @@ export default {
 
   methods: {
     createFoodIngredient() {
-      NProgress.start();
-      axios
-        .post('http://localhost:21021/api/services/app/FoodIngredient/Create', this.FoodIngredient, {
-          headers: { Accept: 'application/json' }
-        })
+      ApiService.postFoodIngredient(this.FoodIngredient)
         .then(response => {
           this.$router.push({
             name: 'FoodIngredientShow',
@@ -57,7 +49,6 @@ export default {
         .catch(error => {
           console.log(error.message);
         });
-      NProgress.done();
     }
   }
 };

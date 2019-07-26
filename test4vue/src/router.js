@@ -27,7 +27,7 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'HeloWorld',
+      name: 'Home',
       component: User
     },
     {
