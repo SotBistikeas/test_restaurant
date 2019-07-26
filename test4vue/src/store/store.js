@@ -8,9 +8,8 @@ import * as notification from '@/store/modules/notification.js';
 import * as unit from '@/store/modules/unit.js';
 import * as FoodIngredient from '@/store/modules/FoodIngredient.js';
 import ProductService from '@/services/ProductService.js';
-import VatService from '@/services/VatService.js';
-import UnitOfMeasureService from '@/services/UnitOfMeasureService.js';
 import FoodIngredientService from '@/services/FoodIngredientService.js';
+import ApiService from '@/services/ApiService.js';
 
 Vue.use(Vuex);
 export default new Vuex.Store({
@@ -52,8 +51,8 @@ export default new Vuex.Store({
     ADD_FOODINGREDIENT(state, FoodIngredient) {
       state.FoodIngredient = FoodIngredient;
     },
-    SET_FOODINGREDIENT(state, FoodIngredient) {
-      state.FoodIngredients = FoodIngredient;
+    SET_FOODINGREDIENTS(state, FoodIngredients) {
+      state.FoodIngredients = FoodIngredients;
     }
   },
   actions: {
@@ -74,18 +73,18 @@ export default new Vuex.Store({
       commit('ADD_FOODINGREDIENT', FoodIngredient);
     },
     fetchVats({ commit }) {
-      VatService.getVat().then(response => {
+      ApiService.getVat().then(response => {
         commit('SET_VATS', response.data.result.items);
       });
     },
     fetchUnits({ commit }) {
-      UnitOfMeasureService.getUnit().then(responce => {
+      ApiService.getUnit().then(responce => {
         commit('SET_UNITS', responce.data.result.items);
       });
     },
     fetchFoodIngredient({ commit }) {
-      FoodIngredientService.getFoodIngredient().then(responce => {
-        commit('SET_FOODINGREDIENT', responce.data.result.items);
+      ApiService.getAllFoodIngredients().then(responce => {
+        commit('SET_FOODINGREDIENTS', responce.data.result.items);
       });
     }
   }

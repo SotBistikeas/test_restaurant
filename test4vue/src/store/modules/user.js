@@ -1,11 +1,11 @@
 export const state = {
   user: {
-    userName: 'string',
-    name: 'string',
-    surname: 'string',
-    emailAddress: 'string',
+    userName: 'User Name',
+    name: 'Name',
+    surname: 'Surname',
+    emailAddress: 'Email',
     isActive: true,
-    roleNames: ['string'],
-    password: 'string'
+    roleNames: ['Role'],
+    password: 'Password'
   }
 };

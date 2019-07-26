@@ -6,18 +6,18 @@
       footer-tag="footer"
       style="max-width: 20rem;"
       class="mb-2"
-      header-bg-variant="success"
+      header-class="yo"
       body-bg-variant="info"
-      footer-bg-variant="warning"
+      footer-class="bake"
     >
       <h5 slot="header" class="mb-0">{{ product.result.name }}</h5>
       <p>name: {{ product.result.name }}</p>
       <p>price: {{ product.result.price }}</p>
       <p>unit id: {{ product.result.unitOfMeasureId }}</p>
       <p>Quantity: {{ product.result.quantity }}</p>
-
       <b-form-checkbox v-model="del" switch>Delete</b-form-checkbox>
       <b-form-checkbox v-model="edit" switch>Edit name</b-form-checkbox>
+      
       <div v-if="del == true">
         <BaseButton @click="deleteIt()" variant="danger">Delete</BaseButton>
       </div>
@@ -29,7 +29,7 @@
         <BaseButton pill size="sm" @click="updateIt()" variant="dark">Update</BaseButton>
       </h5>
 
-      <span slot="footer" class="mb-0">
+      <span slot="footer" class="mb-0" >
         <router-link :to="{ name: 'ProductList' }">Back to Product List</router-link>
       </span>
     </b-card>
@@ -108,4 +108,12 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.yo {
+  background-color: rgb(208, 219, 49)
+}
+.bake {
+  background-color: rgb(208, 125, 233)
+}
+
+</style>

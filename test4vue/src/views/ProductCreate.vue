@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card title="Create a new product" sub-title="">
+    <b-card title="Create a new product" sub-title="" style="max-width: 20rem;" >
       <form @submit.prevent="createProduct">
         <BaseInput
           label="Name"
@@ -31,7 +31,7 @@
           <p v-if="!$v.product.unitOfMeasureId.required" class="errorMessage">Vat is required</p>
         </template>
 
-        <BaseButton type="submit" :disabled="$v.$anyError" variant="primary">Save</BaseButton>
+        <BaseButton type="submit" :disabled="$v.$anyError" variant="primary" >Save</BaseButton>
 
         <p v-if="$v.$anyError">Please fill out all the fields</p>
       </form>

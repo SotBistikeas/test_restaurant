@@ -24,7 +24,8 @@
       </h5>
       <b-form-checkbox v-model="del" switch>Delete</b-form-checkbox>
       <b-form-checkbox v-model="edit" switch>Edit name</b-form-checkbox>
-      <b-form-checkbox v-model="add" switch>Add product</b-form-checkbox>
+      <b-form-checkbox v-model="add" switch>Add FoodIgredient</b-form-checkbox>
+      <b-form-checkbox v-model="add2" switch>Add product</b-form-checkbox>
 
       <div v-if="del == true">
         <BaseButton @click="deleteIt()" variant="danger">Delete</BaseButton>
@@ -65,7 +66,7 @@
       class="mb-2"
       body-bg-variant="info"
       id="productCard"
-      v-if="add == true"
+      v-if="add2 == true"
     >
       <b-form-group label="Products">
         <b-form-select v-model="product">
@@ -83,6 +84,7 @@
 </template>
 <script>
 import ApiService from '@/services/ApiService';
+import { faSort } from '@fortawesome/free-solid-svg-icons/faSort';
 
 export default {
   props: ['id'],
@@ -107,7 +109,8 @@ export default {
       },
       del: false,
       amount: null,
-      add: false
+      add: false,
+      add2: false
     };
   },
 

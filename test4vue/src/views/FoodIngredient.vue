@@ -1,15 +1,31 @@
 <template>
   <div>
-    <h2>Create a new FoodIngredient</h2>
-
+    <b-card
+      header-tag="header"
+      footer-tag="footer"
+      style="max-width: 20rem;"
+      class="mb-2"
+      header-class="yo"
+      body-bg-variant="info"
+      footer-bg-variant="danger"
+    >
+    <h5 slot="header" class="mb-0">Create new Food igredient</h5>
     <form @submit.prevent="createFoodIngredient">
       <BaseInput label="Name:" v-model="FoodIngredient.name" class="field" />
+      <div>
+        <span>Unit: </span>
       <select v-model="FoodIngredient.unitOfMeasureId">
         <option disabled hidden :value="null">Please select one</option>
         <option v-for="option in unitOfMeasureOptions" v-bind:value="option.id" v-bind:key="option.id">{{ option.name }}</option>
       </select>
-      <BaseButton type="submit" variant="success">Create Food Ingredient</BaseButton>
+      </div>
+      
     </form>
+    
+      <span slot="footer" class="mb-0">
+      <BaseButton type="submit" variant="success" size="lg">Create Food Ingredient</BaseButton>
+      </span>
+    </b-card>
   </div>
 </template>
 
