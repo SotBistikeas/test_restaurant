@@ -39,6 +39,7 @@ namespace FoodCost.Models.UnitOfMeasures
         Length = 1,
         Area = 2,
         Volume = 3,
-        Mass = 4
+        Mass = 4,
+        Piece = 5
     }
 }

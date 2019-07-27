@@ -13,5 +13,6 @@ namespace FoodCost.CommonServices.Dto
     {
         public string Name { get; set; }
         public string ShortName { get; set; }
+        public UnitOfMeasureType UnitOfMeasureType { get; set; }
     }
 }

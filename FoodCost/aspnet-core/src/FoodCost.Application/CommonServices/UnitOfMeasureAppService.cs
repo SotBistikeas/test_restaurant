@@ -19,7 +19,7 @@ namespace FoodCost.CommonServices
 
         public override Task<PagedResultDto<UnitOfMeasureDto>> GetAll(PagedAndSortedResultRequestDto input)
         {
-            var r = _repository.GetAll().Where(o => o.MeasureGroupId == 1 && (o.UnitOfMeasureType == UnitOfMeasureType.Mass || o.UnitOfMeasureType == UnitOfMeasureType.Volume));
+            var r = _repository.GetAll().Where(o => o.MeasureGroupId == 1 && (o.UnitOfMeasureType == UnitOfMeasureType.Mass || o.UnitOfMeasureType == UnitOfMeasureType.Volume|| o.UnitOfMeasureType == UnitOfMeasureType.Piece));
             var result = new PagedResultDto<UnitOfMeasureDto>(r.Count(), ObjectMapper.Map<List<UnitOfMeasureDto>>(r));
             return Task.FromResult(result);
         }

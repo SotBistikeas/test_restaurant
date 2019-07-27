@@ -103,18 +103,13 @@ import ApiService from "@/services/ApiService.js";
 
 export default {
   props: ["id"],
-  computed: {
-    ...mapState({
-      baharika: "baharika"
-    })
-  },
   data() {
     return {
       del: false,
       edit: false,
       selected: [],
       ProductOptions: [],
-      unitOfMeasureOptions: [],
+      //unitOfMeasureOptions: [],
       FoodIngredient: {
         result: {}
       },
@@ -159,6 +154,21 @@ export default {
       }
     };
   },
+  computed: {
+    ...mapState({
+      baharika: "baharika",
+      unitOfMeasures: "units"
+    }),
+    unitOfMeasureOptions: function() {
+      if (this.product.id) {
+        //find the unit of measure of this product
+        var unit = this.unitOfMeasures.find(o => (o.id == this.product.unitOfMeasureId));
+        //find all unit of measures of the same type
+        return this.unitOfMeasures.filter(o => (o.unitOfMeasureType == unit.unitOfMeasureType));
+      }
+      return this.unitOfMeasures;
+    }
+  },
   beforeCreate() {
     axios
       .get(
@@ -168,13 +178,15 @@ export default {
       .then(response => {
         this.ProductOptions = response.data.result.items;
       });
-    ApiService.getUnit()
-      .then(responce => {
-        this.unitOfMeasureOptions = responce.data.result.items;
-      })
-      .catch(error => {
-        console.log("There war an error " + error.responce);
-      });
+
+    this.$store.dispatch("fetchUnits");
+    // ApiService.getUnit()
+    //   .then(responce => {
+    //     this.unitOfMeasureOptions = responce.data.result.items;
+    //   })
+    //   .catch(error => {
+    //     console.log("There war an error " + error.responce);
+    //   });
   },
   created() {
     this.loadFoodIngredient();
@@ -274,6 +286,7 @@ export default {
             id: ""
           };
           this.quantity = null;
+          this.unitOfMeasureId = null;
           //reload table
           this.loadProducts();
         });
