@@ -4,7 +4,7 @@ export const actions = {
   fetchUnits({ commit, dispatch, state }) {
     return UnitOfMeasureService.getUnit(state)
       .then(response => {
-        commit('SET_UNITS', response.data);
+        commit('SET_UNITS', response.data.result.items);
       })
       .catch(error => {
         const notification = {

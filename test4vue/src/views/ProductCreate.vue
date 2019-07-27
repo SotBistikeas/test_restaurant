@@ -17,6 +17,9 @@
           :class="{ error: $v.product.price.$error }"
           @blur="$v.product.price.$touch()"
           type="number"
+          step="0.01" 
+          min="0.00" 
+          max="10000.00"
           :state="!$v.product.price.$error"
           errorMessage="Price is required"
         />

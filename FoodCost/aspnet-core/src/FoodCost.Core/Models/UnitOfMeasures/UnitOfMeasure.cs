@@ -15,6 +15,8 @@ namespace FoodCost.Models.UnitOfMeasures
         public string Symbol { get; set; }
         public UnitOfMeasureType UnitOfMeasureType { get; set; }
         public string System { get; set; }
+        
+        [Column(TypeName = "decimal(18, 6)")]
         public decimal BaseEquivalent { get; set; }
 
         public int? MeasureGroupId { get; set; }

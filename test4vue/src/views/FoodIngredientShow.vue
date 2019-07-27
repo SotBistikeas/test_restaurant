@@ -15,7 +15,9 @@
         <p>cost: {{ FoodIngredient.cost }}</p>
         <p>unit id: {{ FoodIngredient.unitOfMeasureId }}</p>
         <p>Quantity: {{ FoodIngredient.quantity }}</p>
-        <h5 slot="footer" class="mb-0"><router-link :to="{ name: 'FoodIngredientList' }">Back to FoodIngredient List</router-link></h5>
+        <h5 slot="footer" class="mb-0">
+          <router-link :to="{ name: 'FoodIngredientList' }">Back to FoodIngredient List</router-link>
+        </h5>
         <h5 slot="footer" class="mb-0" v-if="edit == true">
           <BaseInput v-model="editedname" label="update name" />
           <BaseButton pill size="sm" @click="updateIt()" variant="dark">Update</BaseButton>
@@ -39,9 +41,7 @@
     </div>
     <div>
       <ul>
-        <li v-for="item in selected" :key="item">
-          {{ item }}
-        </li>
+        <li v-for="item in selected" :key="item">{{ item }}</li>
       </ul>
     </div>
     <b-card
@@ -53,38 +53,59 @@
       body-bg-variant="info"
       id="productCard"
     >
-      <b-form-group label="Products">
-        <b-form-select v-model="product">
-          <option disabled hidden :value="null">Please select one</option>
-          <option v-for="option in ProductOptions" v-bind:value="option" v-bind:key="option.id">{{ option.name }}</option>
-        </b-form-select>
-      </b-form-group>
-      <form v-on:submit.prevent="addToList()">
+      <b-form v-on:submit.prevent="addToList()">
+        <b-form-group label="Products">
+          <b-form-select v-model="product">
+            <option disabled hidden :value="null">Please select one</option>
+            <option
+              v-for="option in ProductOptions"
+              v-bind:value="option"
+              v-bind:key="option.id"
+            >{{ option.name }}</option>
+          </b-form-select>
+        </b-form-group>
         <BaseInput label="quantity:" v-model="quantity" class="field" />
-        <h6 v-if="!isNaN(product.price * quantity)">price per FoodIngredient: {{ product.price * quantity }}</h6>
+        <h6
+          v-if="!isNaN(product.price * quantity)"
+        >price per FoodIngredient: {{ product.price * quantity }}</h6>
+        <b-form-group label="Unit">
+          <b-form-select v-model="unitOfMeasureId">
+            <option disabled hidden :value="null">Please select one</option>
+            <option
+              v-for="option in unitOfMeasureOptions"
+              v-bind:value="option.id"
+              v-bind:key="option.id"
+            >{{ option.name }}</option>
+          </b-form-select>
+        </b-form-group>
         <BaseButton type="submit" variant="success">Add to list</BaseButton>
-      </form>
+      </b-form>
     </b-card>
     <br />
     <div>
       <b-form-group label="Using options array:">
-        <b-form-checkbox-group id="checkbox-group-1" v-model="selected" :options="baharika.baharika"></b-form-checkbox-group>
+        <b-form-checkbox-group
+          id="checkbox-group-1"
+          v-model="selected"
+          :options="baharika.baharika"
+        ></b-form-checkbox-group>
       </b-form-group>
     </div>
   </div>
 </template>
 
 <script>
-import FoodIngredientService from '@/services/FoodIngredientService.js';
+import FoodIngredientService from "@/services/FoodIngredientService.js";
 // import ProductService from '@/services/ProductService.js';
-import axios from 'axios';
-import { mapState } from 'vuex';
+import axios from "axios";
+import { mapState } from "vuex";
+import ApiService from "@/services/ApiService.js";
 
 export default {
-  props: ['id'],
+  props: ["id"],
   computed: {
     ...mapState({
-      baharika: 'baharika'
+      baharika: "baharika"
     })
   },
   data() {
@@ -93,44 +114,46 @@ export default {
       edit: false,
       selected: [],
       ProductOptions: [],
+      unitOfMeasureOptions: [],
       FoodIngredient: {
         result: {}
       },
       product: {
-        productId: '',
-        quantity: '',
-        unitOfMeasureId: '',
-        id: ''
+        productId: "",
+        quantity: "",
+        unitOfMeasureId: "",
+        id: ""
       },
-      quantity: '',
+      quantity: "",
+      unitOfMeasureId: "",
       products: [],
       productFields: {
         productId: {},
         quantity: {},
         unitOfMeasureId: {},
         id: {
-          label: ''
+          label: ""
         }
       },
-      item: '',
-      idToRemove: '',
-      editedname: '',
-      temp: '',
+      item: "",
+      idToRemove: "",
+      editedname: "",
+      temp: "",
       Fields: {
         productId: {
-          label: 'Product name',
+          label: "Product name",
           sortable: true
         },
         quantity: {
-          label: 'Quantity per ingredient',
+          label: "Quantity per ingredient",
           sortable: true
         },
         unitOfMeasureId: {
-          label: 'Unit of measure',
+          label: "Unit of measure",
           sortable: false
         },
         id: {
-          label: 'Delete',
+          label: "Delete",
           sortable: false
         }
       }
@@ -138,9 +161,19 @@ export default {
   },
   beforeCreate() {
     axios
-      .get('http://localhost:21021/api/services/app/Product/GetAll?MaxResultCount=10000', { headers: { Accept: 'application/json' } })
+      .get(
+        "http://localhost:21021/api/services/app/Product/GetAll?MaxResultCount=10000",
+        { headers: { Accept: "application/json" } }
+      )
       .then(response => {
         this.ProductOptions = response.data.result.items;
+      });
+    ApiService.getUnit()
+      .then(responce => {
+        this.unitOfMeasureOptions = responce.data.result.items;
+      })
+      .catch(error => {
+        console.log("There war an error " + error.responce);
       });
   },
   created() {
@@ -158,19 +191,27 @@ export default {
         });
     },
     loadProducts() {
-      axios.get('http://localhost:21021/api/services/app/FoodIngredient/GetProducts?foodIngredientId=' + this.id).then(response => {
-        this.products = response.data.result;
-      });
+      axios
+        .get(
+          "http://localhost:21021/api/services/app/FoodIngredient/GetProducts?foodIngredientId=" +
+            this.id
+        )
+        .then(response => {
+          this.products = response.data.result;
+        });
     },
     deleteIt() {
       axios
-        .delete('http://localhost:21021/api/services/app/FoodIngredient/Delete?Id=' + this.id)
+        .delete(
+          "http://localhost:21021/api/services/app/FoodIngredient/Delete?Id=" +
+            this.id
+        )
         .then(response => {
           this.temp = response.data;
           this.$router.push({
-            name: 'FoodIngredientList'
+            name: "FoodIngredientList"
           });
-          console.log('record with id:' + this.id + ' has been deleted');
+          console.log("record with id:" + this.id + " has been deleted");
         })
         .catch(error => {
           console.log(error.message);
@@ -178,7 +219,7 @@ export default {
     },
     updateIt() {
       axios
-        .put('http://localhost:21021/api/services/app/FoodIngredient/Update', {
+        .put("http://localhost:21021/api/services/app/FoodIngredient/Update", {
           name: this.editedname,
           cost: this.FoodIngredient.cost,
           unitOfMeasureId: this.FoodIngredient.unitOfMeasureId,
@@ -188,7 +229,7 @@ export default {
         .then(response => {
           this.loadFoodIngredient();
           this.temp = response.data;
-          this.editedname = '';
+          this.editedname = "";
           this.edit = false;
         })
         .catch(error => {
@@ -199,7 +240,10 @@ export default {
       axios
         //.delete('http://localhost:21021/api/services/app/FoodIngredient/RemoveProductByProductId?foodIngredientId=' + foodIngredientId + '&productId=' + itemId)
         .delete(
-          'http://localhost:21021/api/services/app/FoodIngredient/RemoveProduct?foodIngredientId=' + foodIngredientId + '&id=' + itemId
+          "http://localhost:21021/api/services/app/FoodIngredient/RemoveProduct?foodIngredientId=" +
+            foodIngredientId +
+            "&id=" +
+            itemId
         )
         .then(response => {
           this.temp = response.data;
@@ -211,19 +255,23 @@ export default {
     },
     addToList() {
       axios
-        .post('http://localhost:21021/api/services/app/FoodIngredient/AddProduct?foodIngredientId=' + this.id, {
-          productId: this.product.id,
-          quantity: this.quantity,
-          unitOfMeasureId: this.product.unitOfMeasureId,
-          id: 0
-        })
+        .post(
+          "http://localhost:21021/api/services/app/FoodIngredient/AddProduct?foodIngredientId=" +
+            this.id,
+          {
+            productId: this.product.id,
+            quantity: this.quantity,
+            unitOfMeasureId: this.unitOfMeasureId,
+            id: 0
+          }
+        )
         .then(() => {
           //clear old data
           this.product = {
-            productId: '',
-            quantity: '',
-            unitOfMeasureId: '',
-            id: ''
+            productId: "",
+            quantity: "",
+            unitOfMeasureId: "",
+            id: ""
           };
           this.quantity = null;
           //reload table
