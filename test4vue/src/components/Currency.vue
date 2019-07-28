@@ -7,8 +7,12 @@ export default {
   props: ["value"],
   methods: {
     formatPrice(value) {
-      let val = (value / 1).toFixed(2).replace(".", ",");
-      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      var formatter = new Intl.NumberFormat("el-GR", {
+        style: "currency",
+        currency: "EUR",
+        minimumFractionDigits: value < 0.05 ? 3 : 2
+      });
+      return formatter.format(value);
     }
   }
 };

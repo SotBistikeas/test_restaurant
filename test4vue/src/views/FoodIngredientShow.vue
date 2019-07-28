@@ -40,6 +40,9 @@
         <template slot="unitOfMeasureId" slot-scope="data">
           <UnitName :unitId="data.value" />
         </template>
+        <template slot="cost" slot-scope="data">
+          <Currency :value="data.value" />
+        </template>
       </b-table>
     </div>
     <div>
