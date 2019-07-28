@@ -31,7 +31,7 @@ export default {
     return apiClient.get('Dish/GetFoodIngredients?dishId=' + id);
   },
   getDishById(id) {
-    return apiClient.get('Dish/Get?Id=' + id);
+    return apiClient.get('Dish/GetFull?Id=' + id);
   },
   postDish(dish) {
     return apiClient.post('Dish/Create', dish).catch(error => {

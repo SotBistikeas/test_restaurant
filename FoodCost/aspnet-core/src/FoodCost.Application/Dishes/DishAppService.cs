@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services;
+using Abp.Application.Services.Dto;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
 using FoodCost.Dishes.Dto;
@@ -10,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FoodCost.Dishes
 {
@@ -23,6 +25,30 @@ namespace FoodCost.Dishes
         {
             _dishService = dishService;
             _dish_FoodIngredientRepository = dish_FoodIngredientRepository;
+        }
+
+        public async Task<DishFullDto> GetFull(EntityDto<int> input)
+        {
+            decimal fixedCost = 3.00m;
+            decimal saleFactor = 4.00m;
+            decimal vat = 0.24m;
+
+            var dish = await Repository.GetAsync(input.Id);
+
+
+            var dishFull = dish.MapTo<DishFullDto>();
+
+            dishFull.FoodIngredients = GetFoodIngredients(input.Id);
+
+            dishFull.BaseCost = dishFull.FoodIngredients.Sum(o => o.Cost);
+            dishFull.RealCost = dishFull.BaseCost + fixedCost;
+
+            dishFull.SalePriceExclTax = dishFull.BaseCost * saleFactor;
+            dishFull.SalePriceInclTax = dishFull.SalePriceExclTax * (1.0m + vat);
+
+
+            return dishFull;
+
         }
 
         public IList<Dish_FoodIngredientDto> GetFoodIngredients(int dishId)

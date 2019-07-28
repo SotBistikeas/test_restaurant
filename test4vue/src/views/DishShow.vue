@@ -11,6 +11,48 @@
       footer-bg-variant="warning"
     >
       <h5 slot="header" class="mb-0">{{ dish.name }}</h5>
+      <div>
+        <table>
+          <tbody>
+            <tr>
+              <td>BaseCost</td>
+              <td>{{dish.baseCost}}</td>
+            </tr>
+            <tr>
+              <td>RealCost</td>
+              <td>{{dish.realCost}}</td>
+            </tr>
+            <tr>
+              <td>SalePriceExclTax</td>
+              <td>{{dish.salePriceExclTax}}</td>
+            </tr>
+            <tr>
+              <td>salePriceInclTax</td>
+              <td>{{dish.salePriceInclTax}}</td>
+            </tr>
+            <tr>
+              <td>BaseProfit</td>
+              <td>{{dish.BaseProfit}}</td>
+            </tr>
+            <tr>
+              <td>BaseProfitPerc</td>
+              <td>{{dish.baseProfitPerc}}</td>
+            </tr>
+            <tr>
+              <td>RealProfit</td>
+              <td>{{dish.realProfit}}</td>
+            </tr>
+            <tr>
+              <td>RealProfitPerc</td>
+              <td>{{dish.realProfitPerc}}</td>
+            </tr>
+            <tr>
+              <td>FoodCostPerc</td>
+              <td>{{dish.foodCostPerc}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <div v-for="ingredient in ingredients" :key="ingredient.id">
         Id: {{ ingredient.id }}
         <br />
