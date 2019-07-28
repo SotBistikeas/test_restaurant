@@ -76,7 +76,7 @@
             >{{ option.name }}</option>
           </b-form-select>
         </b-form-group>
-        <BaseInput label="quantity:" v-model="quantity" class="field" />
+        <BaseInput label="quantity:" v-model="quantity" class="field" type="number" step="0.01" />
         <h6 v-if="!isNaN(product.price * quantity)">
           price per foodIngredient:
           <Currency :value="product.price * quantity" />
