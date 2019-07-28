@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services;
+using Abp.Application.Services.Dto;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
 using FoodCost.FoodIngredients.Dto;
@@ -7,6 +8,7 @@ using FoodCost.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace FoodCost.FoodIngredients
 {
@@ -16,6 +18,23 @@ namespace FoodCost.FoodIngredients
         public FoodIngredientAppService(IRepository<FoodIngredient, int> repository, FoodIngredientService foodIngredientService) : base(repository)
         {
             _foodIngredientService = foodIngredientService;
+        }
+
+        public override Task<FoodIngredientDto> Get(EntityDto<int> input)
+        {
+            var fi = Repository.GetAll()
+                .Include(o => o.FoodIngredient_Product_Mapping)
+                    .ThenInclude(o => o.Product)
+                    .ThenInclude(o => o.UnitOfMeasure)
+                .Include(o => o.FoodIngredient_Product_Mapping)
+                    .ThenInclude(o => o.UnitOfMeasure)
+                .FirstOrDefault(o => o.Id == input.Id);
+
+            var result = fi.MapTo<FoodIngredientDto>();
+
+            result.Cost = fi.FoodIngredient_Product_Mapping.Sum(o => CalculateCost(o));
+
+            return Task.FromResult(result);
         }
 
         public IList<FoodIngredient_ProductDto> GetProducts(int foodIngredientId)
@@ -30,9 +49,14 @@ namespace FoodCost.FoodIngredients
             return fi.FoodIngredient_Product_Mapping.Select(o =>
             {
                 var fip = o.MapTo<FoodIngredient_ProductDto>();
-                fip.Cost = (o.Quantity * o.UnitOfMeasure.BaseEquivalent) * (o.Product.Price / o.Product.UnitOfMeasure.BaseEquivalent);
+                fip.Cost = CalculateCost(o);
                 return fip;
             }).ToList();
+        }
+
+        private static decimal CalculateCost(FoodIngredient_Product o)
+        {
+            return (o.Quantity * o.UnitOfMeasure.BaseEquivalent) * (o.Product.Price / o.Product.UnitOfMeasure.BaseEquivalent);
         }
 
         public FoodIngredient_ProductDto AddProduct(int foodIngredientId, FoodIngredient_ProductDto foodIngredientProduct)

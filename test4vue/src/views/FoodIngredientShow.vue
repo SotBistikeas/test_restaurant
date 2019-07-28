@@ -1,5 +1,5 @@
 <template>
-  <div v-if="FoodIngredient != null" id="test">
+  <div v-if="foodIngredient != null" id="test">
     <div>
       <b-card
         title="Details"
@@ -11,12 +11,18 @@
         body-bg-variant="info"
         footer-bg-variant="warning"
       >
-        <h5 slot="header" class="mb-0">{{ FoodIngredient.name }}</h5>
-        <p>cost: {{ FoodIngredient.cost }}</p>
-        <p>unit id: {{ FoodIngredient.unitOfMeasureId }}</p>
-        <p>Quantity: {{ FoodIngredient.quantity }}</p>
+        <h5 slot="header" class="mb-0">{{ foodIngredient.name }}</h5>
+        <p>
+          unit id:
+          <UnitName :unitId="foodIngredient.unitOfMeasureId" />
+        </p>
+        <p>Quantity: {{ foodIngredient.quantity }}</p>
+        <p>
+          Cost:
+          <Currency :value="foodIngredient.cost" />
+        </p>
         <h5 slot="footer" class="mb-0">
-          <router-link :to="{ name: 'FoodIngredientList' }">Back to FoodIngredient List</router-link>
+          <router-link :to="{ name: 'FoodIngredientList' }">Back to foodIngredient List</router-link>
         </h5>
         <h5 slot="footer" class="mb-0" v-if="edit == true">
           <BaseInput v-model="editedname" label="update name" />
@@ -72,7 +78,7 @@
         </b-form-group>
         <BaseInput label="quantity:" v-model="quantity" class="field" />
         <h6 v-if="!isNaN(product.price * quantity)">
-          price per FoodIngredient:
+          price per foodIngredient:
           <Currency :value="product.price * quantity" />
         </h6>
         <b-form-group label="Unit">
@@ -123,9 +129,7 @@ export default {
       selected: [],
       ProductOptions: [],
       //unitOfMeasureOptions: [],
-      FoodIngredient: {
-        result: {}
-      },
+      foodIngredient: {},
       product: {
         productId: "",
         quantity: "",
@@ -210,7 +214,7 @@ export default {
     loadFoodIngredient() {
       FoodIngredientService.getFoodIngredientById(this.id)
         .then(response => {
-          this.FoodIngredient = response.data.result;
+          this.foodIngredient = response.data.result;
         })
         .catch(error => {
           console.log(error.response);
@@ -247,9 +251,9 @@ export default {
       axios
         .put("http://localhost:21021/api/services/app/FoodIngredient/Update", {
           name: this.editedname,
-          cost: this.FoodIngredient.cost,
-          unitOfMeasureId: this.FoodIngredient.unitOfMeasureId,
-          quantity: this.FoodIngredient.quantity,
+          cost: this.foodIngredient.cost,
+          unitOfMeasureId: this.foodIngredient.unitOfMeasureId,
+          quantity: this.foodIngredient.quantity,
           id: this.id
         })
         .then(response => {
@@ -264,7 +268,6 @@ export default {
     },
     deleteThis(foodIngredientId, itemId) {
       axios
-        //.delete('http://localhost:21021/api/services/app/FoodIngredient/RemoveProductByProductId?foodIngredientId=' + foodIngredientId + '&productId=' + itemId)
         .delete(
           "http://localhost:21021/api/services/app/FoodIngredient/RemoveProduct?foodIngredientId=" +
             foodIngredientId +
