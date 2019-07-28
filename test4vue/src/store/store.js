@@ -78,9 +78,11 @@ export default new Vuex.Store({
       });
     },
     fetchUnits({ commit }) {
-      ApiService.getUnit().then(responce => {
-        commit('SET_UNITS', responce.data.result.items);
-      });
+      if (this.state.units.length == 0) {
+        ApiService.getUnit().then(responce => {
+          commit('SET_UNITS', responce.data.result.items);
+        });
+      }
     },
     fetchFoodIngredient({ commit }) {
       ApiService.getAllFoodIngredients().then(responce => {

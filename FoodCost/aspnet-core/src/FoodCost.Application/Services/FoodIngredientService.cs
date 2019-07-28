@@ -1,6 +1,7 @@
 ﻿using Abp.Dependency;
 using Abp.Domain.Repositories;
 using FoodCost.Models.FoodIngredients;
+using FoodCost.Models.UnitOfMeasures;
 using System.Linq;
 
 namespace FoodCost.Services
@@ -9,11 +10,15 @@ namespace FoodCost.Services
     {
         private IRepository<FoodIngredient> _foodIngredientRepository;
         private IRepository<FoodIngredient_Product> _foodIngredient_Product_MappingRepository;
+        private IRepository<UnitOfMeasure> _unitOfMeasureRepository;
 
-        public FoodIngredientService(IRepository<FoodIngredient> foodIngredientRepository, IRepository<FoodIngredient_Product> foodIngredient_Product_MappingRepository)
+        public FoodIngredientService(IRepository<FoodIngredient> foodIngredientRepository,
+            IRepository<FoodIngredient_Product> foodIngredient_Product_MappingRepository,
+            IRepository<UnitOfMeasure> unitOfMeasureRepository)
         {
             _foodIngredientRepository = foodIngredientRepository;
             _foodIngredient_Product_MappingRepository = foodIngredient_Product_MappingRepository;
+            _unitOfMeasureRepository = unitOfMeasureRepository;
         }
         public FoodIngredient CalculateFoodIngredient(int foodIngredientId)
         {
@@ -23,5 +28,7 @@ namespace FoodCost.Services
             _foodIngredientRepository.Update(foodIngredient);
             return foodIngredient;
         }
+
+        
     }
 }

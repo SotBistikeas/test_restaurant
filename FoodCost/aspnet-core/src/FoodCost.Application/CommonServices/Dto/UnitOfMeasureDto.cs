@@ -12,7 +12,7 @@ namespace FoodCost.CommonServices.Dto
     public class UnitOfMeasureDto : EntityDto
     {
         public string Name { get; set; }
-        public string ShortName { get; set; }
+        public string Symbol { get; set; }
         public UnitOfMeasureType UnitOfMeasureType { get; set; }
     }
 }

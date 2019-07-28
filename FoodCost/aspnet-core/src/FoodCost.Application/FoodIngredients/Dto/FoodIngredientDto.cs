@@ -27,5 +27,6 @@ namespace FoodCost.FoodIngredients.Dto
         public decimal Quantity { get; set; }
 
         public int UnitOfMeasureId { get; set; }
+        public decimal Cost { get; internal set; }
     }
 }

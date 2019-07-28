@@ -4,6 +4,7 @@ using Abp.Domain.Repositories;
 using FoodCost.FoodIngredients.Dto;
 using FoodCost.Models.FoodIngredients;
 using FoodCost.Services;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,8 +20,19 @@ namespace FoodCost.FoodIngredients
 
         public IList<FoodIngredient_ProductDto> GetProducts(int foodIngredientId)
         {
-            var fi = Repository.GetAllIncluding(o => o.FoodIngredient_Product_Mapping).FirstOrDefault(o => o.Id == foodIngredientId);
-            return fi.FoodIngredient_Product_Mapping.Select(o => o.MapTo<FoodIngredient_ProductDto>()).ToList();
+            var fi = Repository.GetAll()
+                .Include(o => o.FoodIngredient_Product_Mapping)
+                    .ThenInclude(o => o.Product)
+                    .ThenInclude(o => o.UnitOfMeasure)
+                .Include(o => o.FoodIngredient_Product_Mapping)
+                    .ThenInclude(o => o.UnitOfMeasure)
+                .FirstOrDefault(o => o.Id == foodIngredientId);
+            return fi.FoodIngredient_Product_Mapping.Select(o =>
+            {
+                var fip = o.MapTo<FoodIngredient_ProductDto>();
+                fip.Cost = (o.Quantity * o.UnitOfMeasure.BaseEquivalent) * (o.Product.Price / o.Product.UnitOfMeasure.BaseEquivalent);
+                return fip;
+            }).ToList();
         }
 
         public FoodIngredient_ProductDto AddProduct(int foodIngredientId, FoodIngredient_ProductDto foodIngredientProduct)

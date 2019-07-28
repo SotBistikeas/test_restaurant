@@ -37,6 +37,9 @@
           <b-button variant="outline-danger" size="sm" @click="deleteThis(id, data.value)">Remove</b-button>
         </template>
         <template slot="productId" slot-scope="data">{{ getProductName(data.value) }}</template>
+        <template slot="unitOfMeasureId" slot-scope="data">
+          <UnitName :unitId="data.value" />
+        </template>
       </b-table>
     </div>
     <div>
@@ -65,9 +68,10 @@
           </b-form-select>
         </b-form-group>
         <BaseInput label="quantity:" v-model="quantity" class="field" />
-        <h6
-          v-if="!isNaN(product.price * quantity)"
-        >price per FoodIngredient: {{ product.price * quantity }}</h6>
+        <h6 v-if="!isNaN(product.price * quantity)">
+          price per FoodIngredient:
+          <Currency :value="product.price * quantity" />
+        </h6>
         <b-form-group label="Unit">
           <b-form-select v-model="unitOfMeasureId">
             <option disabled hidden :value="null">Please select one</option>
@@ -100,9 +104,15 @@ import FoodIngredientService from "@/services/FoodIngredientService.js";
 import axios from "axios";
 import { mapState } from "vuex";
 import ApiService from "@/services/ApiService.js";
+import UnitName from "@/components/UnitName.vue";
+import Currency from "@/components/Currency.vue";
 
 export default {
   props: ["id"],
+  components: {
+    UnitName,
+    Currency
+  },
   data() {
     return {
       del: false,
@@ -147,6 +157,10 @@ export default {
           label: "Unit of measure",
           sortable: false
         },
+        cost: {
+          label: "Cost",
+          sortable: true
+        },
         id: {
           label: "Delete",
           sortable: false
@@ -162,9 +176,13 @@ export default {
     unitOfMeasureOptions: function() {
       if (this.product.id) {
         //find the unit of measure of this product
-        var unit = this.unitOfMeasures.find(o => (o.id == this.product.unitOfMeasureId));
+        var unit = this.unitOfMeasures.find(
+          o => o.id == this.product.unitOfMeasureId
+        );
         //find all unit of measures of the same type
-        return this.unitOfMeasures.filter(o => (o.unitOfMeasureType == unit.unitOfMeasureType));
+        return this.unitOfMeasures.filter(
+          o => o.unitOfMeasureType == unit.unitOfMeasureType
+        );
       }
       return this.unitOfMeasures;
     }
