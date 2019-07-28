@@ -5,7 +5,7 @@
 <script>
 import { mapState } from "vuex";
 export default {
-  props: ["unitId"],
+  props: ["unitId", "withLink"],
   computed: {
     ...mapState({ units: "units" })
   },

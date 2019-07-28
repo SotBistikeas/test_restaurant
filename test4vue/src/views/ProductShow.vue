@@ -13,11 +13,13 @@
       <h5 slot="header" class="mb-0">{{ product.result.name }}</h5>
       <p>name: {{ product.result.name }}</p>
       <p>price: {{ product.result.price }}</p>
-      <p>unit id: {{ product.result.unitOfMeasureId }}</p>
-      <p>Quantity: {{ product.result.quantity }}</p>
+      <p>
+        unit id: {{product.result.unitOfMeasureId}} -
+        <UnitName :unitId="product.result.unitOfMeasureId" />
+      </p>
       <b-form-checkbox v-model="del" switch>Delete</b-form-checkbox>
       <b-form-checkbox v-model="edit" switch>Edit name</b-form-checkbox>
-      
+
       <div v-if="del == true">
         <BaseButton @click="deleteIt()" variant="danger">Delete</BaseButton>
       </div>
@@ -29,7 +31,7 @@
         <BaseButton pill size="sm" @click="updateIt()" variant="dark">Update</BaseButton>
       </h5>
 
-      <span slot="footer" class="mb-0" >
+      <span slot="footer" class="mb-0">
         <router-link :to="{ name: 'ProductList' }">Back to Product List</router-link>
       </span>
     </b-card>
@@ -37,20 +39,24 @@
 </template>
 
 <script>
-import ProductService from '@/services/ProductService.js';
-import axios from 'axios';
+import ProductService from "@/services/ProductService.js";
+import UnitName from "@/components/UnitName.vue";
+import axios from "axios";
 
 export default {
-  props: ['id'],
+  props: ["id"],
+  components: {
+    UnitName
+  },
   data() {
     return {
       product: {
         result: {}
       },
       edit: false,
-      editedname: '',
-      editedPrice: '',
-      editedUnit: '',
+      editedname: "",
+      editedPrice: "",
+      editedUnit: "",
       del: false
     };
   },
@@ -59,15 +65,17 @@ export default {
   },
   methods: {
     deleteIt() {
-      console.log('this id = ' + this.id);
+      console.log("this id = " + this.id);
       axios
-        .delete('http://localhost:21021/api/services/app/Product/Delete?Id=' + this.id)
+        .delete(
+          "http://localhost:21021/api/services/app/Product/Delete?Id=" + this.id
+        )
         .then(response => {
           this.$router.push({
-            name: 'ProductList'
+            name: "ProductList"
           });
           console.log(response.data);
-          console.log('record with id:' + this.id + ' has been deleted');
+          console.log("record with id:" + this.id + " has been deleted");
         })
         .catch(error => {
           console.log(error.message);
@@ -75,7 +83,7 @@ export default {
     },
     updateIt() {
       axios
-        .put('http://localhost:21021/api/services/app/Product/Update', {
+        .put("http://localhost:21021/api/services/app/Product/Update", {
           name: this.editedname,
           price: this.editedPrice,
           unitOfMeasureId: this.editedUnit,
@@ -86,9 +94,9 @@ export default {
           if (response.data.error == null) {
             this.getIt();
             this.edit = false;
-            this.editedname = '';
-            this.editedPrice = '';
-            this.editedUnit = '';
+            this.editedname = "";
+            this.editedPrice = "";
+            this.editedUnit = "";
           }
         })
         .catch(error => {
@@ -110,10 +118,9 @@ export default {
 
 <style scoped>
 .yo {
-  background-color: rgb(208, 219, 49)
+  background-color: rgb(208, 219, 49);
 }
 .bake {
-  background-color: rgb(208, 125, 233)
+  background-color: rgb(208, 125, 233);
 }
-
 </style>

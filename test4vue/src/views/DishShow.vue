@@ -12,9 +12,12 @@
     >
       <h5 slot="header" class="mb-0">{{ dish.name }}</h5>
       <div v-for="ingredient in ingredients" :key="ingredient.id">
-        Id: {{ ingredient.id }} <br />
-        Food-Id: {{ ingredient.foodIngredientId }} <br />
-        Quantity: {{ ingredient.quantity }} <br />
+        Id: {{ ingredient.id }}
+        <br />
+        Food-Id: {{ ingredient.foodIngredientId }}
+        <br />
+        Quantity: {{ ingredient.quantity }}
+        <br />
         Unit-Id: {{ ingredient.unitOfMeasureId }}
       </div>
       <br />
@@ -49,7 +52,11 @@
       <b-form-group label="Food Ingredients">
         <b-form-select v-model="FoodIngredient">
           <option disabled hidden :value="null">Please select one</option>
-          <option v-for="option in FoodIngredientOptions" v-bind:value="option" v-bind:key="option.id">{{ option.name }}</option>
+          <option
+            v-for="option in FoodIngredientOptions"
+            v-bind:value="option"
+            v-bind:key="option.id"
+          >{{ option.name }}</option>
         </b-form-select>
         <baseInput label="Amount" v-model="amount" class="field" />
         <span v-if="amount != null">Cost per dish: {{ amount * FoodIngredient.cost }}</span>
@@ -71,7 +78,11 @@
       <b-form-group label="Products">
         <b-form-select v-model="product">
           <option disabled hidden :value="null">Please select one</option>
-          <option v-for="option in ProductOptions" v-bind:value="option" v-bind:key="option.id">{{ option.name }}</option>
+          <option
+            v-for="option in ProductOptions"
+            v-bind:value="option"
+            v-bind:key="option.id"
+          >{{ option.name }}</option>
         </b-form-select>
       </b-form-group>
       <form v-on:submit.prevent="addProdToList()">
@@ -80,15 +91,46 @@
         <BaseButton type="submit" variant="success">Add to Dish</BaseButton>
       </form>
     </b-card>
+
+    <div>
+      <b-table
+        striped
+        hover
+        :items="foodIngredients"
+        :fields="foodIngredientFields"
+        id="table"
+        bordered
+        responsive
+      >
+        <!-- A custom formatted column -->
+        <template slot="id" slot-scope="data">
+          <b-button variant="outline-danger" size="sm" @click="deleteThis(id, data.value)">Remove</b-button>
+        </template>
+        <template slot="foodIngredientId" slot-scope="data">{{getFoodIngredientName(data.value)}}</template>
+        <template slot="unitOfMeasureId" slot-scope="data">
+          <UnitName :unitId="data.value" />
+        </template>
+        <template slot="cost" slot-scope="data">
+          <Currency :value="data.value" />
+        </template>
+      </b-table>
+    </div>
   </div>
 </template>
 <script>
-import ApiService from '@/services/ApiService';
-import { faSort } from '@fortawesome/free-solid-svg-icons/faSort';
+import ApiService from "@/services/ApiService";
+import { faSort } from "@fortawesome/free-solid-svg-icons/faSort";
+import axios from "axios";
+import UnitName from "@/components/UnitName.vue";
+import Currency from "@/components/Currency.vue";
+import FoodIngredientService from "@/services/FoodIngredientService.js";
 
 export default {
-  props: ['id'],
-
+  props: ["id"],
+  components: {
+    UnitName,
+    Currency
+  },
   data() {
     return {
       dish: {
@@ -99,18 +141,41 @@ export default {
       FoodIngredient: {},
       product: {},
       edit: false,
-      editedname: '',
+      editedname: "",
       ingredients: [],
       ingredient: {
-        id: '',
-        foodIngredientid: '',
-        quantity: '',
-        unitOfMeasureId: ''
+        id: "",
+        foodIngredientid: "",
+        quantity: "",
+        unitOfMeasureId: ""
       },
       del: false,
       amount: null,
       add: false,
-      add2: false
+      add2: false,
+      foodIngredients: [],
+      foodIngredientFields: {
+        foodIngredientId: {
+          label: "foodIngredientId",
+          sortable: true
+        },
+        quantity: {
+          label: "Quantity per ingredient",
+          sortable: true
+        },
+        unitOfMeasureId: {
+          label: "Unit of measure",
+          sortable: false
+        },
+        cost: {
+          label: "Cost",
+          sortable: true
+        },
+        id: {
+          label: "Actions",
+          sortable: false
+        }
+      }
     };
   },
 
@@ -121,11 +186,13 @@ export default {
     ApiService.getAllFoodIngredients().then(response => {
       this.FoodIngredientOptions = response.data.result.items;
     });
+    this.$store.dispatch("fetchUnits");
   },
   created() {
     this.getIt();
     this.loadFoodIngredient();
     this.loadProducts();
+    this.loadFoodIngredients();
   },
   methods: {
     getIt() {
@@ -136,19 +203,12 @@ export default {
         .catch(error => {
           console.log(error.response);
         });
-      ApiService.getFoodIngredientsByDish(this.id)
-        .then(response => {
-          this.ingredients = response.data.result;
-        })
-        .catch(error => {
-          console.log(error.message);
-        });
     },
     deleteIt() {
       ApiService.deleteDishById(this.id)
         .then(() => {
           this.$router.push({
-            name: 'DishList'
+            name: "DishList"
           });
         })
         .catch(error => {
@@ -164,7 +224,7 @@ export default {
           if (response.data.error == null) {
             this.getIt();
             this.edit = false;
-            this.editedname = '';
+            this.editedname = "";
           }
         })
         .catch(error => {
@@ -181,7 +241,7 @@ export default {
         .then(() => {
           this.getIt();
           this.loadFoodIngredient();
-          this.amount = '';
+          this.amount = "";
           this.add = false;
         })
         .catch(error => {
@@ -189,7 +249,7 @@ export default {
         });
     },
     addProdToList() {
-      alert('No Back End Yet!!!!');
+      alert("No Back End Yet!!!!");
       // ApiService.postFoodInDish(this.id, {
       //   foodIngredientId: this.FoodIngredient.id,
       //      quantity: this.amount,
@@ -209,7 +269,7 @@ export default {
     loadFoodIngredient() {
       ApiService.getAllFoodIngredients()
         .then(response => {
-          this.FoodIngredient = response.data.result;
+          this.FoodIngredientOptions = response.data.result;
         })
         .catch(error => {
           console.log(error.response);
@@ -219,6 +279,20 @@ export default {
       ApiService.getAllProducts().then(response => {
         this.products = response.data.result;
       });
+    },
+    loadFoodIngredients() {
+      ApiService.getFoodIngredientsByDish(this.id)
+        .then(response => {
+          this.ingredients = response.data.result;
+          this.foodIngredients = response.data.result;
+        })
+        .catch(error => {
+          console.log(error.message);
+        });
+    },
+    getFoodIngredientName(foodIngredientId) {
+      return this.FoodIngredientOptions.find(o => o.id == foodIngredientId)
+        .name;
     }
   }
 };
