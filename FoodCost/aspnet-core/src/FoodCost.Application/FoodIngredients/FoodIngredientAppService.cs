@@ -1,14 +1,13 @@
 ﻿using Abp.Application.Services;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
-using Abp.Web.Models;
-using FoodCost.Models.Products;
-using FoodCost.Products.Dto;
+using FoodCost.FoodIngredients.Dto;
+using FoodCost.Models.FoodIngredients;
 using FoodCost.Services;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FoodCost.Products
+namespace FoodCost.FoodIngredients
 {
     public class FoodIngredientAppService : AsyncCrudAppService<FoodIngredient, FoodIngredientDto>
     {

@@ -1,12 +1,13 @@
 ﻿using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
+using FoodCost.Models.Products;
+using FoodCost.Models.UnitOfMeasures;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using FoodCost.Models.UnitOfMeasures;
-using System.Collections.Generic;
 
-namespace FoodCost.Models.Products
+namespace FoodCost.Models.FoodIngredients
 {
     public class FoodIngredient : Entity, IAudited
     {
@@ -23,8 +24,17 @@ namespace FoodCost.Models.Products
 
         public decimal Quantity { get; set; }
 
+        public bool IsProduct { get; set; }
 
-        public ICollection<FoodIngredient_Product> FoodIngredient_Product_Mapping { get; set; }
+        private ICollection<FoodIngredient_Product> _foodIngredient_Product_Mapping;
+
+        public virtual ICollection<FoodIngredient_Product> FoodIngredient_Product_Mapping
+        {
+            get
+            {
+                return this._foodIngredient_Product_Mapping ?? (this._foodIngredient_Product_Mapping = new HashSet<FoodIngredient_Product>());
+            }
+        }
 
         public long? CreatorUserId { get; set; }
         public DateTime CreationTime { get; set; }

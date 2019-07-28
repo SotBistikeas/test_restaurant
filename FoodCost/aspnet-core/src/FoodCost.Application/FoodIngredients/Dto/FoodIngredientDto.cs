@@ -1,8 +1,9 @@
 ﻿using Abp.Application.Services.Dto;
 using Abp.AutoMapper;
+using FoodCost.Models.FoodIngredients;
 using FoodCost.Models.Products;
 
-namespace FoodCost.Products.Dto
+namespace FoodCost.FoodIngredients.Dto
 {
     [AutoMap(typeof(FoodIngredient))]
     public class FoodIngredientDto : EntityDto
@@ -14,6 +15,8 @@ namespace FoodCost.Products.Dto
         public int UnitOfMeasureId { get; set; }
 
         public decimal Quantity { get; set; }
+
+        public bool IsProduct { get; set; }
     }
 
     [AutoMap(typeof(FoodIngredient_Product))]

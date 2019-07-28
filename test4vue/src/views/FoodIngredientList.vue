@@ -1,6 +1,6 @@
 <template>
   <div>
-    <FoodIngredientCard class="gap" v-for="FoodIngredient in FoodIngredients" :key="FoodIngredient.id" :FoodIngredient="FoodIngredient" />
+    <FoodIngredientCard class="gap" v-for="foodIngredient in FoodIngredients" :key="foodIngredient.id" :foodIngredient="foodIngredient" />
   </div>
 </template>
 <script>

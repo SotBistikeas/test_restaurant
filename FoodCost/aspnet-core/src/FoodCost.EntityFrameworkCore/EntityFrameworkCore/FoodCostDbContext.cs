@@ -1,12 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Abp.Zero.EntityFrameworkCore;
+﻿using Abp.Zero.EntityFrameworkCore;
 using FoodCost.Authorization.Roles;
 using FoodCost.Authorization.Users;
-using FoodCost.MultiTenancy;
-using FoodCost.Models.Products;
-using FoodCost.Models.VatCategories;
-using FoodCost.Models.UnitOfMeasures;
 using FoodCost.Models.Dishes;
+using FoodCost.Models.FoodIngredients;
+using FoodCost.Models.Products;
+using FoodCost.Models.UnitOfMeasures;
+using FoodCost.Models.VatCategories;
+using FoodCost.MultiTenancy;
+using Microsoft.EntityFrameworkCore;
 
 namespace FoodCost.EntityFrameworkCore
 {

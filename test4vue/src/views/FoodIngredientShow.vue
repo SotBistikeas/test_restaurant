@@ -180,13 +180,6 @@ export default {
       });
 
     this.$store.dispatch("fetchUnits");
-    // ApiService.getUnit()
-    //   .then(responce => {
-    //     this.unitOfMeasureOptions = responce.data.result.items;
-    //   })
-    //   .catch(error => {
-    //     console.log("There war an error " + error.responce);
-    //   });
   },
   created() {
     this.loadFoodIngredient();

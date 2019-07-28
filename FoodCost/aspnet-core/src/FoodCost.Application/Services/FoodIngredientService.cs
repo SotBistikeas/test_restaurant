@@ -1,10 +1,7 @@
 ﻿using Abp.Dependency;
 using Abp.Domain.Repositories;
-using FoodCost.Models.Products;
-using System;
-using System.Collections.Generic;
+using FoodCost.Models.FoodIngredients;
 using System.Linq;
-using System.Text;
 
 namespace FoodCost.Services
 {
