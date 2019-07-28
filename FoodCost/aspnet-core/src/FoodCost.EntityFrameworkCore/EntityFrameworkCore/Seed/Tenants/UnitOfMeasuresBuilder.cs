@@ -98,12 +98,24 @@ namespace FoodCost.EntityFrameworkCore.Seed.Tenants
                 _context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT UnitOfMeasures OFF");
             }
 
-            if (!_context.UnitOfMeasures.Any(ο => ο.Id >= 500))
+            if (!_context.UnitOfMeasures.Any(ο => ο.Id > 500))
             {
                 var metric = _context.MeasureGroups.First(o => o.Name == "Metric");
                 var imperial = _context.MeasureGroups.First(o => o.Name == "Imperial");
 
                 _context.UnitOfMeasures.Add(new UnitOfMeasure { Id = 501, MeasureGroup = metric, UnitOfMeasureType = UnitOfMeasureType.Piece, System = "Metric", Name = "Piece", Symbol = "pc", BaseEquivalent = 1.0m });
+
+                _context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT UnitOfMeasures ON");
+                _context.SaveChanges();
+                _context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT UnitOfMeasures OFF");
+            }
+
+            if (!_context.UnitOfMeasures.Any(ο => ο.Id > 501))
+            {
+                var metric = _context.MeasureGroups.First(o => o.Name == "Metric");
+                var imperial = _context.MeasureGroups.First(o => o.Name == "Imperial");
+
+                _context.UnitOfMeasures.Add(new UnitOfMeasure { Id = 502, MeasureGroup = metric, UnitOfMeasureType = UnitOfMeasureType.Piece, System = "Metric", Name = "Ματσάκι", Symbol = "Ματσάκι", BaseEquivalent = 1.0m });
 
                 _context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT UnitOfMeasures ON");
                 _context.SaveChanges();
