@@ -13,10 +13,10 @@
       >
         <h5 slot="header" class="mb-0">{{ foodIngredient.name }}</h5>
         <p>
-          unit id:
+          Unit of measure:
           <UnitName :unitId="foodIngredient.unitOfMeasureId" />
         </p>
-        <p>Quantity: {{ foodIngredient.quantity }}</p>
+        <!-- <p>Quantity: {{ foodIngredient.quantity }}</p> -->
         <p>
           Cost:
           <Currency :value="foodIngredient.cost" />
@@ -76,12 +76,15 @@
             >{{ option.name }}</option>
           </b-form-select>
         </b-form-group>
-        <BaseInput label="quantity:" v-model="quantity" class="field" type="number" step="0.01" />
+
+        <span>Quantity  in ( {{this.product.unitOfMeasureId}} ) **{{ getUnitName(this.product.unitOfMeasureId) }}</span>
+
+        <BaseInput v-model="quantity" class="field" type="number" step="0.01" />
         <h6 v-if="!isNaN(product.price * quantity)">
           price per foodIngredient:
           <Currency :value="product.price * quantity" />
         </h6>
-        <b-form-group label="Unit">
+        <!-- <b-form-group label="Unit">
           <b-form-select v-model="unitOfMeasureId">
             <option disabled hidden :value="null">Please select one</option>
             <option
@@ -90,7 +93,7 @@
               v-bind:key="option.id"
             >{{ option.name }}</option>
           </b-form-select>
-        </b-form-group>
+        </b-form-group> -->
         <BaseButton type="submit" variant="success">Add to list</BaseButton>
       </b-form>
     </b-card>
@@ -109,10 +112,11 @@
 
 <script>
 import FoodIngredientService from "@/services/FoodIngredientService.js";
+import ApiService from "@/services/ApiService.js"
 // import ProductService from '@/services/ProductService.js';
 import axios from "axios";
 import { mapState } from "vuex";
-import ApiService from "@/services/ApiService.js";
+// import ApiService from "@/services/ApiService.js";
 import UnitName from "@/components/UnitName.vue";
 import Currency from "@/components/Currency.vue";
 
@@ -205,7 +209,15 @@ export default {
       });
 
     this.$store.dispatch("fetchUnits");
+    ApiService.getUnit()
+      .then(responce => {
+        this.unitOfMeasureOptions = responce.data.result.items;
+      })
+      .catch(error => {
+        console.log('There war an error ' + error.responce);
+      });
   },
+  
   created() {
     this.loadFoodIngredient();
     this.loadProducts();
@@ -290,7 +302,7 @@ export default {
           {
             productId: this.product.id,
             quantity: this.quantity,
-            unitOfMeasureId: this.unitOfMeasureId,
+            unitOfMeasureId: this.product.unitOfMeasureId,
             id: 0
           }
         )
@@ -312,7 +324,12 @@ export default {
       var p = this.ProductOptions.find(o => o.id == productId);
       if (p != null) return p.name;
       else return null;
-    }
+    },
+    getUnitName(unitOfMeasureId) {
+      var x = this.unitOfMeasureOptions.find(o => o.id == unitOfMeasureId);
+      if (x != null) return x.name;
+      else return null;
+    },
   }
 };
 </script>

@@ -49,6 +49,9 @@ export default {
   editDish(name, id) {
     return apiClient.put('Dish/Update', name, id);
   },
+  deleteFoodFromDish(dishId, foodId) {
+    return apiClient.delete('Dish/RemoveFoodIngredient?dishId=' + dishId + '&foodIngredientId=' + foodId)
+  },
 
   // Product Services
 

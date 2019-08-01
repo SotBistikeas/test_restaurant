@@ -3,7 +3,7 @@
     <b-table :items="products" :fields="productFields" striped responsive small>
       <template slot="actions" slot-scope="row">
         <b-button
-          :to="{ name: 'ProductShow', params: { id: row.id } }"
+          :to="{ name: 'ProductShow', params: { id: row.item.id } }"
           variant="outline-primary"
           size="sm"
         >Edit</b-button>

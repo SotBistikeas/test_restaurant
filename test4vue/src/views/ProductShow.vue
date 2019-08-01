@@ -27,7 +27,6 @@
       <h5 slot="footer" class="mb-0" v-if="edit == true">
         <BaseInput v-model="editedname" label="enter new name" />
         <BaseInput v-model="editedPrice" label="enter new price" />
-        <BaseInput v-model="editedUnit" label="enter new unit" />
         <BaseButton pill size="sm" @click="updateIt()" variant="dark">Update</BaseButton>
       </h5>
 
@@ -56,7 +55,6 @@ export default {
       edit: false,
       editedname: "",
       editedPrice: "",
-      editedUnit: "",
       del: false
     };
   },
@@ -86,8 +84,8 @@ export default {
         .put("http://localhost:21021/api/services/app/Product/Update", {
           name: this.editedname,
           price: this.editedPrice,
-          unitOfMeasureId: this.editedUnit,
-          quantity: this.product.quantity,
+          unitOfMeasureId: this.product.result.unitOfMeasureId,
+          quantity: 1,
           id: this.id
         })
         .then(response => {

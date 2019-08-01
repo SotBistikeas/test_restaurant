@@ -24,9 +24,10 @@
           </select>
         </div>
       </form>
+      
 
       <span slot="footer" class="mb-0">
-        <BaseButton type="submit" variant="success" size="lg">Create Food Ingredient</BaseButton>
+        <BaseButton type="submit" variant="success" size="lg" >Create Food Ingredient</BaseButton>
       </span>
     </b-card>
   </div>

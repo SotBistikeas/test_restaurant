@@ -15,6 +15,10 @@
         <table>
           <tbody>
             <tr>
+              <td>Name</td>
+              <td>{{dish.name}}</td>
+            </tr>
+            <tr>
               <td>BaseCost</td>
               <td>{{dish.baseCost}}</td>
             </tr>
@@ -308,7 +312,13 @@ export default {
       //     console.log(error.response);
       //   });
     },
+    deleteThis(id , data){
+      console.log(id);
+      console.log(data);
+      // ApiService.deleteFoodFromDish(id , data).then( console.log('yoyoyo'));
+    },
     loadFoodIngredient() {
+
       ApiService.getAllFoodIngredients()
         .then(response => {
           this.FoodIngredientOptions = response.data.result;
@@ -332,9 +342,14 @@ export default {
           console.log(error.message);
         });
     },
+
+    // MERIKES FORES DOULEBEI !!!!! OXI PANTA!!!!!!!
     getFoodIngredientName(foodIngredientId) {
-      return this.FoodIngredientOptions.find(o => o.id == foodIngredientId)
-        .name;
+      var p = this.FoodIngredientOptions.find(o => o.id == foodIngredientId);
+      if (p != null) return p.name;
+      else return null;
+      // return this.FoodIngredientOptions.find(o => o.id == foodIngredientId)
+      //   .name;
     }
   }
 };
