@@ -105,9 +105,11 @@ namespace FoodCost.Dishes
         {
             var fi = Repository.GetAllIncluding(
                 o => o.Dish_FoodIngredient_Mapping).FirstOrDefault(o => o.Id == dishId);
-            foreach (var fipm in fi.Dish_FoodIngredient_Mapping.Where(o => o.FoodIngredientId == foodIngredientId).ToList())
+            foreach (var fipm in fi.Dish_FoodIngredient_Mapping.Where(o => o.Id == foodIngredientId).ToList())
                 fi.Dish_FoodIngredient_Mapping.Remove(fipm);
+            
             _dishService.CalculateDish(fi.Id);
+            Repository.Update(fi);
         }
     }
 }

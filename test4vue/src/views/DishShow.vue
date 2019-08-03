@@ -312,16 +312,15 @@ export default {
       //     console.log(error.response);
       //   });
     },
-    deleteThis(id , data){
+    deleteThis(id, data) {
       console.log(id);
       console.log(data);
-      // ApiService.deleteFoodFromDish(id , data).then( console.log('yoyoyo'));
+      ApiService.deleteFoodFromDish(id, data).then(console.log("yoyoyo"));
     },
     loadFoodIngredient() {
-
       ApiService.getAllFoodIngredients()
         .then(response => {
-          this.FoodIngredientOptions = response.data.result;
+          this.FoodIngredientOptions = response.data.result.items;
         })
         .catch(error => {
           console.log(error.response);
