@@ -27,6 +27,9 @@ namespace FoodCost.EntityFrameworkCore
         public FoodCostDbContext(DbContextOptions<FoodCostDbContext> options)
             : base(options)
         {
+            this.Database.Migrate();
+
+            this.SuppressAutoSetTenantId = true;
         }
     }
 }

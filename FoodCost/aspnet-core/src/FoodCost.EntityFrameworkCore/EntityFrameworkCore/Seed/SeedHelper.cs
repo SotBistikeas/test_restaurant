@@ -19,6 +19,7 @@ namespace FoodCost.EntityFrameworkCore.Seed
 
         public static void SeedHostDb(FoodCostDbContext context)
         {
+
             context.SuppressAutoSetTenantId = true;
 
             // Host seed

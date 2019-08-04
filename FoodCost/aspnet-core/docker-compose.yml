@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  db.sql:
+    image: "microsoft/mssql-server-linux"
+    container_name: "db.sql"
+    environment:
+      SA_PASSWORD: "reallyStrongPwd456!@£KALOS"
+      ACCEPT_EULA: "Y"
+
+  foodcost.web.host:
+    image: ${DOCKER_REGISTRY}foodcostwebhost
+    build:
+      context: .
+      dockerfile: src/FoodCost.Web.Host/Dockerfile
+

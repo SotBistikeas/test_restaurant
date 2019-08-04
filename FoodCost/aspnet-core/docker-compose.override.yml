@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:  
+  db.sql:
+    ports:
+      - "41433:1433"      
+    volumes:
+      - ./volumes/sqldata:/var/opt/mssql
+      
+  foodcost.web.host:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "21021:80"
+      - "44321:443"
+    volumes:
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ./volumes/data/foodcost.web.host:/data
+
