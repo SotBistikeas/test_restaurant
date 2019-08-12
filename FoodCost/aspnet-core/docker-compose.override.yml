@@ -1,11 +1,11 @@
 version: '3.4'
 
 services:  
-  db.sql:
+  custdb:
     ports:
       - "41433:1433"      
     volumes:
-      - ./volumes/sqldata:/var/opt/mssql
+      - ./volumes/customsqldata:/var/opt/mssql
       
   foodcost.web.host:
     environment:

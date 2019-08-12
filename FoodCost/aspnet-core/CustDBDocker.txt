@@ -1,0 +1,8 @@
+FROM MyLocalRegistry:5000/custdb-image
+
+RUN mkdir -p /usr/config
+WORKDIR /usr/config
+
+COPY . /usr/config
+
+RUN chmod +x /usr/config/configure-db.sh

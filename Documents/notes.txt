@@ -1,0 +1,5 @@
+Dealing with Databases (and Data) in Docker
+https://visualstudiomagazine.com/articles/2019/03/01/dealing-with-databases.aspx
+
+Build custom SQL Server 2017 Linux Docker image
+https://www.handsonarchitect.com/2018/01/build-custom-sql-server-2017-linux.html

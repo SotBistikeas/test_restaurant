@@ -24,6 +24,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{76A53006-AFDB-49A0-AAED-0ACF61EB1A15}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B9A19C55-25E3-409B-9E16-7A9E3568A957}"
+	ProjectSection(SolutionItems) = preProject
+		configure-db.sh = configure-db.sh
+		CustDBDocker.txt = CustDBDocker.txt
+	EndProjectSection
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{139272F4-639C-412F-8A14-1EF7EBB4B955}"
 EndProject

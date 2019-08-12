@@ -8,6 +8,7 @@
     <PackageId>FoodCost.Web.Host</PackageId>
     <DockerComposeProjectPath>..\..\docker\foodcost\docker-compose.dcproj</DockerComposeProjectPath>
     <UserSecretsId>AbpCompanyName-FoodCost-56C2EF2F-ABD6-4EFC-AAF2-2E81C34E8FB1</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="App_Data\Logs\**" />
@@ -32,6 +33,7 @@
     <ProjectReference Include="..\FoodCost.Web.Core\FoodCost.Web.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.7.9" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.1">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
