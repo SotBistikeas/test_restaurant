@@ -7,30 +7,35 @@ using Abp.Domain.Uow;
 using Abp.Runtime.Caching;
 using Abp.Zero.Configuration;
 using FoodCost.Authorization.Users;
+using Abp.Domain.Repositories;
+using Abp.Organizations;
 
 namespace FoodCost.Authorization.Roles
 {
     public class RoleManager : AbpRoleManager<Role, User>
     {
-        public RoleManager(
-            RoleStore store, 
-            IEnumerable<IRoleValidator<Role>> roleValidators, 
+        public RoleManager(AbpRoleStore<Role, User> store, 
+            IEnumerable<IRoleValidator<Role>> roleValidators,
             ILookupNormalizer keyNormalizer, 
             IdentityErrorDescriber errors, 
             ILogger<AbpRoleManager<Role, User>> logger,
             IPermissionManager permissionManager, 
             ICacheManager cacheManager, 
             IUnitOfWorkManager unitOfWorkManager,
-            IRoleManagementConfig roleManagementConfig)
-            : base(
-                  store,
+            IRoleManagementConfig roleManagementConfig, 
+            IRepository<OrganizationUnit, long> organizationUnitRepository, 
+            IRepository<OrganizationUnitRole, long> organizationUnitRoleRepository) 
+            : base(store, 
                   roleValidators, 
                   keyNormalizer, 
-                  errors, logger, 
-                  permissionManager,
-                  cacheManager, 
+                  errors,
+                  logger,
+                  permissionManager, 
+                  cacheManager,
                   unitOfWorkManager,
-                  roleManagementConfig)
+                  roleManagementConfig,
+                  organizationUnitRepository, 
+                  organizationUnitRoleRepository)
         {
         }
     }

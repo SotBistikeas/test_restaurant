@@ -1,4 +1,5 @@
-﻿using Abp.Zero.EntityFrameworkCore;
+﻿using Abp.IdentityServer4;
+using Abp.Zero.EntityFrameworkCore;
 using FoodCost.Authorization.Roles;
 using FoodCost.Authorization.Users;
 using FoodCost.Models.Dishes;
@@ -11,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FoodCost.EntityFrameworkCore
 {
-    public class FoodCostDbContext : AbpZeroDbContext<Tenant, Role, User, FoodCostDbContext>
+    public class FoodCostDbContext : AbpZeroDbContext<Tenant, Role, User, FoodCostDbContext>, IAbpPersistedGrantDbContext
     {
         /* Define a DbSet for each entity of the application */
 
@@ -23,10 +24,18 @@ namespace FoodCost.EntityFrameworkCore
         public DbSet<FoodIngredient_Product> FoodIngredient_Product_Mapping { get; set; }
         public DbSet<Dish> Dishes { get; set; }
         public DbSet<Dish_FoodIngredient> Dish_FoodIngredient_Mapping { get; set; }
+        public DbSet<PersistedGrantEntity> PersistedGrants { get; set; }
 
         public FoodCostDbContext(DbContextOptions<FoodCostDbContext> options)
             : base(options)
         {
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ConfigurePersistedGrantEntity();
         }
     }
 }

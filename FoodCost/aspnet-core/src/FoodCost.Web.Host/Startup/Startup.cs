@@ -16,6 +16,9 @@ using FoodCost.Configuration;
 using FoodCost.Identity;
 
 using Abp.AspNetCore.SignalR.Hubs;
+using FoodCost.Authorization.Users;
+using Abp.IdentityServer4;
+using FoodCost.Authentication.JwtBearer;
 
 namespace FoodCost.Web.Host.Startup
 {
@@ -38,7 +41,17 @@ namespace FoodCost.Web.Host.Startup
             );
 
             IdentityRegistrar.Register(services);
+             services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
+                .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
+                .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
+                .AddInMemoryClients(IdentityServerConfig.GetClients())
+                .AddAbpPersistedGrants<IAbpPersistedGrantDbContext>()
+                .AddAbpIdentityServer<User>();
+
             AuthConfigurer.Configure(services, _appConfiguration);
+
+           
 
             services.AddSignalR();
 
@@ -94,6 +107,9 @@ namespace FoodCost.Web.Host.Startup
             app.UseStaticFiles();
 
             app.UseAuthentication();
+
+            app.UseJwtTokenMiddleware("IdentityBearer");
+            app.UseIdentityServer();
 
             app.UseAbpRequestLocalization();
 
