@@ -34,6 +34,7 @@
     <ProjectReference Include="..\FoodCost.Web.Core\FoodCost.Web.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.7.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>

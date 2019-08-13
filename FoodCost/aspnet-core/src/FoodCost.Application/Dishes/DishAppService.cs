@@ -1,5 +1,6 @@
 ﻿using Abp.Application.Services;
 using Abp.Application.Services.Dto;
+using Abp.Authorization;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
 using FoodCost.Dishes.Dto;
@@ -15,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace FoodCost.Dishes
 {
+    [AbpAuthorize]
     public class DishAppService : AsyncCrudAppService<Dish, DishDto>
     {
         private DishService _dishService;

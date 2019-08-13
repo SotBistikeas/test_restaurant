@@ -21,29 +21,27 @@ class AuthService {
         api.defaults.headers.common["Authorization"] = this.getAuthorizationHeader();
     }
 
-    login_new(username, password) {
+    login(username, password) {
         const axiosConfig = {
             baseURL: 'http://localhost:21021',
             timeout: 30000,
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Abp.TenantId': null,
+                'Content-Type': 'application/json'
             }
         };
 
         const requestData = {
-            client_id: 'client',
-            client_secret: 'secret',
-            grant_type: 'password',
-            username: username,
-            password: password,
-            // scope: 'api1'
+
+            usernameOrEmailAddress: username,
+            password: password
         };
 
         try {
             debugger;
-            axios.post('/connect/token', qs.stringify(requestData), axiosConfig).then(res => {
-                if (res.refresh_token != null) {
-                    return this.setTokens(res);
+            axios.post('/api/TokenAuth/Authenticate', requestData, axiosConfig).then(res => {
+                if (res.data.success != null) {
+                    return this.setTokens(res.data.result);
                 } else {
                     return Promise.reject(res);
                 }
@@ -55,27 +53,7 @@ class AuthService {
         }
     }
 
-    login(username, password) {
 
-        // Get a token from api server using the fetch api
-
-        var bodyParam = "grant_type=password&client_id=client&client_secret=secret&username=" + username + "&password=" + password;
-
-        return this.fetch(`${this.domain}/connect/token`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: bodyParam
-        }).then(res => {
-            if (res.refresh_token != null) {
-                return this.setTokens(res);
-            } else {
-                return Promise.reject(res);
-            }
-            return Promise.resolve(res);
-        });
-    }
 
     getUserData() {
         return localStorage.getItem("userData") !== null && JSON.parse(localStorage.getItem("userData"));
@@ -190,28 +168,30 @@ class AuthService {
     }
 
     setTokens(responseToken) {
-        localStorage.setItem("applicantAccessToken", responseToken.access_token);
-        localStorage.setItem("applicantRefreshToken", responseToken.refresh_token);
+        localStorage.setItem("applicantAccessToken", responseToken.accessToken);
+        localStorage.setItem("encryptedAccessToken", responseToken.encryptedAccessToken);
+        localStorage.setItem("expireInSeconds", responseToken.expireInSeconds);
+        localStorage.setItem("userId", responseToken.userId);
 
         api.defaults.headers.common["Authorization"] = this.getAuthorizationHeader();
 
-        //call ajax to fetch applicant prefs
-        return api.get("services/app/Account/GetUserProperties").then(prefs => {
-            var userData = prefs.data.result;
-            localStorage.setItem("userData", JSON.stringify(userData));
+        // //call ajax to fetch applicant prefs
+        // return api.get("services/app/Account/GetUserProperties").then(prefs => {
+        //     var userData = prefs.data.result;
+        //     localStorage.setItem("userData", JSON.stringify(userData));
 
-            localStorage.setItem("userId", userData.userId);
-            localStorage.setItem("applicantId", userData.applicantId);
-            localStorage.setItem("roles", JSON.stringify(userData.roles));
-            localStorage.setItem("permissions", JSON.stringify(userData.permissions));
-            localStorage.setItem("permissionsPerStore", JSON.stringify(userData.permissionsPerStore));
-        });
+        //     localStorage.setItem("userId", userData.userId);
+        //     localStorage.setItem("applicantId", userData.applicantId);
+        //     localStorage.setItem("roles", JSON.stringify(userData.roles));
+        //     localStorage.setItem("permissions", JSON.stringify(userData.permissions));
+        //     localStorage.setItem("permissionsPerStore", JSON.stringify(userData.permissionsPerStore));
+        // });
     }
 
     getAuthorizationHeader() {
         let token = this.getToken();
 
-        return token && token.length > 0 ? "Bearer " + this.getToken() : null;
+        return token && token.length > 0 ? "Bearer " + token : null;
     }
 
     getToken() {

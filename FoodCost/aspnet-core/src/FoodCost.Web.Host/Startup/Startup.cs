@@ -41,17 +41,22 @@ namespace FoodCost.Web.Host.Startup
             );
 
             IdentityRegistrar.Register(services);
-             services.AddIdentityServer()
-                .AddDeveloperSigningCredential()
-                .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
-                .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
-                .AddInMemoryClients(IdentityServerConfig.GetClients())
-                .AddAbpPersistedGrants<IAbpPersistedGrantDbContext>()
-                .AddAbpIdentityServer<User>();
+            services.AddIdentityServer()
+               .AddDeveloperSigningCredential()
+               .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
+               .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
+               .AddInMemoryClients(IdentityServerConfig.GetClients())
+               .AddAbpPersistedGrants<IAbpPersistedGrantDbContext>()
+               .AddAbpIdentityServer<User>();
+            services.AddAuthentication().AddIdentityServerAuthentication("IdentityBearer", options =>
+                {
+                    options.Authority = "http://localhost:21021/";
+                    options.RequireHttpsMetadata = false;
+                });
 
             AuthConfigurer.Configure(services, _appConfiguration);
 
-           
+
 
             services.AddSignalR();
 
