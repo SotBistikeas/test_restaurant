@@ -7,6 +7,7 @@ import DishCreate from './views/DishCreate.vue';
 import DishShow from './views/DishShow.vue';
 import ProductShow from './views/ProductShow.vue';
 import User from './views/User.vue';
+import Login from './views/Login.vue';
 import NProgress from 'nprogress';
 import store from '@/store/store';
 import NotFound from './views/NotFound.vue';
@@ -29,6 +30,11 @@ const router = new Router({
       path: '/',
       name: 'Home',
       component: User
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
     },
     {
       path: '/plist',
