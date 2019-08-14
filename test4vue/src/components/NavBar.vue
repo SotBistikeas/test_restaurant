@@ -18,10 +18,34 @@
         <b-nav-item :to="{ name: 'UnitList' }">Units List</b-nav-item>
         <b-nav-item :to="{ name: 'VatList' }">Vat List</b-nav-item>
       </b-navbar-nav>
+      <b-navbar-nav class="ml-auto">
+        <b-nav-item-dropdown right v-if="isLoggedIn">
+          <!-- Using 'button-content' slot -->
+          <template slot="button-content">
+            <em>User</em>
+          </template>
+          <b-dropdown-item :to="{ name: 'Home' }">Profile</b-dropdown-item>
+          <b-dropdown-item @click="logout">Sign Out</b-dropdown-item>
+        </b-nav-item-dropdown>
+        <b-nav-item right v-else :to="{ name: 'Login' }">Login</b-nav-item>
+      </b-navbar-nav>
     </b-collapse>
   </b-navbar>
 </template>
 
 <script>
-export default {};
+export default {
+  computed: {
+    isLoggedIn: function() {
+      return this.$store.getters.isLoggedIn;
+    }
+  },
+  methods: {
+    logout: function() {
+      this.$store.dispatch("logout").then(() => {
+        this.$router.push("/login");
+      });
+    }
+  }
+};
 </script>

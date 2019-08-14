@@ -10,6 +10,8 @@ import * as FoodIngredient from '@/store/modules/FoodIngredient.js';
 import ProductService from '@/services/ProductService.js';
 import FoodIngredientService from '@/services/FoodIngredientService.js';
 import ApiService from '@/services/ApiService.js';
+import AuthService from "@/services/AuthService";
+import api from "@/services/ApiClient"
 
 Vue.use(Vuex);
 export default new Vuex.Store({
@@ -23,6 +25,12 @@ export default new Vuex.Store({
     FoodIngredient
   },
   state: {
+    //user is logged or logout
+    status: '',
+    token: localStorage.getItem('token') || '',
+    userId: null,
+
+    //other
     products: [],
     vats: [],
 
@@ -53,7 +61,22 @@ export default new Vuex.Store({
     },
     SET_FOODINGREDIENTS(state, FoodIngredients) {
       state.FoodIngredients = FoodIngredients;
-    }
+    },
+    auth_request(state) {
+      state.status = 'loading'
+    },
+    auth_success(state, token, userId) {
+      state.status = 'success'
+      state.token = token
+      state.userId = userId
+    },
+    auth_error(state) {
+      state.status = 'error'
+    },
+    logout(state) {
+      state.status = ''
+      state.token = ''
+    },
   },
   actions: {
     createProduct({ commit }, product) {
@@ -88,6 +111,56 @@ export default new Vuex.Store({
       ApiService.getAllFoodIngredients().then(responce => {
         commit('SET_FOODINGREDIENTS', responce.data.result.items);
       });
+    },
+    login({ commit }, user) {
+      return new Promise((resolve, reject) => {
+        commit('auth_request')
+        AuthService.login(user.name, user.password)
+          .then(resp => {
+            const token = resp.accessToken;
+            const userId = resp.userId;
+            localStorage.setItem('token', token);
+            api.defaults.headers.common['Authorization'] = token
+            commit('auth_success', token, userId)
+            resolve(resp)
+          })
+          .catch(err => {
+            commit('auth_error')
+            localStorage.removeItem('token')
+            reject(err)
+          })
+      })
+    },
+    register({ commit }, user) {
+      return new Promise((resolve, reject) => {
+        commit('auth_request')
+        axios({ url: 'http://localhost:3000/register', data: user, method: 'POST' })
+          .then(resp => {
+            const token = resp.data.token
+            const userId = resp.data.userId
+            localStorage.setItem('token', token)
+            api.defaults.headers.common['Authorization'] = token
+            commit('auth_success', token, userId)
+            resolve(resp)
+          })
+          .catch(err => {
+            commit('auth_error', err)
+            localStorage.removeItem('token')
+            reject(err)
+          })
+      })
+    },
+    logout({ commit }) {
+      return new Promise((resolve, reject) => {
+        commit('logout')
+        localStorage.removeItem('token')
+        delete api.defaults.headers.common['Authorization']
+        resolve()
+      })
     }
+  },
+  getters: {
+    isLoggedIn: state => !!state.token,
+    authStatus: state => state.status,
   }
 });

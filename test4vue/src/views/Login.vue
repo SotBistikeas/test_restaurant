@@ -4,7 +4,6 @@
       <BaseInput
         label="Name"
         v-model="name"
-        @blur="$v.name.$touch()"
         :state="!$v.name.$error"
         errorMessage="Name is required"
       />
@@ -14,7 +13,6 @@
         v-model="password"
         class="field"
         :class="{ error: $v.password.$error }"
-        @blur="$v.password.$touch()"
         :state="!$v.password.$error"
         errorMessage="password is required"
       />
@@ -35,8 +33,8 @@ export default {
   beforeCreate: function() {},
   data() {
     return {
-      name: "",
-      password: ""
+      name: "admin",
+      password: "123qwe"
     };
   },
 
@@ -50,8 +48,15 @@ export default {
       this.$v.$touch();
       if (!this.$v.$invalid) {
         NProgress.start();
-        debugger;
-        AuthService.login(this.name, this.password);
+        this.$store
+          .dispatch("login", {
+            name: this.name,
+            password: this.password
+          })
+          .then(() => this.$router.push("/"))
+          .catch(err => console.log(err))
+          .finally(() => NProgress.done());
+        //AuthService.login(this.name, this.password);
 
         // this.$store
         //   .dispatch("product/createProduct", this.product)

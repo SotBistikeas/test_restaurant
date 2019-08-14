@@ -37,20 +37,17 @@ class AuthService {
             password: password
         };
 
-        try {
-            debugger;
-            axios.post('/api/TokenAuth/Authenticate', requestData, axiosConfig).then(res => {
-                if (res.data.success != null) {
-                    return this.setTokens(res.data.result);
-                } else {
-                    return Promise.reject(res);
-                }
-                return Promise.resolve(res);
-            })
 
-        } catch (err) {
-            return err;
-        }
+        return axios.post('/api/TokenAuth/Authenticate', requestData, axiosConfig).then(res => {
+            if (res.data.success) {
+                return Promise.resolve(res.data.result);
+                return this.setTokens(res.data.result);
+            } else {
+                return Promise.reject(res);
+            }
+        })
+
+
     }
 
 
