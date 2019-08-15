@@ -1,31 +1,29 @@
 ﻿using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
-using FoodCost.Models.VatCategories;
+using FoodCost.Models.Products;
 using FoodCost.Models.UnitOfMeasures;
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FoodCost.Models.Products
+namespace FoodCost.Models.FoodIngredients
 {
-    public class Product : Entity, IAudited, IMustHaveTenant
+    public class FoodIngredient_Product : Entity, IAudited, IMustHaveTenant
     {
         public int TenantId { get; set; }
 
-        [Required]
-        [StringLength(255)]
-        public string Name { get; set; }
-        [Required]
-        public decimal Price { get; set; }
+        public int FoodIngredientId { get; set; }
+        [ForeignKey(nameof(FoodIngredientId))]
+        public FoodIngredient FoodIngredient { get; set; }
 
+        public int ProductId { get; set; }
+        [ForeignKey(nameof(ProductId))]
+        public Product Product { get; set; }
+
+        public decimal Quantity { get; set; }
 
         public int UnitOfMeasureId { get; set; }
         [ForeignKey(nameof(UnitOfMeasureId))]
         public UnitOfMeasure UnitOfMeasure { get; set; }
-
-        public decimal Quantity { get; set; }
 
 
         public long? CreatorUserId { get; set; }

@@ -1,11 +1,8 @@
 ﻿using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
-using FoodCost.Models.FoodIngredients;
-using FoodCost.Models.UnitOfMeasures;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FoodCost.Models.Dishes
 {
@@ -41,31 +38,6 @@ namespace FoodCost.Models.Dishes
 
 
         public ICollection<Dish_FoodIngredient> Dish_FoodIngredient_Mapping { get; set; }
-
-        public long? CreatorUserId { get; set; }
-        public DateTime CreationTime { get; set; }
-        public long? LastModifierUserId { get; set; }
-        public DateTime? LastModificationTime { get; set; }
-    }
-
-    public class Dish_FoodIngredient : Entity, IAudited
-    {
-
-        public int DishId { get; set; }
-        [ForeignKey(nameof(DishId))]
-        public Dish Dish { get; set; }
-
-        public int FoodIngredientId { get; set; }
-        [ForeignKey(nameof(FoodIngredientId))]
-        public FoodIngredient FoodIngredient { get; set; }
-
-
-        public decimal Quantity { get; set; }
-
-        public int UnitOfMeasureId { get; set; }
-        [ForeignKey(nameof(UnitOfMeasureId))]
-        public UnitOfMeasure UnitOfMeasure { get; set; }
-
 
         public long? CreatorUserId { get; set; }
         public DateTime CreationTime { get; set; }
