@@ -9,8 +9,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FoodCost.Models.Dishes
 {
-    public class Dish : Entity, IAudited
+    public class Dish : Entity, IAudited, IMustHaveTenant
     {
+
+        public int TenantId { get; set; }
+
         [Required]
         [StringLength(255)]
         public string Name { get; set; }

@@ -18,8 +18,8 @@
         <b-nav-item :to="{ name: 'UnitList' }">Units List</b-nav-item>
         <b-nav-item :to="{ name: 'VatList' }">Vat List</b-nav-item>
       </b-navbar-nav>
-      <b-navbar-nav class="ml-auto">
-        <b-nav-item-dropdown right v-if="isLoggedIn">
+      <b-navbar-nav class="ml-auto" v-if="isLoggedIn">
+        <b-nav-item-dropdown right >
           <!-- Using 'button-content' slot -->
           <template slot="button-content">
             <em>{{getFullName}}</em>
@@ -27,8 +27,12 @@
           <b-dropdown-item :to="{ name: 'Home' }">Profile</b-dropdown-item>
           <b-dropdown-item @click="logout">Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
-        <b-nav-item right v-else :to="{ name: 'Login' }">Login</b-nav-item>
+        
       </b-navbar-nav>
+       <b-navbar-nav class="ml-auto" v-else>
+         <b-nav-item right  :to="{ name: 'Login' }">Login</b-nav-item>
+         <b-nav-item right  :to="{ name: 'Register' }">Sign up</b-nav-item>
+       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
 </template>

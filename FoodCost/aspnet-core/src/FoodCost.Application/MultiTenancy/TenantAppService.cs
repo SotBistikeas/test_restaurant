@@ -8,6 +8,7 @@ using Abp.Extensions;
 using Abp.IdentityFramework;
 using Abp.Linq.Extensions;
 using Abp.MultiTenancy;
+using Abp.ObjectMapping;
 using Abp.Runtime.Security;
 using FoodCost.Authorization;
 using FoodCost.Authorization.Roles;
@@ -26,6 +27,7 @@ namespace FoodCost.MultiTenancy
         private readonly UserManager _userManager;
         private readonly RoleManager _roleManager;
         private readonly IAbpZeroDbMigrator _abpZeroDbMigrator;
+
 
         public TenantAppService(
             IRepository<Tenant, int> repository,

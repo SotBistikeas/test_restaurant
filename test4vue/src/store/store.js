@@ -123,7 +123,7 @@ export default new Vuex.Store({
             const userId = resp.userId;
             const userFullName = resp.userFullName;
             localStorage.setItem('token', token);
-            api.defaults.headers.common['Authorization'] = token
+            api.defaults.headers.common['Authorization'] = "Bearer " + token
             commit('auth_success', { token, userId, userFullName })
             resolve(resp)
           })
@@ -144,6 +144,7 @@ export default new Vuex.Store({
             }
             else {
               debugger;
+              commit('auth_error', err)
               reject('Cannot create account')
             }
 

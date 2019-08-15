@@ -1,8 +1,17 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Abp.Configuration;
+using Abp.Extensions;
+using Abp.MultiTenancy;
+using Abp.ObjectMapping;
 using Abp.Zero.Configuration;
 using FoodCost.Authorization.Accounts.Dto;
+using FoodCost.Authorization.Roles;
 using FoodCost.Authorization.Users;
+using FoodCost.Editions;
+using FoodCost.MultiTenancy;
+using FoodCost.MultiTenancy.Dto;
 
 namespace FoodCost.Authorization.Accounts
 {
@@ -12,11 +21,29 @@ namespace FoodCost.Authorization.Accounts
         public const string PasswordRegex = "(?=^.{8,}$)(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s)[0-9a-zA-Z!@#$%^&*()]*$";
 
         private readonly UserRegistrationManager _userRegistrationManager;
+        private readonly TenantManager _tenantManager;
+        private readonly EditionManager _editionManager;
+        private readonly IAbpZeroDbMigrator _abpZeroDbMigrator;
+        private readonly UserManager _userManager;
+        private readonly RoleManager _roleManager;
+        private readonly IObjectMapper _objectMapper;
 
         public AccountAppService(
-            UserRegistrationManager userRegistrationManager)
+            UserRegistrationManager userRegistrationManager,
+            TenantManager tenantManager,
+            EditionManager editionManager,
+            IAbpZeroDbMigrator abpZeroDbMigrator,
+            UserManager userManager,
+            RoleManager roleManager,
+            IObjectMapper objectMapper)
         {
             _userRegistrationManager = userRegistrationManager;
+            _tenantManager = tenantManager;
+            _editionManager = editionManager;
+            _abpZeroDbMigrator = abpZeroDbMigrator;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _objectMapper = objectMapper;
         }
 
         public async Task<IsTenantAvailableOutput> IsTenantAvailable(IsTenantAvailableInput input)
@@ -37,6 +64,12 @@ namespace FoodCost.Authorization.Accounts
 
         public async Task<RegisterOutput> Register(RegisterInput input)
         {
+            var tenant = await CreateNewTenand(input);
+            return new RegisterOutput
+            {
+                CanLogin = true
+            };
+
             var user = await _userRegistrationManager.RegisterAsync(
                 input.Name,
                 input.Surname,
@@ -52,6 +85,64 @@ namespace FoodCost.Authorization.Accounts
             {
                 CanLogin = user.IsActive && (user.IsEmailConfirmed || !isEmailConfirmationRequiredForLogin)
             };
+        }
+
+        private async Task<TenantDto> CreateNewTenand(RegisterInput input)
+        {
+            try
+            {
+                // Create tenant
+                var tenant = new Tenant
+                {
+                    IsActive = true,
+                    TenancyName = input.Name,
+                    Name = input.Name + " " + input.Surname,
+
+                };
+                tenant.ConnectionString = null;
+
+                var defaultEdition = await _editionManager.FindByNameAsync(EditionManager.DefaultEditionName);
+                if (defaultEdition != null)
+                {
+                    tenant.EditionId = defaultEdition.Id;
+                }
+
+                await _tenantManager.CreateAsync(tenant);
+                await CurrentUnitOfWork.SaveChangesAsync(); // To get new tenant's id.
+
+                // Create tenant database
+                _abpZeroDbMigrator.CreateOrMigrateForTenant(tenant);
+
+                // We are working entities of new tenant, so changing tenant filter
+                using (CurrentUnitOfWork.SetTenantId(tenant.Id))
+                {
+                    // Create static roles for new tenant
+                    CheckErrors(await _roleManager.CreateStaticRoles(tenant.Id));
+
+                    await CurrentUnitOfWork.SaveChangesAsync(); // To get static role ids
+
+                    // Grant all permissions to admin role
+                    var adminRole = _roleManager.Roles.Single(r => r.Name == StaticRoleNames.Tenants.Admin);
+                    await _roleManager.GrantAllPermissionsAsync(adminRole);
+
+                    // Create admin user for the tenant
+                    var adminUser = User.CreateTenantUser(tenant.Id, input.UserName, input.EmailAddress);
+                    await _userManager.InitializeOptionsAsync(tenant.Id);
+                    CheckErrors(await _userManager.CreateAsync(adminUser, input.Password));
+                    await CurrentUnitOfWork.SaveChangesAsync(); // To get admin user's id
+
+                    // Assign admin user to role!
+                    CheckErrors(await _userManager.AddToRoleAsync(adminUser, adminRole.Name));
+                    await CurrentUnitOfWork.SaveChangesAsync();
+                }
+
+                return _objectMapper.Map<TenantDto>(tenant);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex.Message, ex);
+                throw;
+            }
         }
     }
 }

@@ -4,14 +4,16 @@ using FoodCost.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FoodCost.Migrations
 {
     [DbContext(typeof(FoodCostDbContext))]
-    partial class FoodCostDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190815210532_AddTenandId_to_Dish")]
+    partial class AddTenandId_to_Dish
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

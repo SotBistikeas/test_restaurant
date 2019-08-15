@@ -53,7 +53,6 @@ class AuthService {
     register(data) {
         const axiosConfig = {
             baseURL: 'http://localhost:21021',
-            timeout: 30000,
             headers: {
                 'Abp.TenantId': null,
                 'Content-Type': 'application/json'

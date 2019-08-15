@@ -17,6 +17,8 @@ using FoodCost.Authorization;
 using FoodCost.Authorization.Users;
 using FoodCost.Models.TokenAuth;
 using FoodCost.MultiTenancy;
+using Abp.Domain.Repositories;
+using Abp.Domain.Uow;
 
 namespace FoodCost.Controllers
 {
@@ -30,7 +32,7 @@ namespace FoodCost.Controllers
         private readonly IExternalAuthConfiguration _externalAuthConfiguration;
         private readonly IExternalAuthManager _externalAuthManager;
         private readonly UserRegistrationManager _userRegistrationManager;
-
+        private readonly UserManager _userManager;
         public TokenAuthController(
             LogInManager logInManager,
             ITenantCache tenantCache,
@@ -38,7 +40,8 @@ namespace FoodCost.Controllers
             TokenAuthConfiguration configuration,
             IExternalAuthConfiguration externalAuthConfiguration,
             IExternalAuthManager externalAuthManager,
-            UserRegistrationManager userRegistrationManager)
+            UserRegistrationManager userRegistrationManager,
+            UserManager userManager)
         {
             _logInManager = logInManager;
             _tenantCache = tenantCache;
@@ -47,15 +50,28 @@ namespace FoodCost.Controllers
             _externalAuthConfiguration = externalAuthConfiguration;
             _externalAuthManager = externalAuthManager;
             _userRegistrationManager = userRegistrationManager;
+            _userManager = userManager;
         }
 
         [HttpPost]
         public async Task<AuthenticateResultModel> Authenticate([FromBody] AuthenticateModel model)
         {
+            string tenancyName = GetTenancyNameOrNull();
+            //Disabling MayHaveTenant filter, so we can reach all users
+            using (CurrentUnitOfWork.DisableFilter(AbpDataFilters.MayHaveTenant))
+            {
+                //Now, we can search for a user name in all tenants
+                var userByUsername = _userManager.Users.FirstOrDefault(u => u.UserName == model.UserNameOrEmailAddress);
+                if (userByUsername != null && userByUsername.TenantId.HasValue)
+                    tenancyName = _tenantCache.GetOrNull(userByUsername.TenantId.Value)?.TenancyName;
+
+            }
+
             var loginResult = await GetLoginResultAsync(
                 model.UserNameOrEmailAddress,
                 model.Password,
-                GetTenancyNameOrNull()
+                tenancyName
+
             );
 
             var accessToken = CreateAccessToken(CreateJwtClaims(loginResult.Identity));
@@ -214,7 +230,7 @@ namespace FoodCost.Controllers
         {
             var claims = identity.Claims.ToList();
             var nameIdClaim = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-            if(nameIdClaim == null)
+            if (nameIdClaim == null)
             {
                 nameIdClaim = claims.First(c => c.Type == "sub");
             }

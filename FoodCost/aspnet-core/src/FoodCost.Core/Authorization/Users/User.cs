@@ -16,12 +16,30 @@ namespace FoodCost.Authorization.Users
 
         public static User CreateTenantAdminUser(int tenantId, string emailAddress)
         {
+            return CreateTenantUser(tenantId, AdminUserName, emailAddress);
             var user = new User
             {
                 TenantId = tenantId,
                 UserName = AdminUserName,
                 Name = AdminUserName,
                 Surname = AdminUserName,
+                EmailAddress = emailAddress,
+                Roles = new List<UserRole>()
+            };
+
+            user.SetNormalizedNames();
+
+            return user;
+        }
+
+        public static User CreateTenantUser(int tenantId, string userName, string emailAddress)
+        {
+            var user = new User
+            {
+                TenantId = tenantId,
+                UserName = userName,
+                Name = userName,
+                Surname = userName,
                 EmailAddress = emailAddress,
                 Roles = new List<UserRole>()
             };
