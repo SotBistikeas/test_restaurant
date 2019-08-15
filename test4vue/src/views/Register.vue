@@ -6,6 +6,10 @@
       <div>
         <input id="name" type="text" v-model="name" required autofocus />
       </div>
+      <label for="surname">Surname</label>
+      <div>
+        <input id="surname" type="text" v-model="surname" required autofocus />
+      </div>
 
       <label for="email">E-Mail Address</label>
       <div>
@@ -33,6 +37,7 @@ export default {
   data() {
     return {
       name: "",
+      surname: "",
       email: "",
       password: "",
       password_confirmation: "",
@@ -43,13 +48,15 @@ export default {
     register: function() {
       let data = {
         name: this.name,
-        email: this.email,
+        surname: this.surname,
+        userName: this.email,
+        emailAddress: this.email,
         password: this.password,
         is_admin: this.is_admin
       };
       this.$store
         .dispatch("register", data)
-        .then(() => this.$router.push("/"))
+        .then(() => this.$router.push("/login"))
         .catch(err => console.log(err));
     }
   }

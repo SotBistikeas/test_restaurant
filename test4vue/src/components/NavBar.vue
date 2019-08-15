@@ -22,7 +22,7 @@
         <b-nav-item-dropdown right v-if="isLoggedIn">
           <!-- Using 'button-content' slot -->
           <template slot="button-content">
-            <em>User</em>
+            <em>{{getFullName}}</em>
           </template>
           <b-dropdown-item :to="{ name: 'Home' }">Profile</b-dropdown-item>
           <b-dropdown-item @click="logout">Sign Out</b-dropdown-item>
@@ -38,6 +38,9 @@ export default {
   computed: {
     isLoggedIn: function() {
       return this.$store.getters.isLoggedIn;
+    },
+    getFullName: function() {
+      return this.$store.state.userFullName;
     }
   },
   methods: {

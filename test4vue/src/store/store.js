@@ -29,6 +29,7 @@ export default new Vuex.Store({
     status: '',
     token: localStorage.getItem('token') || '',
     userId: null,
+    userFullName: null,
 
     //other
     products: [],
@@ -65,10 +66,11 @@ export default new Vuex.Store({
     auth_request(state) {
       state.status = 'loading'
     },
-    auth_success(state, token, userId) {
-      state.status = 'success'
-      state.token = token
-      state.userId = userId
+    auth_success(state, payload) {
+      state.status = 'success';
+      state.token = payload.token;
+      state.userId = payload.userId;
+      state.userFullName = payload.userFullName;
     },
     auth_error(state) {
       state.status = 'error'
@@ -119,9 +121,10 @@ export default new Vuex.Store({
           .then(resp => {
             const token = resp.accessToken;
             const userId = resp.userId;
+            const userFullName = resp.userFullName;
             localStorage.setItem('token', token);
             api.defaults.headers.common['Authorization'] = token
-            commit('auth_success', token, userId)
+            commit('auth_success', { token, userId, userFullName })
             resolve(resp)
           })
           .catch(err => {
@@ -134,14 +137,16 @@ export default new Vuex.Store({
     register({ commit }, user) {
       return new Promise((resolve, reject) => {
         commit('auth_request')
-        axios({ url: 'http://localhost:3000/register', data: user, method: 'POST' })
+        AuthService.register(user)
           .then(resp => {
-            const token = resp.data.token
-            const userId = resp.data.userId
-            localStorage.setItem('token', token)
-            api.defaults.headers.common['Authorization'] = token
-            commit('auth_success', token, userId)
-            resolve(resp)
+            if (resp.canLogin) {
+              resolve()
+            }
+            else {
+              debugger;
+              reject('Cannot create account')
+            }
+
           })
           .catch(err => {
             commit('auth_error', err)
