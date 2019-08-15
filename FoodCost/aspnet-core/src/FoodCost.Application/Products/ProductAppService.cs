@@ -1,5 +1,6 @@
 ﻿using Abp.Application.Services;
 using Abp.Application.Services.Dto;
+using Abp.Authorization;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
 using FoodCost.Models.FoodIngredients;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace FoodCost.Products
 {
+    [AbpAuthorize]
     public class ProductAppService : AsyncCrudAppService<Product, ProductDto>
     {
         private readonly IRepository<Product, int> _productRepository;

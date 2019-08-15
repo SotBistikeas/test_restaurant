@@ -77,7 +77,7 @@
           </b-form-select>
         </b-form-group>
 
-        <span>Quantity  in ( {{this.product.unitOfMeasureId}} ) **{{ getUnitName(this.product.unitOfMeasureId) }}</span>
+        <span>Quantity in ( {{this.product.unitOfMeasureId}} ) **{{ getUnitName(this.product.unitOfMeasureId) }}</span>
 
         <BaseInput v-model="quantity" class="field" type="number" step="0.01" />
         <h6 v-if="!isNaN(product.price * quantity)">
@@ -93,7 +93,7 @@
               v-bind:key="option.id"
             >{{ option.name }}</option>
           </b-form-select>
-        </b-form-group> -->
+        </b-form-group>-->
         <BaseButton type="submit" variant="success">Add to list</BaseButton>
       </b-form>
     </b-card>
@@ -112,13 +112,14 @@
 
 <script>
 import FoodIngredientService from "@/services/FoodIngredientService.js";
-import ApiService from "@/services/ApiService.js"
+import ApiService from "@/services/ApiService.js";
 // import ProductService from '@/services/ProductService.js';
 import axios from "axios";
 import { mapState } from "vuex";
 // import ApiService from "@/services/ApiService.js";
 import UnitName from "@/components/UnitName.vue";
 import Currency from "@/components/Currency.vue";
+import apiClient from "@/services/ApiClient";
 
 export default {
   props: ["id"],
@@ -199,14 +200,9 @@ export default {
     }
   },
   beforeCreate() {
-    axios
-      .get(
-        "http://localhost:21021/api/services/app/Product/GetAll?MaxResultCount=10000",
-        { headers: { Accept: "application/json" } }
-      )
-      .then(response => {
-        this.ProductOptions = response.data.result.items;
-      });
+    apiClient.get("/Product/GetAll?MaxResultCount=10000").then(response => {
+      this.ProductOptions = response.data.result.items;
+    });
 
     this.$store.dispatch("fetchUnits");
     ApiService.getUnit()
@@ -214,10 +210,10 @@ export default {
         this.unitOfMeasureOptions = responce.data.result.items;
       })
       .catch(error => {
-        console.log('There war an error ' + error.responce);
+        console.log("There war an error " + error.responce);
       });
   },
-  
+
   created() {
     this.loadFoodIngredient();
     this.loadProducts();
@@ -233,19 +229,16 @@ export default {
         });
     },
     loadProducts() {
-      axios
-        .get(
-          "http://localhost:21021/api/services/app/FoodIngredient/GetProducts?foodIngredientId=" +
-            this.id
-        )
+      apiClient
+        .get("/FoodIngredient/GetProducts?foodIngredientId=" + this.id)
         .then(response => {
           this.products = response.data.result;
         });
     },
     deleteIt() {
-      axios
+      apiClient
         .delete(
-          "http://localhost:21021/api/services/app/FoodIngredient/Delete?Id=" +
+          "/FoodIngredient/Delete?Id=" +
             this.id
         )
         .then(response => {
@@ -260,8 +253,8 @@ export default {
         });
     },
     updateIt() {
-      axios
-        .put("http://localhost:21021/api/services/app/FoodIngredient/Update", {
+      apiClient
+        .put("/FoodIngredient/Update", {
           name: this.editedname,
           cost: this.foodIngredient.cost,
           unitOfMeasureId: this.foodIngredient.unitOfMeasureId,
@@ -279,9 +272,9 @@ export default {
         });
     },
     deleteThis(foodIngredientId, itemId) {
-      axios
+      apiClient
         .delete(
-          "http://localhost:21021/api/services/app/FoodIngredient/RemoveProduct?foodIngredientId=" +
+          "/FoodIngredient/RemoveProduct?foodIngredientId=" +
             foodIngredientId +
             "&id=" +
             itemId
@@ -295,9 +288,9 @@ export default {
         });
     },
     addToList() {
-      axios
+      apiClient
         .post(
-          "http://localhost:21021/api/services/app/FoodIngredient/AddProduct?foodIngredientId=" +
+          "/FoodIngredient/AddProduct?foodIngredientId=" +
             this.id,
           {
             productId: this.product.id,
@@ -329,7 +322,7 @@ export default {
       var x = this.unitOfMeasureOptions.find(o => o.id == unitOfMeasureId);
       if (x != null) return x.name;
       else return null;
-    },
+    }
   }
 };
 </script>

@@ -1,15 +1,6 @@
 import axios from 'axios';
 import NProgress from 'nprogress';
-
-const apiClient = axios.create({
-  baseURL: `http://localhost:21021/api/services/app`,
-  withCredentials: false, // This is the default
-  headers: {
-    Accept: 'application/json',
-    'Content-Type': 'application/json'
-  },
-  timeout: 10000
-});
+import apiClient from "@/services/ApiClient"
 
 apiClient.interceptors.request.use(config => {
   NProgress.start();
@@ -47,8 +38,3 @@ export default {
     });
   }
 };
-// http://localhost:21021/api/services/app/Product/Get?Id=
-// http://localhost:21021/api/services/app/Product/GetAll
-// http://localhost:21021/api/services/app/Product/Create
-// http://localhost:21021/api/services/app/Product/Update
-// http://localhost:21021/api/services/app/Product/Delete?Id=2

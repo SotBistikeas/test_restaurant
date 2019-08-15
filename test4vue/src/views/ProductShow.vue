@@ -64,9 +64,9 @@ export default {
   methods: {
     deleteIt() {
       console.log("this id = " + this.id);
-      axios
+      apiClient
         .delete(
-          "http://localhost:21021/api/services/app/Product/Delete?Id=" + this.id
+          "/Product/Delete?Id=" + this.id
         )
         .then(response => {
           this.$router.push({
@@ -80,8 +80,8 @@ export default {
         });
     },
     updateIt() {
-      axios
-        .put("http://localhost:21021/api/services/app/Product/Update", {
+      apiClient
+        .put("/Product/Update", {
           name: this.editedname,
           price: this.editedPrice,
           unitOfMeasureId: this.product.result.unitOfMeasureId,
