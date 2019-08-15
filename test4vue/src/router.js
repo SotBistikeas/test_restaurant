@@ -83,7 +83,10 @@ const router = new Router({
     {
       path: '/dishlist',
       name: 'DishList',
-      component: DishList
+      component: DishList,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/user/:username',
@@ -153,7 +156,16 @@ const router = new Router({
 
 router.beforeEach((_routeTo, _routeFrom, next) => {
   NProgress.start();
-  next();
+  if (_routeTo.matched.some(record => record.meta.requiresAuth)) {
+    if (store.getters.isLoggedIn) {
+      next()
+      return
+    }
+    next('/login')
+  } else {
+    next()
+  }
+
 });
 
 router.afterEach(() => {
