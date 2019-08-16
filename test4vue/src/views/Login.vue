@@ -12,6 +12,7 @@
         label="Password"
         v-model="password"
         class="field"
+        type="password"
         :class="{ error: $v.password.$error }"
         :state="!$v.password.$error"
         errorMessage="password is required"
@@ -33,8 +34,8 @@ export default {
   beforeCreate: function() {},
   data() {
     return {
-      name: "admin",
-      password: "123qwe"
+      name: "",
+      password: ""
     };
   },
 
