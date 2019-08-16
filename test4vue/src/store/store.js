@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import createPersistedState from 'vuex-persistedstate'
+
 import user from '@/store/modules/user.js';
 import * as baharika from '@/store/modules/baharika.js';
 import * as product from '@/store/modules/product.js';
@@ -169,5 +171,6 @@ export default new Vuex.Store({
   getters: {
     isLoggedIn: state => !!state.token,
     authStatus: state => state.status,
-  }
+  },
+  plugins: [createPersistedState()]
 });
