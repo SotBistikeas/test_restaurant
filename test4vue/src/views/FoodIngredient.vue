@@ -34,11 +34,12 @@
 </template>
 
 <script>
-import ApiService from "@/services/ApiService.js";
+import UnitOfMeasureService from "@/services/UnitOfMeasureService.js";
+import FoodIngredientService from "@/services/FoodIngredientService.js";
 
 export default {
   beforeCreate: function() {
-    ApiService.getUnit()
+    UnitOfMeasureService.getUnit()
       .then(responce => {
         this.unitOfMeasureOptions = responce.data.result.items;
       })
@@ -59,7 +60,7 @@ export default {
 
   methods: {
     createFoodIngredient() {
-      ApiService.postFoodIngredient(this.FoodIngredient)
+      FoodIngredientService.postFoodIngredient(this.FoodIngredient)
         .then(response => {
           this.$router.push({
             name: "FoodIngredientShow",

@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import ApiService from '@/services/ApiService.js';
+import VatService from '@/services/VatService.js';
 
 export default {
   props: ['id'],
@@ -33,7 +33,7 @@ export default {
     };
   },
   created() {
-    ApiService.getVatById(this.id)
+    VatService.getVatById(this.id)
       .then(response => {
         this.vat = response.data.result;
       })
