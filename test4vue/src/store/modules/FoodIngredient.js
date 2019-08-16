@@ -36,7 +36,7 @@ export const actions = {
       });
   },
   fetchFoodIngredient({ commit, dispatch, state }) {
-    return FoodIngredientService.getFoodIngredient(state)
+    return FoodIngredientService.getAllFoodIngredients(state)
       .then(response => {
         commit('SET_FOODINGREDIENT', response.data);
       })

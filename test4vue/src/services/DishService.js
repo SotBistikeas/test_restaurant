@@ -13,16 +13,16 @@ apiClient.interceptors.response.use(response => {
 });
 export default {
   getDish() {
-    return apiClient.get('/GetAll?MaxResultCount=1000');
+    return apiClient.get('/Dish/GetAll?MaxResultCount=1000');
   },
   getFoodIngredientsByDish(id) {
-    return apiClient.get('/GetFoodIngredients?dishId=' + id);
+    return apiClient.get('/Dish/GetFoodIngredients?dishId=' + id);
   },
   getDishById(id) {
-    return apiClient.get('Get?Id=' + id);
+    return apiClient.get('/Dish/Get?Id=' + id);
   },
   postDish(dish) {
-    return apiClient.post('/Create', dish).catch(error => {
+    return apiClient.post('/Dish/Create', dish).catch(error => {
       console.log(error.message);
     });
   }

@@ -12,15 +12,19 @@ apiClient.interceptors.response.use(response => {
   return response;
 });
 export default {
-  getFoodIngredient() {
-    return apiClient.get('/GetAll?MaxResultCount=1000');
+  getAllFoodIngredients() {
+    return apiClient.get('FoodIngredient/GetAll?MaxResultCount=1000').catch(error => {
+      console.log('There was an error:', error.message);
+    });
   },
   getFoodIngredientById(id) {
-    return apiClient.get('Get?Id=' + id);
+    return apiClient.get('FoodIngredient/Get?Id=' + id).catch(error => {
+      console.log('There was an error:', error.message);
+    });
   },
   postFoodIngredient(FoodIngredient) {
-    return apiClient.post('/Create', FoodIngredient).catch(error => {
-      console.log(error.message);
+    return apiClient.post('FoodIngredient/Create', FoodIngredient).catch(error => {
+      console.log('There was an error:', error.message);
     });
-  }
+  },
 };
