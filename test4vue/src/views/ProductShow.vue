@@ -41,6 +41,7 @@
 import ProductService from "@/services/ProductService.js";
 import UnitName from "@/components/UnitName.vue";
 import axios from "axios";
+import apiClient from "@/services/ApiClient";
 
 export default {
   props: ["id"],

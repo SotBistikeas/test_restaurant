@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using System.Net.Mail;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Abp.Configuration;
 using Abp.Extensions;
@@ -95,7 +97,7 @@ namespace FoodCost.Authorization.Accounts
                 var tenant = new Tenant
                 {
                     IsActive = true,
-                    TenancyName = input.Name,
+                    TenancyName = NormalizeTenantName(input.Name, input.Surname, input.EmailAddress),
                     Name = input.Name + " " + input.Surname,
 
                 };
@@ -126,7 +128,7 @@ namespace FoodCost.Authorization.Accounts
                     await _roleManager.GrantAllPermissionsAsync(adminRole);
 
                     // Create admin user for the tenant
-                    var adminUser = User.CreateTenantUser(tenant.Id, input.UserName, input.EmailAddress);
+                    var adminUser = User.CreateTenantUser(tenant.Id, input.UserName, input.Name, input.Surname, input.EmailAddress);
                     await _userManager.InitializeOptionsAsync(tenant.Id);
                     CheckErrors(await _userManager.CreateAsync(adminUser, input.Password));
                     await CurrentUnitOfWork.SaveChangesAsync(); // To get admin user's id
@@ -144,5 +146,43 @@ namespace FoodCost.Authorization.Accounts
                 throw;
             }
         }
+
+        private string NormalizeTenantName(string name, string surname, string email)
+        {
+            var mail = new MailAddress(email);
+            email = mail.User;
+
+            Regex rgx = new Regex("[^a-zA-Z0-9_-]");
+            name = rgx.Replace(name, "");
+            surname = rgx.Replace(surname, "");
+            email = rgx.Replace(email, "");
+
+            var tenantName = name;
+            if (tenantName.Length < 7 && surname.Length > 0)
+            {
+                tenantName += "_" + surname;
+            }
+            if (tenantName.Length < 7 && email.Length > 0)
+            {
+                tenantName += "_" + email;
+            }
+            tenantName = tenantName.TrimStart('_');
+            if (!char.IsLetter(tenantName.FirstOrDefault()))
+            {
+                tenantName = "fc" + tenantName;
+            }
+
+            var addRandom = 3;
+            if (tenantName.Length < 10)
+            {
+                addRandom += 10 - tenantName.Length;
+            }
+            tenantName += "_" + Guid.NewGuid().ToString("N").Truncate(addRandom);
+
+            return tenantName;
+        }
+
+
+
     }
 }

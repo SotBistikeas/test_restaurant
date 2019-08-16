@@ -1,38 +1,55 @@
 <template>
-  <div>
-    <h4>Register</h4>
+  <b-card title="Register" sub-title style="max-width: 20rem;">
     <form @submit.prevent="register">
-      <label for="name">Name</label>
-      <div>
-        <input id="name" type="text" v-model="name" required autofocus />
-      </div>
-      <label for="surname">Surname</label>
-      <div>
-        <input id="surname" type="text" v-model="surname" required autofocus />
-      </div>
+      <BaseInput
+        label="Name"
+        v-model="name"
+        :state="!$v.name.$error"
+        errorMessage="Name is required"
+      />
+      <BaseInput
+        label="Surname"
+        v-model="surname"
+        :state="!$v.surname.$error"
+        errorMessage="Surname is required"
+      />
 
-      <label for="email">E-Mail Address</label>
-      <div>
-        <input id="email" type="email" v-model="email" required />
-      </div>
+      <BaseInput
+        label="E-Mail"
+        v-model="email"
+        :state="!$v.email.$error"
+        errorMessage="E-Mail is required"
+      />
 
-      <label for="password">Password</label>
-      <div>
-        <input id="password" type="password" v-model="password" required />
-      </div>
+      <BaseInput
+        label="Password"
+        v-model="password"
+        type="password"
+        class="field"
+        :class="{ error: $v.password.$error }"
+        :state="!$v.password.$error"
+        errorMessage="password is required"
+      />
 
-      <label for="password-confirm">Confirm Password</label>
-      <div>
-        <input id="password-confirm" type="password" v-model="password_confirmation" required />
-      </div>
+      <BaseInput
+        label="Confirm Password"
+        v-model="password_confirmation"
+        type="password"
+        class="field"
+        :class="{ error: $v.password_confirmation.$error }"
+        :state="!$v.password_confirmation.$error"
+        errorMessage="Passwords must be the same"
+      />
 
-      <div>
-        <button type="submit">Register</button>
-      </div>
+      <BaseButton type="submit" :disabled="$v.$anyError" variant="primary">Register</BaseButton>
+
+      <p v-if="$v.$anyError">Please fill out all the fields</p>
     </form>
-  </div>
+  </b-card>
 </template>
 <script>
+import { required, sameAs, minLength, email } from "vuelidate/lib/validators";
+
 export default {
   data() {
     return {
@@ -40,24 +57,35 @@ export default {
       surname: "",
       email: "",
       password: "",
-      password_confirmation: "",
-      is_admin: null
+      password_confirmation: ""
     };
   },
+  validations: {
+    name: { required, minLength: minLength(3) },
+    surname: { required, minLength: minLength(3) },
+    email: { required, email },
+    password: { required, minLength: minLength(6) },
+    password_confirmation: {
+      sameAsPassword: sameAs("password")
+    }
+  },
+
   methods: {
     register: function() {
-      let data = {
-        name: this.name,
-        surname: this.surname,
-        userName: this.email,
-        emailAddress: this.email,
-        password: this.password,
-        is_admin: this.is_admin
-      };
-      this.$store
-        .dispatch("register", data)
-        .then(() => this.$router.push("/login"))
-        .catch(err => console.log(err));
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
+        let data = {
+          name: this.name,
+          surname: this.surname,
+          userName: this.email,
+          emailAddress: this.email,
+          password: this.password
+        };
+        this.$store
+          .dispatch("register", data)
+          .then(() => this.$router.push("/login"))
+          .catch(err => console.log(err));
+      }
     }
   }
 };
