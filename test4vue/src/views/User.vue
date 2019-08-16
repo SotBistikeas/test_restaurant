@@ -10,27 +10,23 @@
       body-bg-variant="info"
       footer-bg-variant="danger"
     >
-      <span slot="header" class="mb-0" v-if="user.user.isActive = true">Active</span>
-
       <p>name: {{ user.user.name }}</p>
-      <p>userName: {{ user.user.userName }}</p>
       <p>surname: {{ user.user.surname }}</p>
+      <p>userName: {{ user.user.userName }}</p>
       <p>emailAddress: {{ user.user.emailAddress }}</p>
-      <p>roleNames: {{ user.user.roleNames }}</p>
-      
-      <span slot="footer" class="mb-0">
-        <p>password: {{ user.user.password }}</p>
-      </span>
     </b-card>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from "vuex";
 
 export default {
   computed: {
-    ...mapState(['user'])
+    ...mapState(["user"])
+  },
+  beforeMount() {
+    this.$store.dispatch("user/updateCurrentUser");
   }
 };
 </script>

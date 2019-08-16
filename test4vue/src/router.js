@@ -30,7 +30,8 @@ const router = new Router({
     {
       path: '/',
       name: 'Home',
-      component: User
+      component: User,
+      meta: { requiresAuth: true }
     },
     {
       path: '/login',
@@ -43,62 +44,75 @@ const router = new Router({
       component: Register
     },
     {
+      path: '/profile',
+      name: 'profile',
+      component: User,
+      meta: { requiresAuth: true }
+    },
+    {
       path: '/plist',
       name: 'ProductList',
       component: ProductList,
-      props: true
+      props: true,
+      meta: { requiresAuth: true }
       // alias:"/faeskata"
     },
     {
       path: '/create',
       name: 'ProductCreate',
-      component: ProductCreate
+      component: ProductCreate,
+      meta: { requiresAuth: true }
     },
     {
       path: '/foodingredient',
       name: 'FoodIngredient',
-      component: FoodIngredient
+      component: FoodIngredient,
+      meta: { requiresAuth: true }
     },
     {
       path: '/foodlist',
       name: 'FoodIngredientList',
-      component: FoodIngredientList
+      component: FoodIngredientList,
+      meta: { requiresAuth: true }
     },
     {
       path: '/FoodIngredient/:id',
       name: 'FoodIngredientShow',
       component: FoodIngredientShow,
-      props: true
+      props: true,
+      meta: { requiresAuth: true }
     },
     {
       path: '/createDish',
       name: 'DishCreate',
-      component: DishCreate
+      component: DishCreate,
+      meta: { requiresAuth: true }
     },
     {
       path: '/DishShow/:id',
       name: 'DishShow',
       component: DishShow,
-      props: true
+      props: true,
+      meta: { requiresAuth: true }
     },
     {
       path: '/baharika',
       name: 'baharika',
-      component: baharika
+      component: baharika,
+      meta: { requiresAuth: true }
     },
     {
       path: '/dishlist',
       name: 'DishList',
       component: DishList,
-      meta: {
-        requiresAuth: true
-      }
+      meta: { requiresAuth: true }
     },
     {
       path: '/user/:username',
       name: 'user',
       component: User,
-      props: true
+      props: true,
+      meta: { requiresAuth: true }
     },
     {
       path: '/show/:id',

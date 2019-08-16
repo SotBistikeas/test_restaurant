@@ -29,12 +29,12 @@ namespace FoodCost.Models.Dishes
         public decimal FinalSalePriceInclTax { get { return UserSalePriceInclTax ?? SalePriceInclTax; } }
 
         public decimal BaseProfit { get { return FinalSalePriceExclTax - BaseCost; } }
-        public decimal BaseProfitPerc { get { return BaseCost / BaseCost; } }
+        public decimal BaseProfitPerc { get { return BaseCost > 0 ? BaseProfit / BaseCost : 0; } }
 
         public decimal RealProfit { get { return FinalSalePriceExclTax - RealCost; } }
-        public decimal RealProfitPerc { get { return RealCost / RealCost; } }
+        public decimal RealProfitPerc { get { return RealCost > 0 ? RealProfit / RealCost : 0; } }
 
-        public decimal FoodCostPerc { get { return BaseCost / FinalSalePriceExclTax; } }
+        public decimal FoodCostPerc { get { return FinalSalePriceExclTax > 0 ? BaseCost / FinalSalePriceExclTax : 0; } }
 
 
         public ICollection<Dish_FoodIngredient> Dish_FoodIngredient_Mapping { get; set; }

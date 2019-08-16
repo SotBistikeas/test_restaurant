@@ -118,6 +118,9 @@ namespace FoodCost.Authorization.Accounts
                 // We are working entities of new tenant, so changing tenant filter
                 using (CurrentUnitOfWork.SetTenantId(tenant.Id))
                 {
+                    //Init tenant data
+                    _tenantManager.InitializeTenantData();
+
                     // Create static roles for new tenant
                     CheckErrors(await _roleManager.CreateStaticRoles(tenant.Id));
 

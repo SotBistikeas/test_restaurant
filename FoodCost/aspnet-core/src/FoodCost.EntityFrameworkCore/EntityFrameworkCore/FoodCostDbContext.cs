@@ -5,6 +5,7 @@ using FoodCost.Authorization.Users;
 using FoodCost.Models.Dishes;
 using FoodCost.Models.FoodIngredients;
 using FoodCost.Models.Products;
+using FoodCost.Models.RestaurantSettings;
 using FoodCost.Models.UnitOfMeasures;
 using FoodCost.Models.VatCategories;
 using FoodCost.MultiTenancy;
@@ -25,6 +26,7 @@ namespace FoodCost.EntityFrameworkCore
         public DbSet<Dish> Dishes { get; set; }
         public DbSet<Dish_FoodIngredient> Dish_FoodIngredient_Mapping { get; set; }
         public DbSet<PersistedGrantEntity> PersistedGrants { get; set; }
+        public DbSet<RestaurantSetting> RestaurantSettings { get; set; }
 
         public FoodCostDbContext(DbContextOptions<FoodCostDbContext> options)
             : base(options)

@@ -20,16 +20,16 @@ namespace FoodCost.Dishes.Dto
         public decimal? UserSalePriceExclTax { get; set; }
         public decimal? UserSalePriceInclTax { get; set; }
 
-        public decimal FinalSalePriceExclTax { get { return UserSalePriceExclTax ?? SalePriceExclTax; } }
-        public decimal FinalSalePriceInclTax { get { return UserSalePriceInclTax ?? SalePriceInclTax; } }
+        public decimal FinalSalePriceExclTax { get; set; }
+        public decimal FinalSalePriceInclTax { get; set; }
 
-        public decimal BaseProfit { get { return FinalSalePriceExclTax - BaseCost; } }
-        public decimal BaseProfitPerc { get { return BaseCost / BaseCost; } }
+        public decimal BaseProfit { get; set; }
+        public decimal BaseProfitPerc { get; set; }
 
-        public decimal RealProfit { get { return FinalSalePriceExclTax - RealCost; } }
-        public decimal RealProfitPerc { get { return RealCost / RealCost; } }
+        public decimal RealProfit { get; set; }
+        public decimal RealProfitPerc { get; set; }
 
-        public decimal FoodCostPerc { get { return BaseCost / FinalSalePriceExclTax; } }
+        public decimal FoodCostPerc { get; set; }
 
 
         public IList<Dish_FoodIngredientDto> FoodIngredients { get; set; }

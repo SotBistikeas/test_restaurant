@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import * as user from '@/store/modules/user.js';
+import user from '@/store/modules/user.js';
 import * as baharika from '@/store/modules/baharika.js';
 import * as product from '@/store/modules/product.js';
 import * as dish from '@/store/modules/dish.js';
@@ -114,7 +114,7 @@ export default new Vuex.Store({
         commit('SET_FOODINGREDIENTS', responce.data.result.items);
       });
     },
-    login({ commit }, user) {
+    login({ commit, dispatch }, user) {
       return new Promise((resolve, reject) => {
         commit('auth_request')
         AuthService.login(user.name, user.password)
@@ -125,6 +125,7 @@ export default new Vuex.Store({
             localStorage.setItem('token', token);
             api.defaults.headers.common['Authorization'] = "Bearer " + token
             commit('auth_success', { token, userId, userFullName })
+            dispatch('user/updateCurrentUser');
             resolve(resp)
           })
           .catch(err => {
