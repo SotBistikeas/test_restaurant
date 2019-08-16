@@ -5,7 +5,7 @@
 </template>
 <script>
 import FoodIngredientCard from '@/components/FoodIngredientCard.vue';
-import ApiServices from '@/services/ApiService.js';
+import FoodIngredientServices from '@/services/FoodIngredientService.js';
 export default {
   data(){
     return {
@@ -16,7 +16,7 @@ export default {
     FoodIngredientCard
   },
   beforeCreate() {
-    ApiServices.getAllFoodIngredients().then(Response =>{
+    FoodIngredientServices.getAllFoodIngredients().then(Response =>{
       this.FoodIngredients = Response.data.result.items
     })
   },

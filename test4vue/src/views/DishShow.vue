@@ -164,7 +164,8 @@
   </div>
 </template>
 <script>
-import ApiService from "@/services/ApiService";
+import DishService from "@/services/DishService.js";
+import ProductService from "@/services/ProductService.js";
 import { faSort } from "@fortawesome/free-solid-svg-icons/faSort";
 import axios from "axios";
 import UnitName from "@/components/UnitName.vue";
@@ -226,10 +227,10 @@ export default {
   },
 
   beforeCreate() {
-    ApiService.getAllProducts().then(response => {
+    ProductService.getAllProducts().then(response => {
       this.ProductOptions = response.data.result.items;
     });
-    ApiService.getAllFoodIngredients().then(response => {
+    FoodIngredientService.getAllFoodIngredients().then(response => {
       this.FoodIngredientOptions = response.data.result.items;
     });
     this.$store.dispatch("fetchUnits");
@@ -242,16 +243,16 @@ export default {
   },
   methods: {
     getIt() {
-      ApiService.getDishById(this.id)
+      DishService.getDishById(this.id)
         .then(response => {
           this.dish = response.data.result;
         })
         .catch(error => {
-          console.log(error.response);
+          console.log(error.message);
         });
     },
     deleteIt() {
-      ApiService.deleteDishById(this.id)
+      DishService.deleteDishById(this.id)
         .then(() => {
           this.$router.push({
             name: "DishList"
@@ -262,7 +263,7 @@ export default {
         });
     },
     updateIt() {
-      ApiService.editDish({
+      DishService.editDish({
         name: this.editedname,
         id: this.id
       })
@@ -278,7 +279,7 @@ export default {
         });
     },
     addFoodToList() {
-      ApiService.postFoodInDish(this.id, {
+      DishService.postFoodInDish(this.id, {
         foodIngredientId: this.FoodIngredient.id,
         quantity: this.amount,
         unitOfMeasureId: this.FoodIngredient.unitOfMeasureId,
@@ -313,12 +314,10 @@ export default {
       //   });
     },
     deleteThis(id, data) {
-      console.log(id);
-      console.log(data);
-      ApiService.deleteFoodFromDish(id, data).then(console.log("yoyoyo"));
+      DishService.deleteFoodFromDish(id, data).then(console.log("yoyoyo"));
     },
     loadFoodIngredient() {
-      ApiService.getAllFoodIngredients()
+      FoodIngredientService.getAllFoodIngredients()
         .then(response => {
           this.FoodIngredientOptions = response.data.result.items;
         })
@@ -327,12 +326,12 @@ export default {
         });
     },
     loadProducts() {
-      ApiService.getAllProducts().then(response => {
+      ProductService.getAllProducts().then(response => {
         this.products = response.data.result;
       });
     },
     loadFoodIngredients() {
-      ApiService.getFoodIngredientsByDish(this.id)
+      DishService.getFoodIngredientsByDish(this.id)
         .then(response => {
           this.ingredients = response.data.result;
           this.foodIngredients = response.data.result;

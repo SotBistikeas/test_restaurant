@@ -5,7 +5,7 @@
 </template>
 <script>
 import DishCard from '@/components/DishCard.vue';
-import ApiService from '@/services/ApiService.js';
+import DishService from '@/services/DishService.js';
 
 export default {
   data() {
@@ -18,7 +18,7 @@ export default {
     DishCard
   },
   beforeCreate() {
-    ApiService.getDish().then(response => {
+    DishService.getDish().then(response => {
       this.dishes = response.data.result.items;
     });
   }

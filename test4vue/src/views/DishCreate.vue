@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import ApiService from '@/services/ApiService.js';
+import DishService from '@/services/DishService.js';
 
 export default {
   data() {
@@ -21,7 +21,7 @@ export default {
 
   methods: {
     createDish() {
-      ApiService.postDish(this.dish)
+      DishService.postDish(this.dish)
         .then(response => {
           this.$router.push({
             name: 'DishShow',
