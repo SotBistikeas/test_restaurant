@@ -27,6 +27,7 @@ namespace FoodCost.EntityFrameworkCore
         public DbSet<Dish_FoodIngredient> Dish_FoodIngredient_Mapping { get; set; }
         public DbSet<PersistedGrantEntity> PersistedGrants { get; set; }
         public DbSet<RestaurantSetting> RestaurantSettings { get; set; }
+        public DbSet<RestaurantExpence> RestaurantExpence { get; set; }
 
         public FoodCostDbContext(DbContextOptions<FoodCostDbContext> options)
             : base(options)

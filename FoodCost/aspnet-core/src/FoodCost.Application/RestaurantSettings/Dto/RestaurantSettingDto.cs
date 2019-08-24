@@ -12,6 +12,19 @@ namespace FoodCost.RestaurantSettings.Dto
     {
         public decimal BaseFactor { get; set; }
 
+        public ICollection<RestaurantExpenceDto> RestaurantExpences { get; set; }
+
         public decimal ExtraCostPerServing { get; set; }
+        public decimal ServingsPerMonth { get; set; }
     }
+
+    [AutoMap(typeof(RestaurantExpence))]
+    public class RestaurantExpenceDto : EntityDto
+    {
+        public string Reason { get; set; }
+        public decimal MonthlyExpence { get; set; }
+
+    }
+
+
 }

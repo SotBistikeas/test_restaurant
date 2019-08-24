@@ -36,7 +36,7 @@
             </tr>
             <tr>
               <td>BaseProfit</td>
-              <td>{{dish.BaseProfit}}</td>
+              <td>{{dish.baseProfit}}</td>
             </tr>
             <tr>
               <td>BaseProfitPerc</td>

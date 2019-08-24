@@ -4,9 +4,11 @@ using Abp.Authorization;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
 using Abp.ObjectMapping;
+using Abp.Runtime.Session;
 using FoodCost.Dishes.Dto;
 using FoodCost.Models.Dishes;
 using FoodCost.Models.FoodIngredients;
+using FoodCost.Models.RestaurantSettings;
 using FoodCost.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -23,23 +25,30 @@ namespace FoodCost.Dishes
         private readonly DishService _dishService;
         private readonly IRepository<Dish_FoodIngredient> _dish_FoodIngredientRepository;
         private readonly IObjectMapper _objectMapper;
+        private readonly IRepository<RestaurantSetting> _restaurantSettingsRepository;
+
         public DishAppService(IRepository<Dish, int> repository,
             DishService dishService,
             IRepository<Dish_FoodIngredient> dish_FoodIngredientRepository,
-            IObjectMapper objectMapper) : base(repository)
+            IObjectMapper objectMapper,
+            IRepository<RestaurantSetting> restaurantSettingsRepository) : base(repository)
         {
             _dishService = dishService;
             _dish_FoodIngredientRepository = dish_FoodIngredientRepository;
             _objectMapper = objectMapper;
+            _restaurantSettingsRepository = restaurantSettingsRepository;
         }
 
         public async Task<DishFullDto> GetFull(EntityDto<int> input)
         {
-            decimal fixedCost = 3.00m;
-            decimal saleFactor = 4.00m;
-            decimal vat = 0.24m;
+
 
             var dish = await Repository.GetAsync(input.Id);
+
+            var setting = await _restaurantSettingsRepository.FirstOrDefaultAsync(o => o.TenantId == AbpSession.TenantId);
+            decimal fixedCost = setting.ExtraCostPerServing;
+            decimal saleFactor = setting.BaseFactor;
+            decimal vat = 0.24m;
 
 
             var dishFull = _objectMapper.Map<DishFullDto>(dish);
