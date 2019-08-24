@@ -57,15 +57,7 @@
           </tbody>
         </table>
       </div>
-      <div v-for="ingredient in ingredients" :key="ingredient.id">
-        Id: {{ ingredient.id }}
-        <br />
-        Food-Id: {{ ingredient.foodIngredientId }}
-        <br />
-        Quantity: {{ ingredient.quantity }}
-        <br />
-        Unit-Id: {{ ingredient.unitOfMeasureId }}
-      </div>
+
       <br />
       <h5 slot="footer" class="mb-0" v-if="edit == true">
         <BaseInput v-model="editedname" label="Enter a new name" />
@@ -104,7 +96,15 @@
             v-bind:key="option.id"
           >{{ option.name }}</option>
         </b-form-select>
-        <baseInput label="Amount" v-model="amount" class="field" />
+        <BaseInput
+          label="Amount"
+          v-model="amount"
+          class="field"
+          type="number"
+          step="0.01"
+          min="0.00"
+          max="10000.00"
+        />
         <span v-if="amount != null">Cost per dish: {{ amount * FoodIngredient.cost }}</span>
       </b-form-group>
       <form v-on:submit.prevent="addFoodToList()">
@@ -180,9 +180,7 @@ export default {
   },
   data() {
     return {
-      dish: {
-        result: {}
-      },
+      dish: {},
       ProductOptions: [],
       FoodIngredientOptions: [],
       FoodIngredient: {},
@@ -287,7 +285,7 @@ export default {
       })
         .then(() => {
           this.getIt();
-          this.loadFoodIngredient();
+          this.loadFoodIngredients();
           this.amount = "";
           this.add = false;
         })
@@ -297,24 +295,11 @@ export default {
     },
     addProdToList() {
       alert("No Back End Yet!!!!");
-      // ApiService.postFoodInDish(this.id, {
-      //   foodIngredientId: this.FoodIngredient.id,
-      //      quantity: this.amount,
-      //      unitOfMeasureId: this.FoodIngredient.unitOfMeasureId,
-      //      id: 0
-      // })
-      //   .then(() => {
-      //     this.getIt();
-      //     this.loadFoodIngredient();
-      //     this.amount = '';
-      //     this.add = false;
-      //   })
-      //   .catch(error => {
-      //     console.log(error.response);
-      //   });
     },
     deleteThis(id, data) {
-      DishService.deleteFoodFromDish(id, data).then(console.log("yoyoyo"));
+      DishService.deleteFoodFromDish(id, data).then(() =>
+        this.loadFoodIngredients()
+      );
     },
     loadFoodIngredient() {
       FoodIngredientService.getAllFoodIngredients()

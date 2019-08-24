@@ -84,16 +84,6 @@
           price per foodIngredient:
           <Currency :value="product.price * quantity" />
         </h6>
-        <!-- <b-form-group label="Unit">
-          <b-form-select v-model="unitOfMeasureId">
-            <option disabled hidden :value="null">Please select one</option>
-            <option
-              v-for="option in unitOfMeasureOptions"
-              v-bind:value="option.id"
-              v-bind:key="option.id"
-            >{{ option.name }}</option>
-          </b-form-select>
-        </b-form-group>-->
         <BaseButton type="submit" variant="success">Add to list</BaseButton>
       </b-form>
     </b-card>
@@ -133,7 +123,6 @@ export default {
       edit: false,
       selected: [],
       ProductOptions: [],
-      //unitOfMeasureOptions: [],
       foodIngredient: {},
       product: {
         productId: "",
@@ -205,13 +194,7 @@ export default {
     });
 
     this.$store.dispatch("fetchUnits");
-    ApiService.getUnit()
-      .then(responce => {
-        this.unitOfMeasureOptions = responce.data.result.items;
-      })
-      .catch(error => {
-        console.log("There war an error " + error.responce);
-      });
+   
   },
 
   created() {
@@ -319,7 +302,7 @@ export default {
       else return null;
     },
     getUnitName(unitOfMeasureId) {
-      var x = this.unitOfMeasureOptions.find(o => o.id == unitOfMeasureId);
+      var x = this.unitOfMeasures.find(o => o.id == unitOfMeasureId);
       if (x != null) return x.name;
       else return null;
     }

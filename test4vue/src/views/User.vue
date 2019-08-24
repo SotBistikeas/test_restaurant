@@ -9,6 +9,7 @@
       header-bg-variant="success"
       body-bg-variant="info"
       footer-bg-variant="danger"
+      v-if="user.user"
     >
       <p>name: {{ user.user.name }}</p>
       <p>surname: {{ user.user.surname }}</p>

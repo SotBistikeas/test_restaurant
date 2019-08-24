@@ -3,6 +3,7 @@ using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
+using Abp.ObjectMapping;
 using FoodCost.Dishes.Dto;
 using FoodCost.Models.Dishes;
 using FoodCost.Models.FoodIngredients;
@@ -19,14 +20,17 @@ namespace FoodCost.Dishes
     [AbpAuthorize]
     public class DishAppService : AsyncCrudAppService<Dish, DishDto>
     {
-        private DishService _dishService;
-        private IRepository<Dish_FoodIngredient> _dish_FoodIngredientRepository;
+        private readonly DishService _dishService;
+        private readonly IRepository<Dish_FoodIngredient> _dish_FoodIngredientRepository;
+        private readonly IObjectMapper _objectMapper;
         public DishAppService(IRepository<Dish, int> repository,
             DishService dishService,
-            IRepository<Dish_FoodIngredient> dish_FoodIngredientRepository) : base(repository)
+            IRepository<Dish_FoodIngredient> dish_FoodIngredientRepository,
+            IObjectMapper objectMapper) : base(repository)
         {
             _dishService = dishService;
             _dish_FoodIngredientRepository = dish_FoodIngredientRepository;
+            _objectMapper = objectMapper;
         }
 
         public async Task<DishFullDto> GetFull(EntityDto<int> input)
@@ -38,7 +42,7 @@ namespace FoodCost.Dishes
             var dish = await Repository.GetAsync(input.Id);
 
 
-            var dishFull = dish.MapTo<DishFullDto>();
+            var dishFull = _objectMapper.Map<DishFullDto>(dish);
 
             dishFull.FoodIngredients = GetFoodIngredients(input.Id);
 
@@ -68,8 +72,8 @@ namespace FoodCost.Dishes
 
             var result = dishFoodIngredients.Select(o =>
             {
-                var dfi = o.MapTo<Dish_FoodIngredientDto>();
-                dfi.Cost = o.FoodIngredient.FoodIngredient_Product_Mapping.Sum(x => CalculateCost(x));
+                var dfi = _objectMapper.Map<Dish_FoodIngredientDto>(o);
+                dfi.Cost = o.Quantity * o.FoodIngredient.FoodIngredient_Product_Mapping.Sum(x => CalculateCost(x));
                 return dfi;
             })
             .ToList();
@@ -109,7 +113,7 @@ namespace FoodCost.Dishes
                 o => o.Dish_FoodIngredient_Mapping).FirstOrDefault(o => o.Id == dishId);
             foreach (var fipm in fi.Dish_FoodIngredient_Mapping.Where(o => o.Id == foodIngredientId).ToList())
                 fi.Dish_FoodIngredient_Mapping.Remove(fipm);
-            
+
             _dishService.CalculateDish(fi.Id);
             Repository.Update(fi);
         }
