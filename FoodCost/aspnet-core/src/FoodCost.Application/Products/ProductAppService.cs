@@ -3,6 +3,7 @@ using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
+using Abp.ObjectMapping;
 using FoodCost.Models.FoodIngredients;
 using FoodCost.Models.Products;
 using FoodCost.Products.Dto;
@@ -16,12 +17,15 @@ namespace FoodCost.Products
     {
         private readonly IRepository<Product, int> _productRepository;
         private readonly IRepository<FoodIngredient> _foodIngredientRepository;
+        private readonly IObjectMapper _objectMapper;
 
         public ProductAppService(IRepository<Product, int> repository,
-            IRepository<FoodIngredient> foodIngredientRepository) : base(repository)
+            IRepository<FoodIngredient> foodIngredientRepository,
+            IObjectMapper objectMapper) : base(repository)
         {
             _productRepository = repository;
             _foodIngredientRepository = foodIngredientRepository;
+            _objectMapper = objectMapper;
         }
 
         public override async Task<ProductDto> Create(ProductDto input)
@@ -51,7 +55,8 @@ namespace FoodCost.Products
 
         public override async Task<ProductDto> Update(ProductDto input)
         {
-            var product = input.MapTo<Product>();
+            var product = _productRepository.Get(input.Id);
+            _objectMapper.Map(input, product);
             await _productRepository.UpdateAsync(product);
 
             //find corresponding food ingredient

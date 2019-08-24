@@ -9,7 +9,6 @@ import * as dish from '@/store/modules/dish.js';
 import * as notification from '@/store/modules/notification.js';
 import * as unit from '@/store/modules/unit.js';
 import * as FoodIngredient from '@/store/modules/FoodIngredient.js';
-import ProductService from '@/services/ProductService.js';
 import FoodIngredientService from '@/services/FoodIngredientService.js';
 import ApiService from '@/services/ApiService.js';
 import AuthService from "@/services/AuthService";
@@ -34,7 +33,6 @@ export default new Vuex.Store({
     userFullName: null,
 
     //other
-    products: [],
     vats: [],
 
     units: [],
@@ -47,12 +45,6 @@ export default new Vuex.Store({
     pds: []
   },
   mutations: {
-    ADD_PRODUCT(state, product) {
-      state.products.push(product);
-    },
-    SET_PRODUCTS(state, products) {
-      state.products = products;
-    },
     SET_VATS(state, vats) {
       state.vats = vats;
     },
@@ -83,18 +75,6 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    createProduct({ commit }, product) {
-      // kanei post sto db
-      ProductService.postProduct(product);
-      // kanei update to state
-      commit('ADD_PRODUCT', product);
-    },
-    fetchProducts({ commit }) {
-      ProductService.getAllProducts().then(response => {
-        commit('SET_PRODUCTS', response.data.result.items);
-        // this.totalCount = response.data.result.totalCount;
-      });
-    },
     createFoodIngredient({ commit }, FoodIngredient) {
       FoodIngredientService.postFoodIngredient(FoodIngredient);
       commit('ADD_FOODINGREDIENT', FoodIngredient);

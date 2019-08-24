@@ -182,6 +182,7 @@ router.beforeEach((_routeTo, _routeFrom, next) => {
       return
     }
     next('/login')
+    NProgress.done();
   } else {
     next()
   }

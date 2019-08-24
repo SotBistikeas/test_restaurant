@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-table :items="products" :fields="productFields" striped responsive small>
+    <b-table :items="product.products" :fields="productFields" striped responsive small>
       <template slot="actions" slot-scope="row">
         <b-button
           :to="{ name: 'ProductShow', params: { id: row.item.id } }"
@@ -12,9 +12,10 @@
         <UnitName :unitId="data.value" />
       </template>
     </b-table>
-    <b-list-group>
+    <ProductCreate />
+    <!-- <b-list-group>
       <b-list-group-item
-        v-for="product in products"
+        v-for="product in product.products"
         :key="product.id"
         :to="{ name: 'ProductShow', params: { id: product.id } }"
       >
@@ -24,17 +25,20 @@
         </span>
       </b-list-group-item>
     </b-list-group>
+   -->
   </div>
 </template>
 <script>
 import { mapState } from "vuex";
 import UnitName from "@/components/UnitName.vue";
+import ProductCreate from "@/views/ProductCreate.vue"
 export default {
   components: {
-    UnitName
+    UnitName,
+    ProductCreate
   },
   beforeCreate() {
-    this.$store.dispatch("fetchProducts");
+    this.$store.dispatch("product/fetchProducts");
     this.$store.dispatch("fetchUnits");
   },
   data() {
@@ -48,6 +52,6 @@ export default {
       }
     };
   },
-  computed: mapState(["products"])
+  computed: mapState(["product"])
 };
 </script>

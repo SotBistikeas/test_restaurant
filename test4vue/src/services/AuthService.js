@@ -18,7 +18,7 @@ class AuthService {
         this.setTokens = this.setTokens.bind(this);
         AxiosInterceptor.refreshTokenInterceptor(this.domain, this.getRefreshToken, this.setTokens);
         AxiosInterceptor.addStoreIdsInterceptor(this.getStoreIdsString);
-        api.defaults.headers.common["Authorization"] = this.getAuthorizationHeader();
+        //api.defaults.headers.common["Authorization"] = this.getAuthorizationHeader();
     }
 
     login(username, password) {
@@ -192,7 +192,7 @@ class AuthService {
         localStorage.setItem("expireInSeconds", responseToken.expireInSeconds);
         localStorage.setItem("userId", responseToken.userId);
 
-        api.defaults.headers.common["Authorization"] = this.getAuthorizationHeader();
+        //api.defaults.headers.common["Authorization"] = this.getAuthorizationHeader();
 
         // //call ajax to fetch applicant prefs
         // return api.get("services/app/Account/GetUserProperties").then(prefs => {
@@ -256,7 +256,7 @@ class AuthService {
         if (this.loggedIn()) {
             let token = this.getAuthorizationHeader();
             if (token && token.length > 0) {
-                headers["Authorization"] = "Bearer " + token;
+                //headers["Authorization"] = "Bearer " + token;
             }
         }
 
