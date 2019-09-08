@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import Welcome from './views/Welcome.vue';
 import ProductList from './views/ProductList.vue';
 import DishList from './views/DishList.vue';
 import ProductCreate from './views/ProductCreate.vue';
@@ -21,6 +22,7 @@ import FoodIngredient from './views/FoodIngredient.vue';
 import FoodIngredientShow from './views/FoodIngredientShow.vue';
 import FoodIngredientList from './views/FoodIngredientList.vue';
 import baharika from './views/baharika.vue';
+import MonthlyExp from './views/MonthlyExp.vue';
 Vue.use(Router);
 
 const router = new Router({
@@ -30,8 +32,14 @@ const router = new Router({
     {
       path: '/',
       name: 'Home',
-      component: User,
-      meta: { requiresAuth: true }
+      component: Welcome
+      //meta: { requiresAuth: true }
+    },
+    {
+      path: '/expenses',
+      name: 'MonthlyExp',
+      component: MonthlyExp,
+      //meta: { requiresAuth: true }
     },
     {
       path: '/login',
