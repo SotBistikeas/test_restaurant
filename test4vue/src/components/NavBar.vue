@@ -17,6 +17,7 @@
 
         <b-nav-item :to="{ name: 'UnitList' }">Units List</b-nav-item>
         <b-nav-item :to="{ name: 'VatList' }">Vat List</b-nav-item>
+        <b-nav-item :to="{ name: 'MonthlyExp' }">Monthly expenses</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav class="ml-auto" v-if="isLoggedIn">
         <b-nav-item-dropdown right>
