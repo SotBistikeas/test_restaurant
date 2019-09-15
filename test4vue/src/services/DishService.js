@@ -1,6 +1,6 @@
 import axios from 'axios';
 import NProgress from 'nprogress';
-import apiClient from "@/services/ApiClient"
+import apiClient from '@/services/ApiClient';
 
 apiClient.interceptors.request.use(config => {
   NProgress.start();
@@ -28,7 +28,7 @@ export default {
   },
   postFoodInDish(dishId, foodIngredientId, quantity, unitOfMeasureId) {
     return apiClient.post('Dish/AddFoodIngredient?dishId=' + dishId, foodIngredientId, quantity, unitOfMeasureId);
-  },  
+  },
   deleteDishById(id) {
     return apiClient.delete('Dish/Delete?Id=' + id).catch(error => {
       console.log('There was an error:', error.message);
@@ -38,6 +38,6 @@ export default {
     return apiClient.put('Dish/Update', name, id);
   },
   deleteFoodFromDish(dishId, foodId) {
-    return apiClient.delete('Dish/RemoveFoodIngredient?dishId=' + dishId + '&foodIngredientId=' + foodId)
-  },
+    return apiClient.delete('Dish/RemoveFoodIngredient?dishId=' + dishId + '&foodIngredientId=' + foodId);
+  }
 };

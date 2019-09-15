@@ -20,14 +20,14 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions } from 'vuex';
 
 export default {
   computed: {
-    ...mapState(["user"])
+    ...mapState(['user'])
   },
   beforeMount() {
-    this.$store.dispatch("user/updateCurrentUser");
+    this.$store.dispatch('user/updateCurrentUser');
   }
 };
 </script>

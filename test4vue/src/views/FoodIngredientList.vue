@@ -7,20 +7,19 @@
 import FoodIngredientCard from '@/components/FoodIngredientCard.vue';
 import FoodIngredientServices from '@/services/FoodIngredientService.js';
 export default {
-  data(){
+  data() {
     return {
       FoodIngredients: []
-    }
+    };
   },
   components: {
     FoodIngredientCard
   },
   beforeCreate() {
-    FoodIngredientServices.getAllFoodIngredients().then(Response =>{
-      this.FoodIngredients = Response.data.result.items
-    })
-  },
-  
+    FoodIngredientServices.getAllFoodIngredients().then(Response => {
+      this.FoodIngredients = Response.data.result.items;
+    });
+  }
 };
 </script>
 

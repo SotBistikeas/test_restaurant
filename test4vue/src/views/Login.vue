@@ -1,12 +1,7 @@
 <template>
   <b-card title="Login" sub-title style="max-width: 20rem;">
     <form @submit.prevent="loginUser">
-      <BaseInput
-        label="Name"
-        v-model="name"
-        :state="!$v.name.$error"
-        errorMessage="Name is required"
-      />
+      <BaseInput label="Name" v-model="name" :state="!$v.name.$error" errorMessage="Name is required" />
 
       <BaseInput
         label="Password"
@@ -26,16 +21,16 @@
 </template>
 
 <script>
-import NProgress from "nprogress";
-import { required } from "vuelidate/lib/validators";
-import AuthService from "@/services/AuthService";
+import NProgress from 'nprogress';
+import { required } from 'vuelidate/lib/validators';
+import AuthService from '@/services/AuthService';
 
 export default {
   beforeCreate: function() {},
   data() {
     return {
-      name: "",
-      password: ""
+      name: '',
+      password: ''
     };
   },
 
@@ -50,11 +45,11 @@ export default {
       if (!this.$v.$invalid) {
         NProgress.start();
         this.$store
-          .dispatch("login", {
+          .dispatch('login', {
             name: this.name,
             password: this.password
           })
-          .then(() => this.$router.push("/"))
+          .then(() => this.$router.push('/'))
           .catch(err => console.log(err))
           .finally(() => NProgress.done());
         //AuthService.login(this.name, this.password);

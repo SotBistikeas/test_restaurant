@@ -23,7 +23,7 @@
         <b-nav-item-dropdown right>
           <!-- Using 'button-content' slot -->
           <template slot="button-content">
-            <em>{{getFullName}}</em>
+            <em>{{ getFullName }}</em>
           </template>
           <b-dropdown-item :to="{ name: 'Home' }">Profile</b-dropdown-item>
           <b-dropdown-item @click="logout">Sign Out</b-dropdown-item>
@@ -49,8 +49,8 @@ export default {
   },
   methods: {
     logout: function() {
-      this.$store.dispatch("logout").then(() => {
-        this.$router.push("/login");
+      this.$store.dispatch('logout').then(() => {
+        this.$router.push('/login');
       });
     }
   }

@@ -2,11 +2,7 @@
   <div>
     <b-table :items="product.products" :fields="productFields" striped responsive small>
       <template slot="actions" slot-scope="row">
-        <b-button
-          :to="{ name: 'ProductShow', params: { id: row.item.id } }"
-          variant="outline-primary"
-          size="sm"
-        >Edit</b-button>
+        <b-button :to="{ name: 'ProductShow', params: { id: row.item.id } }" variant="outline-primary" size="sm">Edit</b-button>
       </template>
       <template slot="unitOfMeasureId" slot-scope="data">
         <UnitName :unitId="data.value" />
@@ -29,17 +25,17 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
-import UnitName from "@/components/UnitName.vue";
-import ProductCreate from "@/views/ProductCreate.vue"
+import { mapState } from 'vuex';
+import UnitName from '@/components/UnitName.vue';
+import ProductCreate from '@/views/ProductCreate.vue';
 export default {
   components: {
     UnitName,
     ProductCreate
   },
   beforeCreate() {
-    this.$store.dispatch("product/fetchProducts");
-    this.$store.dispatch("fetchUnits");
+    this.$store.dispatch('product/fetchProducts');
+    this.$store.dispatch('fetchUnits');
   },
   data() {
     return {
@@ -52,6 +48,6 @@ export default {
       }
     };
   },
-  computed: mapState(["product"])
+  computed: mapState(['product'])
 };
 </script>

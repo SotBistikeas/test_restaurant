@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import createPersistedState from 'vuex-persistedstate'
+import createPersistedState from 'vuex-persistedstate';
 
 import user from '@/store/modules/user.js';
 import * as baharika from '@/store/modules/baharika.js';
@@ -11,8 +11,8 @@ import * as unit from '@/store/modules/unit.js';
 import * as FoodIngredient from '@/store/modules/FoodIngredient.js';
 import FoodIngredientService from '@/services/FoodIngredientService.js';
 import ApiService from '@/services/ApiService.js';
-import AuthService from "@/services/AuthService";
-import api from "@/services/ApiClient"
+import AuthService from '@/services/AuthService';
+import api from '@/services/ApiClient';
 
 Vue.use(Vuex);
 export default new Vuex.Store({
@@ -58,7 +58,7 @@ export default new Vuex.Store({
       state.FoodIngredients = FoodIngredients;
     },
     auth_request(state) {
-      state.status = 'loading'
+      state.status = 'loading';
     },
     auth_success(state, payload) {
       state.status = 'success';
@@ -67,12 +67,12 @@ export default new Vuex.Store({
       state.userFullName = payload.userFullName;
     },
     auth_error(state) {
-      state.status = 'error'
+      state.status = 'error';
     },
     logout(state) {
-      state.status = ''
-      state.token = ''
-    },
+      state.status = '';
+      state.token = '';
+    }
   },
   actions: {
     createFoodIngredient({ commit }, FoodIngredient) {
@@ -98,59 +98,57 @@ export default new Vuex.Store({
     },
     login({ commit, dispatch }, user) {
       return new Promise((resolve, reject) => {
-        commit('auth_request')
+        commit('auth_request');
         AuthService.login(user.name, user.password)
           .then(resp => {
             const token = resp.accessToken;
             const userId = resp.userId;
             const userFullName = resp.userFullName;
             localStorage.setItem('token', token);
-            api.defaults.headers.common['Authorization'] = "Bearer " + token
-            commit('auth_success', { token, userId, userFullName })
+            api.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+            commit('auth_success', { token, userId, userFullName });
             dispatch('user/updateCurrentUser');
-            resolve(resp)
+            resolve(resp);
           })
           .catch(err => {
-            commit('auth_error')
-            localStorage.removeItem('token')
-            reject(err)
-          })
-      })
+            commit('auth_error');
+            localStorage.removeItem('token');
+            reject(err);
+          });
+      });
     },
     register({ commit }, user) {
       return new Promise((resolve, reject) => {
-        commit('auth_request')
+        commit('auth_request');
         AuthService.register(user)
           .then(resp => {
             if (resp.canLogin) {
-              resolve()
-            }
-            else {
+              resolve();
+            } else {
               debugger;
-              commit('auth_error', err)
-              reject('Cannot create account')
+              commit('auth_error', err);
+              reject('Cannot create account');
             }
-
           })
           .catch(err => {
-            commit('auth_error', err)
-            localStorage.removeItem('token')
-            reject(err)
-          })
-      })
+            commit('auth_error', err);
+            localStorage.removeItem('token');
+            reject(err);
+          });
+      });
     },
     logout({ commit }) {
       return new Promise((resolve, reject) => {
-        commit('logout')
-        localStorage.removeItem('token')
-        delete api.defaults.headers.common['Authorization']
-        resolve()
-      })
+        commit('logout');
+        localStorage.removeItem('token');
+        delete api.defaults.headers.common['Authorization'];
+        resolve();
+      });
     }
   },
   getters: {
     isLoggedIn: state => !!state.token,
-    authStatus: state => state.status,
+    authStatus: state => state.status
   },
   plugins: [createPersistedState()]
 });

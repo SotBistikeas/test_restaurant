@@ -1,6 +1,6 @@
 import axios from 'axios';
 import NProgress from 'nprogress';
-import apiClient from "@/services/ApiClient"
+import apiClient from '@/services/ApiClient';
 
 apiClient.interceptors.request.use(config => {
   NProgress.start();
@@ -26,5 +26,5 @@ export default {
     return apiClient.post('FoodIngredient/Create', FoodIngredient).catch(error => {
       console.log('There was an error:', error.message);
     });
-  },
+  }
 };

@@ -16,43 +16,43 @@
           <tbody>
             <tr>
               <td>Name</td>
-              <td>{{dish.name}}</td>
+              <td>{{ dish.name }}</td>
             </tr>
             <tr>
               <td>BaseCost</td>
-              <td>{{dish.baseCost}}</td>
+              <td>{{ dish.baseCost }}</td>
             </tr>
             <tr>
               <td>RealCost</td>
-              <td>{{dish.realCost}}</td>
+              <td>{{ dish.realCost }}</td>
             </tr>
             <tr>
               <td>SalePriceExclTax</td>
-              <td>{{dish.salePriceExclTax}}</td>
+              <td>{{ dish.salePriceExclTax }}</td>
             </tr>
             <tr>
               <td>salePriceInclTax</td>
-              <td>{{dish.salePriceInclTax}}</td>
+              <td>{{ dish.salePriceInclTax }}</td>
             </tr>
             <tr>
               <td>BaseProfit</td>
-              <td>{{dish.baseProfit}}</td>
+              <td>{{ dish.baseProfit }}</td>
             </tr>
             <tr>
               <td>BaseProfitPerc</td>
-              <td>{{dish.baseProfitPerc}}</td>
+              <td>{{ dish.baseProfitPerc }}</td>
             </tr>
             <tr>
               <td>RealProfit</td>
-              <td>{{dish.realProfit}}</td>
+              <td>{{ dish.realProfit }}</td>
             </tr>
             <tr>
               <td>RealProfitPerc</td>
-              <td>{{dish.realProfitPerc}}</td>
+              <td>{{ dish.realProfitPerc }}</td>
             </tr>
             <tr>
               <td>FoodCostPerc</td>
-              <td>{{dish.foodCostPerc}}</td>
+              <td>{{ dish.foodCostPerc }}</td>
             </tr>
           </tbody>
         </table>
@@ -90,21 +90,9 @@
       <b-form-group label="Food Ingredients">
         <b-form-select v-model="FoodIngredient">
           <option disabled hidden :value="null">Please select one</option>
-          <option
-            v-for="option in FoodIngredientOptions"
-            v-bind:value="option"
-            v-bind:key="option.id"
-          >{{ option.name }}</option>
+          <option v-for="option in FoodIngredientOptions" v-bind:value="option" v-bind:key="option.id">{{ option.name }}</option>
         </b-form-select>
-        <BaseInput
-          label="Amount"
-          v-model="amount"
-          class="field"
-          type="number"
-          step="0.01"
-          min="0.00"
-          max="10000.00"
-        />
+        <BaseInput label="Amount" v-model="amount" class="field" type="number" step="0.01" min="0.00" max="10000.00" />
         <span v-if="amount != null">Cost per dish: {{ amount * FoodIngredient.cost }}</span>
       </b-form-group>
       <form v-on:submit.prevent="addFoodToList()">
@@ -124,11 +112,7 @@
       <b-form-group label="Products">
         <b-form-select v-model="product">
           <option disabled hidden :value="null">Please select one</option>
-          <option
-            v-for="option in ProductOptions"
-            v-bind:value="option"
-            v-bind:key="option.id"
-          >{{ option.name }}</option>
+          <option v-for="option in ProductOptions" v-bind:value="option" v-bind:key="option.id">{{ option.name }}</option>
         </b-form-select>
       </b-form-group>
       <form v-on:submit.prevent="addProdToList()">
@@ -139,20 +123,12 @@
     </b-card>
 
     <div>
-      <b-table
-        striped
-        hover
-        :items="foodIngredients"
-        :fields="foodIngredientFields"
-        id="table"
-        bordered
-        responsive
-      >
+      <b-table striped hover :items="foodIngredients" :fields="foodIngredientFields" id="table" bordered responsive>
         <!-- A custom formatted column -->
         <template slot="id" slot-scope="data">
           <b-button variant="outline-danger" size="sm" @click="deleteThis(id, data.value)">Remove</b-button>
         </template>
-        <template slot="foodIngredientId" slot-scope="data">{{getFoodIngredientName(data.value)}}</template>
+        <template slot="foodIngredientId" slot-scope="data">{{ getFoodIngredientName(data.value) }}</template>
         <template slot="unitOfMeasureId" slot-scope="data">
           <UnitName :unitId="data.value" />
         </template>
@@ -164,16 +140,16 @@
   </div>
 </template>
 <script>
-import DishService from "@/services/DishService.js";
-import ProductService from "@/services/ProductService.js";
-import { faSort } from "@fortawesome/free-solid-svg-icons/faSort";
-import axios from "axios";
-import UnitName from "@/components/UnitName.vue";
-import Currency from "@/components/Currency.vue";
-import FoodIngredientService from "@/services/FoodIngredientService.js";
+import DishService from '@/services/DishService.js';
+import ProductService from '@/services/ProductService.js';
+import { faSort } from '@fortawesome/free-solid-svg-icons/faSort';
+import axios from 'axios';
+import UnitName from '@/components/UnitName.vue';
+import Currency from '@/components/Currency.vue';
+import FoodIngredientService from '@/services/FoodIngredientService.js';
 
 export default {
-  props: ["id"],
+  props: ['id'],
   components: {
     UnitName,
     Currency
@@ -186,13 +162,13 @@ export default {
       FoodIngredient: {},
       product: {},
       edit: false,
-      editedname: "",
+      editedname: '',
       ingredients: [],
       ingredient: {
-        id: "",
-        foodIngredientid: "",
-        quantity: "",
-        unitOfMeasureId: ""
+        id: '',
+        foodIngredientid: '',
+        quantity: '',
+        unitOfMeasureId: ''
       },
       del: false,
       amount: null,
@@ -201,23 +177,23 @@ export default {
       foodIngredients: [],
       foodIngredientFields: {
         foodIngredientId: {
-          label: "foodIngredientId",
+          label: 'foodIngredientId',
           sortable: true
         },
         quantity: {
-          label: "Quantity per ingredient",
+          label: 'Quantity per ingredient',
           sortable: true
         },
         unitOfMeasureId: {
-          label: "Unit of measure",
+          label: 'Unit of measure',
           sortable: false
         },
         cost: {
-          label: "Cost",
+          label: 'Cost',
           sortable: true
         },
         id: {
-          label: "Actions",
+          label: 'Actions',
           sortable: false
         }
       }
@@ -231,7 +207,7 @@ export default {
     FoodIngredientService.getAllFoodIngredients().then(response => {
       this.FoodIngredientOptions = response.data.result.items;
     });
-    this.$store.dispatch("fetchUnits");
+    this.$store.dispatch('fetchUnits');
   },
   created() {
     this.getIt();
@@ -253,7 +229,7 @@ export default {
       DishService.deleteDishById(this.id)
         .then(() => {
           this.$router.push({
-            name: "DishList"
+            name: 'DishList'
           });
         })
         .catch(error => {
@@ -269,7 +245,7 @@ export default {
           if (response.data.error == null) {
             this.getIt();
             this.edit = false;
-            this.editedname = "";
+            this.editedname = '';
           }
         })
         .catch(error => {
@@ -286,7 +262,7 @@ export default {
         .then(() => {
           this.getIt();
           this.loadFoodIngredients();
-          this.amount = "";
+          this.amount = '';
           this.add = false;
         })
         .catch(error => {
@@ -294,12 +270,10 @@ export default {
         });
     },
     addProdToList() {
-      alert("No Back End Yet!!!!");
+      alert('No Back End Yet!!!!');
     },
     deleteThis(id, data) {
-      DishService.deleteFoodFromDish(id, data).then(() =>
-        this.loadFoodIngredients()
-      );
+      DishService.deleteFoodFromDish(id, data).then(() => this.loadFoodIngredients());
     },
     loadFoodIngredient() {
       FoodIngredientService.getAllFoodIngredients()

@@ -11,7 +11,7 @@ export default {
   props: {
     label: {
       type: String,
-      default: ""
+      default: ''
     },
     value: [String, Number],
     errorMessage: String
@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     updateValue(event) {
-      this.$emit("input", event);
+      this.$emit('input', event);
     }
   }
 };

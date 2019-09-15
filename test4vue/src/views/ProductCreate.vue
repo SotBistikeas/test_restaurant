@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card title="Create a new product" sub-title="" style="max-width: 20rem;" >
+    <b-card title="Create a new product" sub-title="" style="max-width: 20rem;">
       <form @submit.prevent="createProduct">
         <BaseInput
           label="Name"
@@ -17,8 +17,8 @@
           :class="{ error: $v.product.price.$error }"
           @blur="$v.product.price.$touch()"
           type="number"
-          step="0.01" 
-          min="0.00" 
+          step="0.01"
+          min="0.00"
           max="10000.00"
           :state="!$v.product.price.$error"
           errorMessage="Price is required"
@@ -34,7 +34,7 @@
           <p v-if="!$v.product.unitOfMeasureId.required" class="errorMessage">Vat is required</p>
         </template>
 
-        <BaseButton type="submit" :disabled="$v.$anyError" variant="primary" >Save</BaseButton>
+        <BaseButton type="submit" :disabled="$v.$anyError" variant="primary">Save</BaseButton>
 
         <p v-if="$v.$anyError">Please fill out all the fields</p>
       </form>
@@ -104,6 +104,5 @@ export default {
   }
 };
 </script>
-
 
 <style scoped></style>

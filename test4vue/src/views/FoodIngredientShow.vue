@@ -69,15 +69,11 @@
         <b-form-group label="Products">
           <b-form-select v-model="product">
             <option disabled hidden :value="null">Please select one</option>
-            <option
-              v-for="option in ProductOptions"
-              v-bind:value="option"
-              v-bind:key="option.id"
-            >{{ option.name }}</option>
+            <option v-for="option in ProductOptions" v-bind:value="option" v-bind:key="option.id">{{ option.name }}</option>
           </b-form-select>
         </b-form-group>
 
-        <span>Quantity in ( {{this.product.unitOfMeasureId}} ) **{{ getUnitName(this.product.unitOfMeasureId) }}</span>
+        <span>Quantity in ( {{ this.product.unitOfMeasureId }} ) **{{ getUnitName(this.product.unitOfMeasureId) }}</span>
 
         <BaseInput v-model="quantity" class="field" type="number" step="0.01" />
         <h6 v-if="!isNaN(product.price * quantity)">
@@ -90,29 +86,25 @@
     <br />
     <div>
       <b-form-group label="Using options array:">
-        <b-form-checkbox-group
-          id="checkbox-group-1"
-          v-model="selected"
-          :options="baharika.baharika"
-        ></b-form-checkbox-group>
+        <b-form-checkbox-group id="checkbox-group-1" v-model="selected" :options="baharika.baharika"></b-form-checkbox-group>
       </b-form-group>
     </div>
   </div>
 </template>
 
 <script>
-import FoodIngredientService from "@/services/FoodIngredientService.js";
-import ApiService from "@/services/ApiService.js";
+import FoodIngredientService from '@/services/FoodIngredientService.js';
+import ApiService from '@/services/ApiService.js';
 // import ProductService from '@/services/ProductService.js';
-import axios from "axios";
-import { mapState } from "vuex";
+import axios from 'axios';
+import { mapState } from 'vuex';
 // import ApiService from "@/services/ApiService.js";
-import UnitName from "@/components/UnitName.vue";
-import Currency from "@/components/Currency.vue";
-import apiClient from "@/services/ApiClient";
+import UnitName from '@/components/UnitName.vue';
+import Currency from '@/components/Currency.vue';
+import apiClient from '@/services/ApiClient';
 
 export default {
-  props: ["id"],
+  props: ['id'],
   components: {
     UnitName,
     Currency
@@ -125,45 +117,45 @@ export default {
       ProductOptions: [],
       foodIngredient: {},
       product: {
-        productId: "",
-        quantity: "",
-        unitOfMeasureId: "",
-        id: ""
+        productId: '',
+        quantity: '',
+        unitOfMeasureId: '',
+        id: ''
       },
-      quantity: "",
-      unitOfMeasureId: "",
+      quantity: '',
+      unitOfMeasureId: '',
       products: [],
       productFields: {
         productId: {},
         quantity: {},
         unitOfMeasureId: {},
         id: {
-          label: ""
+          label: ''
         }
       },
-      item: "",
-      idToRemove: "",
-      editedname: "",
-      temp: "",
+      item: '',
+      idToRemove: '',
+      editedname: '',
+      temp: '',
       Fields: {
         productId: {
-          label: "Product name",
+          label: 'Product name',
           sortable: true
         },
         quantity: {
-          label: "Quantity per ingredient",
+          label: 'Quantity per ingredient',
           sortable: true
         },
         unitOfMeasureId: {
-          label: "Unit of measure",
+          label: 'Unit of measure',
           sortable: false
         },
         cost: {
-          label: "Cost",
+          label: 'Cost',
           sortable: true
         },
         id: {
-          label: "Delete",
+          label: 'Delete',
           sortable: false
         }
       }
@@ -171,30 +163,25 @@ export default {
   },
   computed: {
     ...mapState({
-      baharika: "baharika",
-      unitOfMeasures: "units"
+      baharika: 'baharika',
+      unitOfMeasures: 'units'
     }),
     unitOfMeasureOptions: function() {
       if (this.product.id) {
         //find the unit of measure of this product
-        var unit = this.unitOfMeasures.find(
-          o => o.id == this.product.unitOfMeasureId
-        );
+        var unit = this.unitOfMeasures.find(o => o.id == this.product.unitOfMeasureId);
         //find all unit of measures of the same type
-        return this.unitOfMeasures.filter(
-          o => o.unitOfMeasureType == unit.unitOfMeasureType
-        );
+        return this.unitOfMeasures.filter(o => o.unitOfMeasureType == unit.unitOfMeasureType);
       }
       return this.unitOfMeasures;
     }
   },
   beforeCreate() {
-    apiClient.get("/Product/GetAll?MaxResultCount=10000").then(response => {
+    apiClient.get('/Product/GetAll?MaxResultCount=10000').then(response => {
       this.ProductOptions = response.data.result.items;
     });
 
-    this.$store.dispatch("fetchUnits");
-   
+    this.$store.dispatch('fetchUnits');
   },
 
   created() {
@@ -212,24 +199,19 @@ export default {
         });
     },
     loadProducts() {
-      apiClient
-        .get("/FoodIngredient/GetProducts?foodIngredientId=" + this.id)
-        .then(response => {
-          this.products = response.data.result;
-        });
+      apiClient.get('/FoodIngredient/GetProducts?foodIngredientId=' + this.id).then(response => {
+        this.products = response.data.result;
+      });
     },
     deleteIt() {
       apiClient
-        .delete(
-          "/FoodIngredient/Delete?Id=" +
-            this.id
-        )
+        .delete('/FoodIngredient/Delete?Id=' + this.id)
         .then(response => {
           this.temp = response.data;
           this.$router.push({
-            name: "FoodIngredientList"
+            name: 'FoodIngredientList'
           });
-          console.log("record with id:" + this.id + " has been deleted");
+          console.log('record with id:' + this.id + ' has been deleted');
         })
         .catch(error => {
           console.log(error.message);
@@ -237,7 +219,7 @@ export default {
     },
     updateIt() {
       apiClient
-        .put("/FoodIngredient/Update", {
+        .put('/FoodIngredient/Update', {
           name: this.editedname,
           cost: this.foodIngredient.cost,
           unitOfMeasureId: this.foodIngredient.unitOfMeasureId,
@@ -247,7 +229,7 @@ export default {
         .then(response => {
           this.loadFoodIngredient();
           this.temp = response.data;
-          this.editedname = "";
+          this.editedname = '';
           this.edit = false;
         })
         .catch(error => {
@@ -256,12 +238,7 @@ export default {
     },
     deleteThis(foodIngredientId, itemId) {
       apiClient
-        .delete(
-          "/FoodIngredient/RemoveProduct?foodIngredientId=" +
-            foodIngredientId +
-            "&id=" +
-            itemId
-        )
+        .delete('/FoodIngredient/RemoveProduct?foodIngredientId=' + foodIngredientId + '&id=' + itemId)
         .then(response => {
           this.temp = response.data;
           this.loadProducts();
@@ -272,23 +249,19 @@ export default {
     },
     addToList() {
       apiClient
-        .post(
-          "/FoodIngredient/AddProduct?foodIngredientId=" +
-            this.id,
-          {
-            productId: this.product.id,
-            quantity: this.quantity,
-            unitOfMeasureId: this.product.unitOfMeasureId,
-            id: 0
-          }
-        )
+        .post('/FoodIngredient/AddProduct?foodIngredientId=' + this.id, {
+          productId: this.product.id,
+          quantity: this.quantity,
+          unitOfMeasureId: this.product.unitOfMeasureId,
+          id: 0
+        })
         .then(() => {
           //clear old data
           this.product = {
-            productId: "",
-            quantity: "",
-            unitOfMeasureId: "",
-            id: ""
+            productId: '',
+            quantity: '',
+            unitOfMeasureId: '',
+            id: ''
           };
           this.quantity = null;
           this.unitOfMeasureId = null;

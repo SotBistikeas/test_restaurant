@@ -1,25 +1,10 @@
 <template>
   <b-card title="Register" sub-title style="max-width: 20rem;">
     <form @submit.prevent="register">
-      <BaseInput
-        label="Name"
-        v-model="name"
-        :state="!$v.name.$error"
-        errorMessage="Name is required"
-      />
-      <BaseInput
-        label="Surname"
-        v-model="surname"
-        :state="!$v.surname.$error"
-        errorMessage="Surname is required"
-      />
+      <BaseInput label="Name" v-model="name" :state="!$v.name.$error" errorMessage="Name is required" />
+      <BaseInput label="Surname" v-model="surname" :state="!$v.surname.$error" errorMessage="Surname is required" />
 
-      <BaseInput
-        label="E-Mail"
-        v-model="email"
-        :state="!$v.email.$error"
-        errorMessage="E-Mail is required"
-      />
+      <BaseInput label="E-Mail" v-model="email" :state="!$v.email.$error" errorMessage="E-Mail is required" />
 
       <BaseInput
         label="Password"
@@ -48,16 +33,16 @@
   </b-card>
 </template>
 <script>
-import { required, sameAs, minLength, email } from "vuelidate/lib/validators";
+import { required, sameAs, minLength, email } from 'vuelidate/lib/validators';
 
 export default {
   data() {
     return {
-      name: "",
-      surname: "",
-      email: "",
-      password: "",
-      password_confirmation: ""
+      name: '',
+      surname: '',
+      email: '',
+      password: '',
+      password_confirmation: ''
     };
   },
   validations: {
@@ -66,7 +51,7 @@ export default {
     email: { required, email },
     password: { required, minLength: minLength(6) },
     password_confirmation: {
-      sameAsPassword: sameAs("password")
+      sameAsPassword: sameAs('password')
     }
   },
 
@@ -82,8 +67,8 @@ export default {
           password: this.password
         };
         this.$store
-          .dispatch("register", data)
-          .then(() => this.$router.push("/login"))
+          .dispatch('register', data)
+          .then(() => this.$router.push('/login'))
           .catch(err => console.log(err));
       }
     }

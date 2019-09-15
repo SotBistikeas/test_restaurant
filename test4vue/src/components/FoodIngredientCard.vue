@@ -1,9 +1,8 @@
 <template>
   <div class="box">
-    <router-link
-      class="box"
-      :to="{ name: 'FoodIngredientShow', params: { id: foodIngredient.id } }"
-    >{{ foodIngredient.name }} - {{ foodIngredient.id }} - {{foodIngredient.isProduct}}</router-link>
+    <router-link class="box" :to="{ name: 'FoodIngredientShow', params: { id: foodIngredient.id } }"
+      >{{ foodIngredient.name }} - {{ foodIngredient.id }} - {{ foodIngredient.isProduct }}</router-link
+    >
   </div>
 </template>
 

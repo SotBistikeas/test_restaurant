@@ -38,7 +38,7 @@ const router = new Router({
     {
       path: '/expenses',
       name: 'MonthlyExp',
-      component: MonthlyExp,
+      component: MonthlyExp
       //meta: { requiresAuth: true }
     },
     {
@@ -186,15 +186,14 @@ router.beforeEach((_routeTo, _routeFrom, next) => {
   NProgress.start();
   if (_routeTo.matched.some(record => record.meta.requiresAuth)) {
     if (store.getters.isLoggedIn) {
-      next()
-      return
+      next();
+      return;
     }
-    next('/login')
+    next('/login');
     NProgress.done();
   } else {
-    next()
+    next();
   }
-
 });
 
 router.afterEach(() => {

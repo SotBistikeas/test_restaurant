@@ -1,13 +1,13 @@
 <template>
-  <span>{{getUnitName(unitId)}}</span>
+  <span>{{ getUnitName(unitId) }}</span>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex';
 export default {
-  props: ["unitId", "withLink"],
+  props: ['unitId', 'withLink'],
   computed: {
-    ...mapState({ units: "units" })
+    ...mapState({ units: 'units' })
   },
   beforeCreate() {
     //this.$store.dispatch("fetchUnits");

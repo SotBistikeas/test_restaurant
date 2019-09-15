@@ -14,7 +14,7 @@
       <p>name: {{ product.result.name }}</p>
       <p>price: {{ product.result.price }}</p>
       <p>
-        unit id: {{product.result.unitOfMeasureId}} -
+        unit id: {{ product.result.unitOfMeasureId }} -
         <UnitName :unitId="product.result.unitOfMeasureId" />
       </p>
       <b-form-checkbox v-model="del" switch>Delete</b-form-checkbox>
@@ -38,13 +38,13 @@
 </template>
 
 <script>
-import ProductService from "@/services/ProductService.js";
-import UnitName from "@/components/UnitName.vue";
-import axios from "axios";
-import apiClient from "@/services/ApiClient";
+import ProductService from '@/services/ProductService.js';
+import UnitName from '@/components/UnitName.vue';
+import axios from 'axios';
+import apiClient from '@/services/ApiClient';
 
 export default {
-  props: ["id"],
+  props: ['id'],
   components: {
     UnitName
   },
@@ -54,8 +54,8 @@ export default {
         result: {}
       },
       edit: false,
-      editedname: "",
-      editedPrice: "",
+      editedname: '',
+      editedPrice: '',
       del: false
     };
   },
@@ -64,17 +64,15 @@ export default {
   },
   methods: {
     deleteIt() {
-      console.log("this id = " + this.id);
+      console.log('this id = ' + this.id);
       apiClient
-        .delete(
-          "/Product/Delete?Id=" + this.id
-        )
+        .delete('/Product/Delete?Id=' + this.id)
         .then(response => {
           this.$router.push({
-            name: "ProductList"
+            name: 'ProductList'
           });
           console.log(response.data);
-          console.log("record with id:" + this.id + " has been deleted");
+          console.log('record with id:' + this.id + ' has been deleted');
         })
         .catch(error => {
           console.log(error.message);
@@ -82,7 +80,7 @@ export default {
     },
     updateIt() {
       apiClient
-        .put("/Product/Update", {
+        .put('/Product/Update', {
           name: this.editedname,
           price: this.editedPrice,
           unitOfMeasureId: this.product.result.unitOfMeasureId,
@@ -93,9 +91,9 @@ export default {
           if (response.data.error == null) {
             this.getIt();
             this.edit = false;
-            this.editedname = "";
-            this.editedPrice = "";
-            this.editedUnit = "";
+            this.editedname = '';
+            this.editedPrice = '';
+            this.editedUnit = '';
           }
         })
         .catch(error => {

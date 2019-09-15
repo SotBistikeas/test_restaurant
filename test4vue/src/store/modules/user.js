@@ -1,6 +1,5 @@
-import apiClient from "@/services/ApiClient";
+import apiClient from '@/services/ApiClient';
 export default {
-
   namespaced: true,
   state: {
     user: {
@@ -17,12 +16,9 @@ export default {
   },
   actions: {
     updateCurrentUser({ commit, state }) {
-
-      apiClient.get("/Session/GetCurrentLoginInformations")
-        .then((resp) => {
-          commit('setUserData', resp.data.result.user)
-        })
-
+      apiClient.get('/Session/GetCurrentLoginInformations').then(resp => {
+        commit('setUserData', resp.data.result.user);
+      });
     }
   }
 };

@@ -30,7 +30,7 @@ export default {
     };
   },
   beforeMount() {
-     UnitOfMeasureService.getUnitById(this.id)
+    UnitOfMeasureService.getUnitById(this.id)
       .then(response => {
         this.unit = response.data.result;
       })

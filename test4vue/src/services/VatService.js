@@ -1,5 +1,5 @@
 import axios from 'axios';
-import apiClient from "@/services/ApiClient"
+import apiClient from '@/services/ApiClient';
 
 export default {
   getVat() {

@@ -16,26 +16,21 @@
           <span>Unit:</span>
           <select v-model="FoodIngredient.unitOfMeasureId">
             <option disabled hidden :value="null">Please select one</option>
-            <option
-              v-for="option in unitOfMeasureOptions"
-              v-bind:value="option.id"
-              v-bind:key="option.id"
-            >{{ option.name }}</option>
+            <option v-for="option in unitOfMeasureOptions" v-bind:value="option.id" v-bind:key="option.id">{{ option.name }}</option>
           </select>
         </div>
       </form>
-      
 
       <span slot="footer" class="mb-0">
-        <BaseButton type="submit" variant="success" size="lg" >Create Food Ingredient</BaseButton>
+        <BaseButton type="submit" variant="success" size="lg">Create Food Ingredient</BaseButton>
       </span>
     </b-card>
   </div>
 </template>
 
 <script>
-import UnitOfMeasureService from "@/services/UnitOfMeasureService.js";
-import FoodIngredientService from "@/services/FoodIngredientService.js";
+import UnitOfMeasureService from '@/services/UnitOfMeasureService.js';
+import FoodIngredientService from '@/services/FoodIngredientService.js';
 
 export default {
   beforeCreate: function() {
@@ -44,17 +39,17 @@ export default {
         this.unitOfMeasureOptions = responce.data.result.items;
       })
       .catch(error => {
-        console.log("There war an error " + error.responce);
+        console.log('There war an error ' + error.responce);
       });
   },
   data() {
     return {
       unitOfMeasureOptions: [],
       FoodIngredient: {
-        name: "",
-        unitOfMeasureId: ""
+        name: '',
+        unitOfMeasureId: ''
       },
-      x: ""
+      x: ''
     };
   },
 
@@ -63,7 +58,7 @@ export default {
       FoodIngredientService.postFoodIngredient(this.FoodIngredient)
         .then(response => {
           this.$router.push({
-            name: "FoodIngredientShow",
+            name: 'FoodIngredientShow',
             params: { id: response.data.result.id }
           });
         })

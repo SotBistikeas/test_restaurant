@@ -1,7 +1,5 @@
-import apiClient from "./ApiClient"
+import apiClient from './ApiClient';
 import NProgress from 'nprogress';
-
-
 
 apiClient.interceptors.request.use(config => {
   NProgress.start();
@@ -14,8 +12,6 @@ apiClient.interceptors.response.use(response => {
 });
 
 export default {
-
-
   // Product Services
 
   getAllProducts() {
@@ -38,7 +34,6 @@ export default {
       console.log('There was an error:', error.message);
     });
   },
-
 
   // Unit Services
 
